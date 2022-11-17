@@ -1,0 +1,11 @@
+.button{
+    default-button-color: #ff6600;
+    default-action-button-color: #bfff00;
+    mouse-on-color: #cc5200;
+    button-color: default-button-color;
+    -fx-background-color: button-color;
+    -fx-pref-width: 200px;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold
+}
