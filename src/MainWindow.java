@@ -102,22 +102,10 @@ public class MainWindow extends Application {
 
         Button prev = new Button();
         ImageView prevI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/back.png")).toExternalForm()));
-        prevI.setFitHeight(20);
-        prevI.setPreserveRatio(true);
-        prev.setGraphic(prevI);
-        prev.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
-        prev.setOnMouseEntered(e -> prev.setStyle("button-color: mouse-on-color"));
-        prev.setOnMouseExited(e -> prev.setStyle("button-color: default-button-color"));
-
+        prevNext(prev, prevI);
         Button next = new Button();
         ImageView nextI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/next.png")).toExternalForm()));
-        nextI.setFitHeight(20);
-        nextI.setPreserveRatio(true);
-        next.setGraphic(nextI);
-        next.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
-        next.setOnMouseEntered(e -> next.setStyle("button-color: mouse-on-color"));
-        next.setOnMouseExited(e -> next.setStyle("button-color: default-button-color"));
-
+        prevNext(next, nextI);
         Button repeat = new Button();
         ImageView repeatI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/repeat.png")).toExternalForm()));
         repeatI.setFitHeight(20);
@@ -193,6 +181,15 @@ public class MainWindow extends Application {
         mainSongControls.getChildren().addAll(songNameAligment, songTimeAligment, controls);
         mainSongControls.setStyle("-fx-background-color: #4d4d4d; -fx-padding: 15px; -fx-background-radius: 10");
         return mainSongControls;
+    }
+
+    private void prevNext(Button b, ImageView i) {
+        i.setFitHeight(20);
+        i.setPreserveRatio(true);
+        b.setGraphic(i);
+        b.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
+        b.setOnMouseEntered(e -> b.setStyle("button-color: mouse-on-color"));
+        b.setOnMouseExited(e -> b.setStyle("button-color: default-button-color"));
     }
 
     private VBox menu() {
@@ -296,10 +293,10 @@ public class MainWindow extends Application {
         Label volume = new Label("Volume");
         volume.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         ImageView volumeI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/volume.png")).toExternalForm()));
-        HBox volumeHbox = new HBox(volumeI, volume);
-        volumeHbox.setSpacing(10);
-        volumeHbox.setAlignment(Pos.CENTER);
-        VBox volumeBox = new VBox(volumeHbox, hybridSlider(150));
+        HBox volumeLabelBox = new HBox(volumeI, volume);
+        volumeLabelBox.setSpacing(10);
+        volumeLabelBox.setAlignment(Pos.CENTER);
+        VBox volumeBox = new VBox(volumeLabelBox, hybridSlider(150));
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
 
