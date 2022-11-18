@@ -74,6 +74,19 @@ public class MainWindow extends Application {
     public void setSongName(String s) {
         this.songName.setText(s);
     }
+    private void setTheme(String t) {
+        switch (t) {
+            case "Orange":  this.mainScene.getStylesheets().remove(0);
+                            this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
+                            break;
+            case "Green":   this.mainScene.getStylesheets().remove(0);
+                            this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/greenTheme.css")).toExternalForm());
+                            break;
+            case "Blue":    this.mainScene.getStylesheets().remove(0);
+                            this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/blueTheme.css")).toExternalForm());
+                            break;
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -358,15 +371,16 @@ public class MainWindow extends Application {
     }
 
     private VBox settingsPage() {
-        VBox colorBox = new VBox();
         Label color = new Label("Theme");
         ComboBox<String> colorPicker = new ComboBox<>();
         colorPicker.getItems().addAll("Orange", "Green", "Blue");
+        colorPicker.getSelectionModel().selectFirst();
+        colorPicker.setOnMouseEntered(e -> colorPicker.setStyle("combo-color: mouse-color"));
+        colorPicker.setOnMouseExited(e -> colorPicker.setStyle("combo-color: default-color"));
+        colorPicker.valueProperty().addListener(e -> this.setTheme(colorPicker.getValue()));
+        VBox colorBox = new VBox();
         colorBox.getChildren().addAll(color, colorPicker);
         colorBox.setSpacing(10);
-        colorPicker.getSelectionModel().selectFirst();
-        colorBox.setOnMouseEntered(e -> colorPicker.setStyle("combo-color: mouse-color"));
-        colorBox.setOnMouseExited(e -> colorPicker.setStyle("combo-color: default-color"));
 
         VBox infoBox = new VBox();
         Label info = new Label("Made by: " + this.autor);

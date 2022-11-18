@@ -56,6 +56,16 @@
     -fx-font-size: 17px;
     -fx-font-weight: bold
 }
+.combo-box .cell:selected{
+    -fx-background-color: default-color;
+    -fx-text-fill: black;
+    -fx-text-background-color: transparent;
+}
+.combo-box .cell:hover{
+    -fx-background-color: default-color;
+    -fx-text-fill: black;
+    -fx-text-background-color: transparent;
+}
 
 .progress-bar{
     track-color: #808080;
@@ -126,6 +136,7 @@
 
 .label{
     -fx-text-fill: white;
+    -fx-text-background-color: transparent;
     -fx-font-family: Arial Rounded MT Bold;
     -fx-font-weight: bold;
     -fx-font-size: 17px;
@@ -133,6 +144,7 @@
 
 .label-large{
     -fx-text-fill: white;
+    -fx-text-background-color: transparent;
     -fx-font-family: Arial Rounded MT Bold;
     -fx-font-weight: bold;
     -fx-font-size: 50px;
@@ -141,6 +153,7 @@
 
 .label-small{
     -fx-text-fill: white;
+    -fx-text-background-color: transparent;
     -fx-font-family: Arial Rounded MT Bold;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
