@@ -1,0 +1,16 @@
+.combo-box{
+    default-combo-color: #ff6600;
+    default-combo-color-blue: #0066ff;
+    default-combo-color-green: #00cc00;
+
+    mouse-on-color: #cc5200;
+    mouse-on-color-blue: #0052cc;
+    mouse-on-color-green: #009900;
+
+    combo-color: default-combo-color;
+    -fx-background-color: combo-color;
+    -fx-pref-width: 200px;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold
+}

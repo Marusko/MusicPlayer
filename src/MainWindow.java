@@ -1,5 +1,7 @@
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -14,6 +16,8 @@ import java.util.Objects;
 
 
 public class MainWindow extends Application {
+    private String autor = "Matúš Suský";
+    private String version = "0.0.1";
     //Testovanie
     private static final int ADD = 0;
     private static final int ALL = 1;
@@ -28,6 +32,8 @@ public class MainWindow extends Application {
     //UI elements which are updated based on other elements
     private final Label nameOnScreen = new Label();
     private final Label songName = new Label("Song name");
+    private final VBox mainListsVbox = new VBox();
+    private final VBox settings = new VBox();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -35,7 +41,7 @@ public class MainWindow extends Application {
         bp.setStyle("-fx-background-color: #5c5c5c");
         bp.setBottom(this.songControls());
         bp.setLeft(this.menu());
-        bp.setCenter(this.lists());
+        bp.setCenter(this.content());
         Scene mainScene = new Scene(bp, 1500, 900);
         stage.setTitle("Music player");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
@@ -303,11 +309,11 @@ public class MainWindow extends Application {
         return mainMenu;
     }
 
-    private VBox lists() {
-        VBox mainListsVbox = new VBox();
+    private VBox content() {
         this.nameOnScreen.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelLarge.css")).toExternalForm());
-        mainListsVbox.getChildren().add(this.nameOnScreen);
-        mainListsVbox.setAlignment(Pos.TOP_LEFT);
+        this.mainListsVbox.getChildren().add(this.nameOnScreen);
+        this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
+        this.mainListsVbox.getChildren().add(this.settings());
         return mainListsVbox;
     }
 
@@ -341,5 +347,37 @@ public class MainWindow extends Application {
 
         hybrid.getChildren().addAll(pb2, pb, slider);
         return hybrid;
+    }
+
+    private void setContent(Node n) {
+        this.mainListsVbox.getChildren().add(n);
+    }
+
+    private VBox settings() {
+        VBox colorBox = new VBox();
+        Label color = new Label("Theme");
+        color.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+        ComboBox<String> colorPicker = new ComboBox<>();
+        colorPicker.getItems().addAll("Orange", "Green", "Blue");
+        colorBox.getChildren().addAll(color, colorPicker);
+        colorBox.setSpacing(10);
+        colorPicker.getSelectionModel().selectFirst();
+        colorPicker.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/combobox.css")).toExternalForm());
+        colorBox.setOnMouseEntered(e -> colorPicker.setStyle("combo-color: mouse-on-color"));
+        colorBox.setOnMouseExited(e -> colorPicker.setStyle("combo-color: default-combo-color"));
+
+        VBox infoBox = new VBox();
+        Label info = new Label("Made by: " + this.autor);
+        info.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
+        Label infoVersion = new Label("Version: " + this.version);
+        infoVersion.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
+        infoBox.getChildren().addAll(info, infoVersion);
+        infoBox.setSpacing(10);
+
+        this.settings.getChildren().addAll(colorBox, infoBox);
+        this.settings.setSpacing(300);
+        this.settings.setPadding(new Insets(100));
+
+        return settings;
     }
 }
