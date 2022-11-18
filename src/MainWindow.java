@@ -54,6 +54,7 @@ public class MainWindow extends Application {
         this.playlistsPage();
         this.addPage();
         this.setContent(this.songsScroll);
+        this.setNameOnScreen("All songs"); //Testovanie
     }
     //Testovanie
     private void setRep(boolean v) {
@@ -90,7 +91,7 @@ public class MainWindow extends Application {
         ImageView pauseI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/pause.png")).toExternalForm()));
         pauseI.setFitHeight(20);
         pauseI.setPreserveRatio(true);
-        play.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
+        play.getStyleClass().add("my-music-control-button");
         play.setOnMouseEntered(e -> play.setStyle("button-color: mouse-on-color"));
         play.setOnMouseExited(e -> play.setStyle("button-color: default-button-color"));
         //Testovanie
@@ -115,7 +116,7 @@ public class MainWindow extends Application {
         repeatI.setFitHeight(20);
         repeatI.setPreserveRatio(true);
         repeat.setGraphic(repeatI);
-        repeat.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
+        repeat.getStyleClass().add("my-music-control-button");
         repeat.setOnMouseEntered(e -> repeat.setStyle("button-color: mouse-on-color"));
         repeat.setOnMouseExited(e -> {
             //testovanie
@@ -141,7 +142,7 @@ public class MainWindow extends Application {
         shuffleI.setFitHeight(20);
         shuffleI.setPreserveRatio(true);
         shuffle.setGraphic(shuffleI);
-        shuffle.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
+        shuffle.getStyleClass().add("my-music-control-button");
         shuffle.setOnMouseEntered(e -> shuffle.setStyle("button-color: mouse-on-color"));
         shuffle.setOnMouseExited(e -> {
             //testovanie
@@ -191,7 +192,7 @@ public class MainWindow extends Application {
         i.setFitHeight(20);
         i.setPreserveRatio(true);
         b.setGraphic(i);
-        b.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
+        b.getStyleClass().add("my-music-control-button");
         b.setOnMouseEntered(e -> b.setStyle("button-color: mouse-on-color"));
         b.setOnMouseExited(e -> b.setStyle("button-color: default-button-color"));
     }
@@ -204,7 +205,7 @@ public class MainWindow extends Application {
         addI.setFitHeight(20);
         addI.setPreserveRatio(true);
         add.setGraphic(addI);
-        add.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        add.getStyleClass().add("my-menu-button");
         add.setOnMouseEntered(e -> add.setStyle("button-color: mouse-on-color"));
         add.setOnMouseExited(e -> {
             if (this.selected == MainWindow.ADD) {
@@ -219,9 +220,8 @@ public class MainWindow extends Application {
         allI.setFitHeight(20);
         allI.setPreserveRatio(true);
         all.setGraphic(allI);
-        all.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        all.getStyleClass().add("my-menu-button");
         all.setStyle("button-color: default-action-button-color");
-        this.setNameOnScreen("All songs");
         all.setOnMouseEntered(e -> all.setStyle("button-color: mouse-on-color"));
         all.setOnMouseExited(e -> {
             if (this.selected == MainWindow.ALL) {
@@ -236,7 +236,7 @@ public class MainWindow extends Application {
         playlistI.setFitHeight(20);
         playlistI.setPreserveRatio(true);
         playlists.setGraphic(playlistI);
-        playlists.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        playlists.getStyleClass().add("my-menu-button");
         playlists.setOnMouseEntered(e -> playlists.setStyle("button-color: mouse-on-color"));
         playlists.setOnMouseExited(e -> {
             if (this.selected == MainWindow.PLAYLISTS) {
@@ -251,7 +251,7 @@ public class MainWindow extends Application {
         settingsI.setFitHeight(20);
         settingsI.setPreserveRatio(true);
         settings.setGraphic(settingsI);
-        settings.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        settings.getStyleClass().add("my-menu-button");
         settings.setOnMouseEntered(e -> settings.setStyle("button-color: mouse-on-color"));
         settings.setOnMouseExited(e -> {
             if (this.selected == MainWindow.SETTINGS) {
@@ -389,7 +389,7 @@ public class MainWindow extends Application {
         Label addSong = new Label("Add song");
         addSong.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Button songButton = new Button("Add");
-        songButton.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        songButton.getStyleClass().add("my-menu-button");
         songButton.setOnMouseEntered(e -> songButton.setStyle("button-color: mouse-on-color"));
         songButton.setOnMouseExited(e -> songButton.setStyle("button-color: default-button-color"));
         VBox songBox = new VBox(addSong, songButton);
@@ -401,7 +401,7 @@ public class MainWindow extends Application {
         playlistName.setOnMouseEntered(e -> playlistName.setStyle("field-color: mouse-on-color"));
         playlistName.setOnMouseExited(e -> playlistName.setStyle("field-color: default-field-color"));
         Button playlistButton = new Button("Create");
-        playlistButton.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        playlistButton.getStyleClass().add("my-menu-button");
         playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("button-color: mouse-on-color"));
         playlistButton.setOnMouseExited(e -> playlistButton.setStyle("button-color: default-button-color"));
         VBox playlistBox = new VBox(createPlaylist, playlistName, playlistButton);
@@ -420,10 +420,9 @@ public class MainWindow extends Application {
         playSongI.setPreserveRatio(true);
         playSongI.setFitHeight(10);
         playSong.setGraphic(playSongI);
-        playSong.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
-        playSong.setStyle("-fx-pref-width: 10px; -fx-pref-height: 10px");
-        playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-on-color; -fx-pref-width: 10px; -fx-pref-height: 10px"));
-        playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-button-color; -fx-pref-width: 10px; -fx-pref-height: 10px"));
+        playSong.getStyleClass().add("my-play-button");
+        playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-on-color"));
+        playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-button-color"));
         HBox controlsBox = new HBox(/*selected, */playSong);
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);
@@ -464,7 +463,7 @@ public class MainWindow extends Application {
         Label name = new Label("Playlist");
         name.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Button open = new Button("Open");
-        open.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        open.getStyleClass().add("my-menu-button");
         open.setOnMouseEntered(e -> open.setStyle("button-color: mouse-on-color"));
         open.setOnMouseExited(e -> open.setStyle("button-color: default-button-color"));
         VBox playlist = new VBox(playlistI, name, open);

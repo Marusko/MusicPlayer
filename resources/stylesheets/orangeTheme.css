@@ -13,6 +13,22 @@
     -fx-font-weight: bold
 }
 
+.my-play-button{
+    default-button-color: #ff6600;
+
+    default-action-button-color: #bfff00;
+
+    mouse-on-color: #cc5200;
+
+    button-color: default-button-color;
+    -fx-background-color: button-color;
+    -fx-pref-width: 10px;
+    -fx-pref-height: 10px;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold
+}
+
 .my-music-control-button{
     default-button-color: #ff6600;
 
