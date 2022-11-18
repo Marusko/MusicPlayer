@@ -1,7 +1,14 @@
 .button{
     default-button-color: #ff6600;
+    default-button-color-blue: #0066ff;
+    default-button-color-green: #00cc00;
+
     default-action-button-color: #bfff00;
+
     mouse-on-color: #cc5200;
+    mouse-on-color-blue: #0052cc;
+    mouse-on-color-green: #009900;
+
     button-color: default-button-color;
     -fx-background-color: button-color;
     -fx-pref-width: 200px;
