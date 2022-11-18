@@ -6,10 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.Objects;
@@ -36,6 +33,7 @@ public class MainWindow extends Application {
     private final VBox settings = new VBox();
     private final VBox add = new VBox();
     private final ScrollPane songsScroll = new ScrollPane();
+    private final ScrollPane playlistsScroll = new ScrollPane();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -312,7 +310,7 @@ public class MainWindow extends Application {
         this.nameOnScreen.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelLarge.css")).toExternalForm());
         this.mainListsVbox.getChildren().add(this.nameOnScreen);
         this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
-        this.mainListsVbox.getChildren().addAll(this.songs());
+        this.mainListsVbox.getChildren().addAll(this.playlists());
         return mainListsVbox;
     }
 
@@ -349,6 +347,7 @@ public class MainWindow extends Application {
     }
 
     private void setContent(Node n) {
+        this.mainListsVbox.getChildren().remove(1);
         this.mainListsVbox.getChildren().add(n);
     }
 
@@ -447,14 +446,49 @@ public class MainWindow extends Application {
         VBox songs = new VBox();
         songs.setPadding(new Insets(10));
         songs.setSpacing(10);
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 8; i++) {
             songs.getChildren().add(this.songUI());
         }
         this.songsScroll.setContent(songs);
-        this.songsScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         this.songsScroll.setOnMouseEntered(e -> this.songsScroll.setStyle("bar-width: bar-fat"));
         this.songsScroll.setOnMouseExited(e -> this.songsScroll.setStyle("bar-width: bar-skinny"));
         this.songsScroll.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/scrollpane.css")).toExternalForm());
         return this.songsScroll;
+    }
+
+    private VBox playlist() {
+        ImageView playlistI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
+        Label name = new Label("Playlist");
+        name.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+        Button open = new Button("Open");
+        open.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        open.setOnMouseEntered(e -> open.setStyle("button-color: mouse-on-color"));
+        open.setOnMouseExited(e -> open.setStyle("button-color: default-button-color"));
+        VBox playlist = new VBox(playlistI, name, open);
+        playlist.setSpacing(10);
+        playlist.setAlignment(Pos.CENTER);
+        playlist.setPadding(new Insets(10));
+        playlist.setPrefHeight(250);
+        playlist.setPrefWidth(200);
+        playlist.setMaxWidth(200);
+        playlist.setStyle("-fx-background-color: #404040; -fx-background-radius: 5");
+        return playlist;
+    }
+
+    private ScrollPane playlists() {
+        GridPane playlists = new GridPane();
+        playlists.setPadding(new Insets(0, 0, 100, 170));
+        playlists.setVgap(40);
+        playlists.setHgap(40);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 4; j++) {
+                playlists.add(this.playlist(), j, i);
+            }
+        }
+        this.playlistsScroll.setContent(playlists);
+        this.playlistsScroll.setOnMouseEntered(e -> this.playlistsScroll.setStyle("bar-width: bar-fat"));
+        this.playlistsScroll.setOnMouseExited(e -> this.playlistsScroll.setStyle("bar-width: bar-skinny"));
+        this.playlistsScroll.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/scrollpane.css")).toExternalForm());
+        return this.playlistsScroll;
     }
 }
