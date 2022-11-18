@@ -27,6 +27,7 @@ public class MainWindow extends Application {
     private boolean shuf = false;
 
     //UI elements which are updated based on other elements
+    private Scene mainScene;
     private final Label nameOnScreen = new Label();
     private final Label songName = new Label("Song name");
     private final VBox mainListsVbox = new VBox();
@@ -42,8 +43,8 @@ public class MainWindow extends Application {
         bp.setBottom(this.songControls());
         bp.setLeft(this.menu());
         bp.setCenter(this.content());
-        Scene mainScene = new Scene(bp, 1500, 900);
-        mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
+        this.mainScene = new Scene(bp, 1500, 900);
+        this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
         stage.setTitle("Music player");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         stage.setScene(mainScene);
@@ -92,8 +93,8 @@ public class MainWindow extends Application {
         pauseI.setFitHeight(20);
         pauseI.setPreserveRatio(true);
         play.getStyleClass().add("my-music-control-button");
-        play.setOnMouseEntered(e -> play.setStyle("button-color: mouse-on-color"));
-        play.setOnMouseExited(e -> play.setStyle("button-color: default-button-color"));
+        play.setOnMouseEntered(e -> play.setStyle("button-color: mouse-color"));
+        play.setOnMouseExited(e -> play.setStyle("button-color: default-color"));
         //Testovanie
         play.setOnAction(e -> {
             if (this.pla) {
@@ -117,23 +118,23 @@ public class MainWindow extends Application {
         repeatI.setPreserveRatio(true);
         repeat.setGraphic(repeatI);
         repeat.getStyleClass().add("my-music-control-button");
-        repeat.setOnMouseEntered(e -> repeat.setStyle("button-color: mouse-on-color"));
+        repeat.setOnMouseEntered(e -> repeat.setStyle("button-color: mouse-color"));
         repeat.setOnMouseExited(e -> {
             //testovanie
             if (!this.rep) {
-                repeat.setStyle("button-color: default-button-color");
+                repeat.setStyle("button-color: default-color");
             } else {
-                repeat.setStyle("button-color: default-action-button-color");
+                repeat.setStyle("button-color: default-action-color");
             }
         });
         //testovanie
         repeat.setOnAction(e -> {
             if (this.rep) {
                 this.setRep(false);
-                repeat.setStyle("button-color: default-button-color");
+                repeat.setStyle("button-color: default-color");
             } else {
                 this.setRep(true);
-                repeat.setStyle("button-color: default-action-button-color");
+                repeat.setStyle("button-color: default-action-color");
             }
         });
 
@@ -143,31 +144,30 @@ public class MainWindow extends Application {
         shuffleI.setPreserveRatio(true);
         shuffle.setGraphic(shuffleI);
         shuffle.getStyleClass().add("my-music-control-button");
-        shuffle.setOnMouseEntered(e -> shuffle.setStyle("button-color: mouse-on-color"));
+        shuffle.setOnMouseEntered(e -> shuffle.setStyle("button-color: mouse-color"));
         shuffle.setOnMouseExited(e -> {
             //testovanie
             if (!this.shuf) {
-                shuffle.setStyle("button-color: default-button-color");
+                shuffle.setStyle("button-color: default-color");
             } else {
-                shuffle.setStyle("button-color: default-action-button-color");
+                shuffle.setStyle("button-color: default-action-color");
             }
         });
         //testovanie
         shuffle.setOnAction(e -> {
             if (this.shuf) {
                 this.setShuf(false);
-                shuffle.setStyle("button-color: default-button-color");
+                shuffle.setStyle("button-color: default-color");
             } else {
                 this.setShuf(true);
-                shuffle.setStyle("button-color: default-action-button-color");
+                shuffle.setStyle("button-color: default-action-color");
             }
         });
 
-        this.songName.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Label actualTime = new Label("0:00");
-        actualTime.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
+        actualTime.getStyleClass().add("label-small");
         Label songLength = new Label("5:00");
-        songLength.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
+        songLength.getStyleClass().add("label-small");
 
         HBox controls = new HBox();
         controls.getChildren().addAll(shuffle, prev, play, next, repeat);
@@ -193,8 +193,8 @@ public class MainWindow extends Application {
         i.setPreserveRatio(true);
         b.setGraphic(i);
         b.getStyleClass().add("my-music-control-button");
-        b.setOnMouseEntered(e -> b.setStyle("button-color: mouse-on-color"));
-        b.setOnMouseExited(e -> b.setStyle("button-color: default-button-color"));
+        b.setOnMouseEntered(e -> b.setStyle("button-color: mouse-color"));
+        b.setOnMouseExited(e -> b.setStyle("button-color: default-color"));
     }
 
     private VBox menu() {
@@ -206,12 +206,12 @@ public class MainWindow extends Application {
         addI.setPreserveRatio(true);
         add.setGraphic(addI);
         add.getStyleClass().add("my-menu-button");
-        add.setOnMouseEntered(e -> add.setStyle("button-color: mouse-on-color"));
+        add.setOnMouseEntered(e -> add.setStyle("button-color: mouse-color"));
         add.setOnMouseExited(e -> {
             if (this.selected == MainWindow.ADD) {
-                add.setStyle("button-color: default-action-button-color");
+                add.setStyle("button-color: default-action-color");
             } else {
-                add.setStyle("button-color: default-button-color");
+                add.setStyle("button-color: default-color");
             }
         });
 
@@ -221,13 +221,13 @@ public class MainWindow extends Application {
         allI.setPreserveRatio(true);
         all.setGraphic(allI);
         all.getStyleClass().add("my-menu-button");
-        all.setStyle("button-color: default-action-button-color");
-        all.setOnMouseEntered(e -> all.setStyle("button-color: mouse-on-color"));
+        all.setStyle("button-color: default-action-color");
+        all.setOnMouseEntered(e -> all.setStyle("button-color: mouse-color"));
         all.setOnMouseExited(e -> {
             if (this.selected == MainWindow.ALL) {
-                all.setStyle("button-color: default-action-button-color");
+                all.setStyle("button-color: default-action-color");
             } else {
-                all.setStyle("button-color: default-button-color");
+                all.setStyle("button-color: default-color");
             }
         });
 
@@ -237,12 +237,12 @@ public class MainWindow extends Application {
         playlistI.setPreserveRatio(true);
         playlists.setGraphic(playlistI);
         playlists.getStyleClass().add("my-menu-button");
-        playlists.setOnMouseEntered(e -> playlists.setStyle("button-color: mouse-on-color"));
+        playlists.setOnMouseEntered(e -> playlists.setStyle("button-color: mouse-color"));
         playlists.setOnMouseExited(e -> {
             if (this.selected == MainWindow.PLAYLISTS) {
-                playlists.setStyle("button-color: default-action-button-color");
+                playlists.setStyle("button-color: default-action-color");
             } else {
-                playlists.setStyle("button-color: default-button-color");
+                playlists.setStyle("button-color: default-color");
             }
         });
 
@@ -252,12 +252,12 @@ public class MainWindow extends Application {
         settingsI.setPreserveRatio(true);
         settings.setGraphic(settingsI);
         settings.getStyleClass().add("my-menu-button");
-        settings.setOnMouseEntered(e -> settings.setStyle("button-color: mouse-on-color"));
+        settings.setOnMouseEntered(e -> settings.setStyle("button-color: mouse-color"));
         settings.setOnMouseExited(e -> {
             if (this.selected == MainWindow.SETTINGS) {
-                settings.setStyle("button-color: default-action-button-color");
+                settings.setStyle("button-color: default-action-color");
             } else {
-                settings.setStyle("button-color: default-button-color");
+                settings.setStyle("button-color: default-color");
             }
         });
 
@@ -265,41 +265,40 @@ public class MainWindow extends Application {
             this.selected = MainWindow.ADD;
             this.setContent(this.add);
             this.setNameOnScreen("Add new song or playlist");
-            add.setStyle("button-color: default-action-button-color");
-            all.setStyle("button-color: default-button-color");
-            playlists.setStyle("button-color: default-button-color");
-            settings.setStyle("button-color: default-button-color");
+            add.setStyle("button-color: default-action-color");
+            all.setStyle("button-color: default-color");
+            playlists.setStyle("button-color: default-color");
+            settings.setStyle("button-color: default-color");
         });
         all.setOnAction(e -> {
             this.selected = MainWindow.ALL;
             this.setContent(this.songsScroll);
             this.setNameOnScreen("All songs");
-            all.setStyle("button-color: default-action-button-color");
-            add.setStyle("button-color: default-button-color");
-            playlists.setStyle("button-color: default-button-color");
-            settings.setStyle("button-color: default-button-color");
+            all.setStyle("button-color: default-action-color");
+            add.setStyle("button-color: default-color");
+            playlists.setStyle("button-color: default-color");
+            settings.setStyle("button-color: default-color");
         });
         playlists.setOnAction(e -> {
             this.selected = MainWindow.PLAYLISTS;
             this.setContent(this.playlistsScroll);
             this.setNameOnScreen("Your playlists");
-            playlists.setStyle("button-color: default-action-button-color");
-            all.setStyle("button-color: default-button-color");
-            add.setStyle("button-color: default-button-color");
-            settings.setStyle("button-color: default-button-color");
+            playlists.setStyle("button-color: default-action-color");
+            all.setStyle("button-color: default-color");
+            add.setStyle("button-color: default-color");
+            settings.setStyle("button-color: default-color");
         });
         settings.setOnAction(e -> {
             this.selected = MainWindow.SETTINGS;
             this.setContent(this.settings);
             this.setNameOnScreen("Settings");
-            settings.setStyle("button-color: default-action-button-color");
-            all.setStyle("button-color: default-button-color");
-            add.setStyle("button-color: default-button-color");
-            playlists.setStyle("button-color: default-button-color");
+            settings.setStyle("button-color: default-action-color");
+            all.setStyle("button-color: default-color");
+            add.setStyle("button-color: default-color");
+            playlists.setStyle("button-color: default-color");
         });
 
         Label volume = new Label("Volume");
-        volume.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         ImageView volumeI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/volume.png")).toExternalForm()));
         HBox volumeLabelBox = new HBox(volumeI, volume);
         volumeLabelBox.setSpacing(10);
@@ -317,7 +316,7 @@ public class MainWindow extends Application {
     }
 
     private VBox content() {
-        this.nameOnScreen.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelLarge.css")).toExternalForm());
+        this.nameOnScreen.getStyleClass().add("label-large");
         this.mainListsVbox.getChildren().add(this.nameOnScreen);
         this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
         this.mainListsVbox.getChildren().addAll(this.playlistsPage());
@@ -361,20 +360,19 @@ public class MainWindow extends Application {
     private VBox settingsPage() {
         VBox colorBox = new VBox();
         Label color = new Label("Theme");
-        color.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         ComboBox<String> colorPicker = new ComboBox<>();
         colorPicker.getItems().addAll("Orange", "Green", "Blue");
         colorBox.getChildren().addAll(color, colorPicker);
         colorBox.setSpacing(10);
         colorPicker.getSelectionModel().selectFirst();
-        colorBox.setOnMouseEntered(e -> colorPicker.setStyle("combo-color: mouse-on-color"));
-        colorBox.setOnMouseExited(e -> colorPicker.setStyle("combo-color: default-combo-color"));
+        colorBox.setOnMouseEntered(e -> colorPicker.setStyle("combo-color: mouse-color"));
+        colorBox.setOnMouseExited(e -> colorPicker.setStyle("combo-color: default-color"));
 
         VBox infoBox = new VBox();
         Label info = new Label("Made by: " + this.autor);
-        info.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
+        info.getStyleClass().add("label-small");
         Label infoVersion = new Label("Version: " + this.version);
-        infoVersion.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
+        infoVersion.getStyleClass().add("label-small");
         infoBox.getChildren().addAll(info, infoVersion);
         infoBox.setSpacing(10);
 
@@ -387,23 +385,21 @@ public class MainWindow extends Application {
 
     private VBox addPage() {
         Label addSong = new Label("Add song");
-        addSong.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Button songButton = new Button("Add");
         songButton.getStyleClass().add("my-menu-button");
-        songButton.setOnMouseEntered(e -> songButton.setStyle("button-color: mouse-on-color"));
-        songButton.setOnMouseExited(e -> songButton.setStyle("button-color: default-button-color"));
+        songButton.setOnMouseEntered(e -> songButton.setStyle("button-color: mouse-color"));
+        songButton.setOnMouseExited(e -> songButton.setStyle("button-color: default-color"));
         VBox songBox = new VBox(addSong, songButton);
         songBox.setSpacing(10);
 
         Label createPlaylist = new Label("Create playlist");
-        createPlaylist.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         TextField playlistName = new TextField();
-        playlistName.setOnMouseEntered(e -> playlistName.setStyle("field-color: mouse-on-color"));
-        playlistName.setOnMouseExited(e -> playlistName.setStyle("field-color: default-field-color"));
+        playlistName.setOnMouseEntered(e -> playlistName.setStyle("field-color: mouse-color"));
+        playlistName.setOnMouseExited(e -> playlistName.setStyle("field-color: default-color"));
         Button playlistButton = new Button("Create");
         playlistButton.getStyleClass().add("my-menu-button");
-        playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("button-color: mouse-on-color"));
-        playlistButton.setOnMouseExited(e -> playlistButton.setStyle("button-color: default-button-color"));
+        playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("button-color: mouse-color"));
+        playlistButton.setOnMouseExited(e -> playlistButton.setStyle("button-color: default-color"));
         VBox playlistBox = new VBox(createPlaylist, playlistName, playlistButton);
         playlistBox.setSpacing(10);
 
@@ -421,20 +417,16 @@ public class MainWindow extends Application {
         playSongI.setFitHeight(10);
         playSong.setGraphic(playSongI);
         playSong.getStyleClass().add("my-play-button");
-        playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-on-color"));
-        playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-button-color"));
+        playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-color"));
+        playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-color"));
         HBox controlsBox = new HBox(/*selected, */playSong);
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);
 
         Label songName = new Label("Song name");
-        songName.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Label author = new Label("Author");
-        author.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Label year = new Label("Year");
-        year.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Label length = new Label("5:00");
-        length.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
 
         HBox song = new HBox(controlsBox, songName, author, year, length);
         song.setSpacing(200);
@@ -461,11 +453,10 @@ public class MainWindow extends Application {
     private VBox playlist() {
         ImageView playlistI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         Label name = new Label("Playlist");
-        name.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Button open = new Button("Open");
         open.getStyleClass().add("my-menu-button");
-        open.setOnMouseEntered(e -> open.setStyle("button-color: mouse-on-color"));
-        open.setOnMouseExited(e -> open.setStyle("button-color: default-button-color"));
+        open.setOnMouseEntered(e -> open.setStyle("button-color: mouse-color"));
+        open.setOnMouseExited(e -> open.setStyle("button-color: default-color"));
         VBox playlist = new VBox(playlistI, name, open);
         playlist.setSpacing(10);
         playlist.setAlignment(Pos.CENTER);

@@ -1,11 +1,10 @@
+.root{
+    default-color: #ff6600;
+    mouse-color: #cc5200;
+    default-action-color: #bfff00;
+}
 .my-menu-button{
-    default-button-color: #ff6600;
-
-    default-action-button-color: #bfff00;
-
-    mouse-on-color: #cc5200;
-
-    button-color: default-button-color;
+    button-color: default-color;
     -fx-background-color: button-color;
     -fx-pref-width: 200px;
     -fx-font-family: Arial Rounded MT Bold;
@@ -14,13 +13,7 @@
 }
 
 .my-play-button{
-    default-button-color: #ff6600;
-
-    default-action-button-color: #bfff00;
-
-    mouse-on-color: #cc5200;
-
-    button-color: default-button-color;
+    button-color: default-color;
     -fx-background-color: button-color;
     -fx-pref-width: 10px;
     -fx-pref-height: 10px;
@@ -30,13 +23,7 @@
 }
 
 .my-music-control-button{
-    default-button-color: #ff6600;
-
-    default-action-button-color: #bfff00;
-
-    mouse-on-color: #cc5200;
-
-    button-color: default-button-color;
+    button-color: default-color;
     -fx-background-color: button-color;
     -fx-font-weight: bold;
     -fx-font-family: Arial Rounded MT Bold;
@@ -46,11 +33,7 @@
 }
 
 .check-box{
-    default-check-color: #ff6600;
-
-    mouse-on-color: #cc5200;
-
-    check-color: default-check-color;
+    check-color: default-color;
 }
 .check-box .box{
     -fx-background-color: transparent;
@@ -66,11 +49,7 @@
 }
 
 .combo-box{
-    default-combo-color: #ff6600;
-
-    mouse-on-color: #cc5200;
-
-    combo-color: default-combo-color;
+    combo-color: default-color;
     -fx-background-color: combo-color;
     -fx-pref-width: 200px;
     -fx-font-family: Arial Rounded MT Bold;
@@ -80,7 +59,6 @@
 
 .progress-bar{
     track-color: #808080;
-    default-slider-color: #ff6600;
     -fx-background-color: transparent;
 }
 .progress-bar .track {
@@ -88,7 +66,7 @@
     -fx-background-radius: 50;
 }
 .progress-bar .bar{
-    -fx-background-color: default-slider-color;
+    -fx-background-color: default-color;
     -fx-background-size: 5;
 }
 
@@ -99,12 +77,10 @@
     -fx-background-color: transparent;
 }
 .scroll-bar {
-    default-scroll-color: #ff6600;
-
     bar-skinny: 8px;
     bar-fat: 12px;
 
-    thumb-color: default-scroll-color;
+    thumb-color: default-color;
     bar-width: bar-skinny;
 
     -fx-background-color: transparent;
@@ -140,14 +116,32 @@
 }
 
 .text-field{
-    default-field-color: #ff6600;
-
-    mouse-on-color: #cc5200;
-
-    field-color: default-field-color;
+    field-color: default-color;
     -fx-background-color: field-color;
     -fx-pref-width: 200px;
     -fx-font-family: Arial Rounded MT Bold;
     -fx-font-size: 17px;
     -fx-font-weight: bold
+}
+
+.label{
+    -fx-text-fill: white;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-weight: bold;
+    -fx-font-size: 17px;
+}
+
+.label-large{
+    -fx-text-fill: white;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-weight: bold;
+    -fx-font-size: 50px;
+    -fx-padding: 50;
+}
+
+.label-small{
+    -fx-text-fill: white;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
 }
