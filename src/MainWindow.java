@@ -287,8 +287,11 @@ public class MainWindow extends Application {
 
         Label volume = new Label("Volume");
         volume.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
-
-        VBox volumeBox = new VBox(volume, hybridSlider(150));
+        ImageView volumeI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/volume.png")).toExternalForm()));
+        HBox volumeHbox = new HBox(volumeI, volume);
+        volumeHbox.setSpacing(10);
+        volumeHbox.setAlignment(Pos.CENTER);
+        VBox volumeBox = new VBox(volumeHbox, hybridSlider(150));
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
 
