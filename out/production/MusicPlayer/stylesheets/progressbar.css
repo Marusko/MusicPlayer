@@ -1,5 +1,8 @@
 .progress-bar{
     track-color: #808080;
+    default-slider-color: #ff6600;
+    default-slider-color-blue: #0066ff;
+    default-slider-color-green: #00cc00;
     -fx-background-color: transparent;
 }
 .progress-bar .track {
@@ -7,6 +10,6 @@
     -fx-background-radius: 50;
 }
 .progress-bar .bar{
-    -fx-background-color: #ff6600;
+    -fx-background-color: default-slider-color;
     -fx-background-size: 5;
 }
