@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class Playlist {
     private final ArrayList<Song> songs;
     private String name;
-    private int numberOfSongs;
     private String totalLength;
     private final String path;
 
@@ -30,7 +29,7 @@ public class Playlist {
     }
 
     public int getNumberOfSongs() {
-        return numberOfSongs;
+        return this.songs.size();
     }
 
     public ArrayList<Song> getSongs() {
@@ -49,4 +48,8 @@ public class Playlist {
     public void addSong(Song s) {
         this.songs.add(s);
     }
+
+    /*private void calculateTotalLength() {
+        ZATIAL NEPOUZITE
+    }*/
 }

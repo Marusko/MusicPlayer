@@ -23,8 +23,11 @@ public class Song {
         return author;
     }
 
-    public String getLength() {
-        return length;
+    public int getMinutes() {
+        return Integer.parseInt(this.length.split(":")[0]); //Zatial takto
+    }
+    public int getSeconds() {
+        return Integer.parseInt(this.length.split(":")[1]); //Zatial takto
     }
 
     public String getYear() {
