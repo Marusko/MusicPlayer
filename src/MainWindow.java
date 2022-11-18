@@ -76,15 +76,18 @@ public class MainWindow extends Application {
     }
     private void setTheme(String t) {
         switch (t) {
-            case "Orange":  this.mainScene.getStylesheets().remove(0);
-                            this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
-                            break;
-            case "Green":   this.mainScene.getStylesheets().remove(0);
-                            this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/greenTheme.css")).toExternalForm());
-                            break;
-            case "Blue":    this.mainScene.getStylesheets().remove(0);
-                            this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/blueTheme.css")).toExternalForm());
-                            break;
+            case "Orange" -> {
+                this.mainScene.getStylesheets().remove(0);
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
+            }
+            case "Green" -> {
+                this.mainScene.getStylesheets().remove(0);
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/greenTheme.css")).toExternalForm());
+            }
+            case "Blue" -> {
+                this.mainScene.getStylesheets().remove(0);
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/blueTheme.css")).toExternalForm());
+            }
         }
     }
 
@@ -332,7 +335,6 @@ public class MainWindow extends Application {
         this.nameOnScreen.getStyleClass().add("label-large");
         this.mainListsVbox.getChildren().add(this.nameOnScreen);
         this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
-        this.mainListsVbox.getChildren().addAll(this.playlistsPage());
         return mainListsVbox;
     }
 
@@ -366,11 +368,15 @@ public class MainWindow extends Application {
     }
 
     private void setContent(Node n) {
-        this.mainListsVbox.getChildren().remove(1);
-        this.mainListsVbox.getChildren().add(n);
+        if (this.mainListsVbox.getChildren().size() > 1) {
+            this.mainListsVbox.getChildren().remove(1);
+            this.mainListsVbox.getChildren().add(n);
+        } else {
+            this.mainListsVbox.getChildren().add(n);
+        }
     }
 
-    private VBox settingsPage() {
+    private void settingsPage() {
         Label color = new Label("Theme");
         ComboBox<String> colorPicker = new ComboBox<>();
         colorPicker.getItems().addAll("Orange", "Green", "Blue");
@@ -393,11 +399,9 @@ public class MainWindow extends Application {
         this.settings.getChildren().addAll(colorBox, infoBox);
         this.settings.setSpacing(300);
         this.settings.setPadding(new Insets(100));
-
-        return settings;
     }
 
-    private VBox addPage() {
+    private void addPage() {
         Label addSong = new Label("Add song");
         Button songButton = new Button("Add");
         songButton.getStyleClass().add("my-menu-button");
@@ -420,7 +424,6 @@ public class MainWindow extends Application {
         this.add.getChildren().addAll(songBox, playlistBox);
         this.add.setSpacing(50);
         this.add.setPadding(new Insets(100));
-        return this.add;
     }
 
     private HBox songUI() {
@@ -451,7 +454,7 @@ public class MainWindow extends Application {
         return song;
     }
 
-    private ScrollPane songsPage() {
+    private void songsPage() {
         VBox songs = new VBox();
         songs.setPadding(new Insets(10));
         songs.setSpacing(10);
@@ -461,7 +464,6 @@ public class MainWindow extends Application {
         this.songsScroll.setContent(songs);
         this.songsScroll.setOnMouseEntered(e -> this.songsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
         this.songsScroll.setOnMouseExited(e -> this.songsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-skinny"));
-        return this.songsScroll;
     }
 
     private VBox playlist() {
@@ -482,7 +484,7 @@ public class MainWindow extends Application {
         return playlist;
     }
 
-    private ScrollPane playlistsPage() {
+    private void playlistsPage() {
         GridPane playlists = new GridPane();
         playlists.setPadding(new Insets(0, 0, 100, 170));
         playlists.setVgap(40);
@@ -495,6 +497,5 @@ public class MainWindow extends Application {
         this.playlistsScroll.setContent(playlists);
         this.playlistsScroll.setOnMouseEntered(e -> this.playlistsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
         this.playlistsScroll.setOnMouseExited(e -> this.playlistsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-skinny"));
-        return this.playlistsScroll;
     }
 }
