@@ -18,6 +18,7 @@ public class MainWindow extends Application {
     private static final int ADD = 0;
     private static final int ALL = 1;
     private static final int PLAYLISTS = 2;
+    private static final int SETTINGS = 3;
     private int selected = MainWindow.ALL;
     //Testovanie
     private boolean pla = true;
@@ -236,12 +237,28 @@ public class MainWindow extends Application {
             }
         });
 
+        Button settings = new Button("Settings");
+        ImageView settingsI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/equalizer.png")).toExternalForm()));
+        settingsI.setFitHeight(20);
+        settingsI.setPreserveRatio(true);
+        settings.setGraphic(settingsI);
+        settings.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        settings.setOnMouseEntered(e -> settings.setStyle("button-color: mouse-on-color"));
+        settings.setOnMouseExited(e -> {
+            if (this.selected == MainWindow.SETTINGS) {
+                settings.setStyle("button-color: default-action-button-color");
+            } else {
+                settings.setStyle("button-color: default-button-color");
+            }
+        });
+
         add.setOnAction(e -> {
             this.selected = MainWindow.ADD;
             this.setNameOnScreen("Add new song or playlist");
             add.setStyle("button-color: default-action-button-color");
             all.setStyle("button-color: default-button-color");
             playlists.setStyle("button-color: default-button-color");
+            settings.setStyle("button-color: default-button-color");
         });
         all.setOnAction(e -> {
             this.selected = MainWindow.ALL;
@@ -249,6 +266,7 @@ public class MainWindow extends Application {
             all.setStyle("button-color: default-action-button-color");
             add.setStyle("button-color: default-button-color");
             playlists.setStyle("button-color: default-button-color");
+            settings.setStyle("button-color: default-button-color");
         });
         playlists.setOnAction(e -> {
             this.selected = MainWindow.PLAYLISTS;
@@ -256,6 +274,15 @@ public class MainWindow extends Application {
             playlists.setStyle("button-color: default-action-button-color");
             all.setStyle("button-color: default-button-color");
             add.setStyle("button-color: default-button-color");
+            settings.setStyle("button-color: default-button-color");
+        });
+        settings.setOnAction(e -> {
+            this.selected = MainWindow.SETTINGS;
+            this.setNameOnScreen("Settings");
+            settings.setStyle("button-color: default-action-button-color");
+            all.setStyle("button-color: default-button-color");
+            add.setStyle("button-color: default-button-color");
+            playlists.setStyle("button-color: default-button-color");
         });
 
         Label volume = new Label("Volume");
@@ -265,7 +292,7 @@ public class MainWindow extends Application {
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
 
-        mainMenu.getChildren().addAll(add, all, playlists, volumeBox);
+        mainMenu.getChildren().addAll(add, all, playlists, settings, volumeBox);
         mainMenu.setSpacing(10);
         mainMenu.setAlignment(Pos.CENTER);
         mainMenu.setStyle("-fx-padding: 10px; -fx-background-color: #404040; -fx-background-radius: 10");
