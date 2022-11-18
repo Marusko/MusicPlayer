@@ -34,6 +34,7 @@ public class MainWindow extends Application {
     private final Label songName = new Label("Song name");
     private final VBox mainListsVbox = new VBox();
     private final VBox settings = new VBox();
+    private final VBox add = new VBox();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -313,7 +314,7 @@ public class MainWindow extends Application {
         this.nameOnScreen.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelLarge.css")).toExternalForm());
         this.mainListsVbox.getChildren().add(this.nameOnScreen);
         this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
-        this.mainListsVbox.getChildren().add(this.settings());
+        this.mainListsVbox.getChildren().add(this.addPage());
         return mainListsVbox;
     }
 
@@ -379,5 +380,34 @@ public class MainWindow extends Application {
         this.settings.setPadding(new Insets(100));
 
         return settings;
+    }
+
+    private VBox addPage() {
+        Label addSong = new Label("Add song");
+        addSong.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+        Button songButton = new Button("Add");
+        songButton.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        songButton.setOnMouseEntered(e -> songButton.setStyle("button-color: mouse-on-color"));
+        songButton.setOnMouseExited(e -> songButton.setStyle("button-color: default-button-color"));
+        VBox songBox = new VBox(addSong, songButton);
+        songBox.setSpacing(10);
+
+        Label createPlaylist = new Label("Create playlist");
+        createPlaylist.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+        TextField playlistName = new TextField();
+        playlistName.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/textfield.css")).toExternalForm());
+        playlistName.setOnMouseEntered(e -> playlistName.setStyle("field-color: mouse-on-color"));
+        playlistName.setOnMouseExited(e -> playlistName.setStyle("field-color: default-field-color"));
+        Button playlistButton = new Button("Create");
+        playlistButton.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("button-color: mouse-on-color"));
+        playlistButton.setOnMouseExited(e -> playlistButton.setStyle("button-color: default-button-color"));
+        VBox playlistBox = new VBox(createPlaylist, playlistName, playlistButton);
+        playlistBox.setSpacing(10);
+
+        this.add.getChildren().addAll(songBox, playlistBox);
+        this.add.setSpacing(50);
+        this.add.setPadding(new Insets(100));
+        return this.add;
     }
 }
