@@ -22,6 +22,7 @@ public class MainWindow extends Application {
     //Testovanie
     private boolean pla = true;
     private boolean rep = false;//Testovanie
+    private boolean shuf = false;
 
     //UI elements which are updated based on other elements
     private final Label nameOnScreen = new Label();
@@ -54,6 +55,9 @@ public class MainWindow extends Application {
     }
     private void setPla(boolean v) {
         this.pla = v;
+    }
+    private void setShuf(boolean v) {
+        this.shuf = v;
     }
 
     public static void main(String[] args) {
@@ -131,6 +135,32 @@ public class MainWindow extends Application {
             }
         });
 
+        Button shuffle = new Button();
+        ImageView shuffleI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/shuffle.png")).toExternalForm()));
+        shuffleI.setFitHeight(20);
+        shuffleI.setPreserveRatio(true);
+        shuffle.setGraphic(shuffleI);
+        shuffle.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/musicControls.css")).toExternalForm());
+        shuffle.setOnMouseEntered(e -> shuffle.setStyle("button-color: mouse-on-color"));
+        shuffle.setOnMouseExited(e -> {
+            //testovanie
+            if (!this.shuf) {
+                shuffle.setStyle("button-color: default-button-color");
+            } else {
+                shuffle.setStyle("button-color: default-action-button-color");
+            }
+        });
+        //testovanie
+        shuffle.setOnAction(e -> {
+            if (this.shuf) {
+                this.setShuf(false);
+                shuffle.setStyle("button-color: default-button-color");
+            } else {
+                this.setShuf(true);
+                shuffle.setStyle("button-color: default-action-button-color");
+            }
+        });
+
         this.songName.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         Label actualTime = new Label("0:00");
         actualTime.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
@@ -138,7 +168,7 @@ public class MainWindow extends Application {
         songLength.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelSmall.css")).toExternalForm());
 
         HBox controls = new HBox();
-        controls.getChildren().addAll(prev, play, next, repeat);
+        controls.getChildren().addAll(shuffle, prev, play, next, repeat);
         controls.setAlignment(Pos.TOP_CENTER);
         controls.setSpacing(10);
 
