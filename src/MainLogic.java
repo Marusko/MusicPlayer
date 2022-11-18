@@ -9,6 +9,4 @@ public class MainLogic {
         this.mw = mw;
     }
 
-
-
 }
