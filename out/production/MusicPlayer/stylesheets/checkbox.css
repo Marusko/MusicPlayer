@@ -1,0 +1,23 @@
+.check-box{
+    default-check-color: #ff6600;
+    default-check-color-blue: #0066ff;
+    default-check-color-green: #00cc00;
+
+    mouse-on-color: #cc5200;
+    mouse-on-color-blue: #0052cc;
+    mouse-on-color-green: #009900;
+
+    check-color: default-check-color;
+}
+.check-box .box{
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+.check-box:selected .mark{
+    -fx-background-color: black;
+}
+.check-box:selected .box{
+    -fx-background-color: check-color;
+}

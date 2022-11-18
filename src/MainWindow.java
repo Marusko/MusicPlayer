@@ -16,8 +16,8 @@ import java.util.Objects;
 
 
 public class MainWindow extends Application {
-    private String autor = "Matúš Suský";
-    private String version = "0.0.1";
+    private final String autor = "Matúš Suský";
+    private final String version = "0.0.1";
     //Testovanie
     private static final int ADD = 0;
     private static final int ALL = 1;
@@ -35,6 +35,7 @@ public class MainWindow extends Application {
     private final VBox mainListsVbox = new VBox();
     private final VBox settings = new VBox();
     private final VBox add = new VBox();
+    private final ScrollPane songsScroll = new ScrollPane();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -314,7 +315,7 @@ public class MainWindow extends Application {
         this.nameOnScreen.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelLarge.css")).toExternalForm());
         this.mainListsVbox.getChildren().add(this.nameOnScreen);
         this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
-        this.mainListsVbox.getChildren().add(this.addPage());
+        this.mainListsVbox.getChildren().addAll(this.songs());
         return mainListsVbox;
     }
 
@@ -409,5 +410,54 @@ public class MainWindow extends Application {
         this.add.setSpacing(50);
         this.add.setPadding(new Insets(100));
         return this.add;
+    }
+
+    private HBox songUI() {
+        //CheckBox selected = new CheckBox(); //TO DO
+        //selected.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/checkbox.css")).toExternalForm());
+        Button playSong = new Button();
+        ImageView playSongI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
+        playSongI.setPreserveRatio(true);
+        playSongI.setFitHeight(10);
+        playSong.setGraphic(playSongI);
+        playSong.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/button.css")).toExternalForm());
+        playSong.setStyle("-fx-pref-width: 10px; -fx-pref-height: 10px");
+        playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-on-color; -fx-pref-width: 10px; -fx-pref-height: 10px"));
+        playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-button-color; -fx-pref-width: 10px; -fx-pref-height: 10px"));
+        HBox controlsBox = new HBox(/*selected, */playSong);
+        controlsBox.setSpacing(10);
+        controlsBox.setAlignment(Pos.CENTER);
+
+        Label songName = new Label("Song name");
+        songName.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+        Label author = new Label("Author");
+        author.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+        Label year = new Label("Year");
+        year.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+        Label length = new Label("5:00");
+        length.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
+
+        HBox song = new HBox(controlsBox, songName, author, year, length);
+        song.setSpacing(200);
+        song.setPrefHeight(40);
+        song.setPrefWidth(1200);
+        song.setAlignment(Pos.CENTER);
+        song.setStyle(" -fx-background-color: #404040; -fx-background-radius: 10");
+        return song;
+    }
+
+    private ScrollPane songs() {
+        VBox songs = new VBox();
+        songs.setPadding(new Insets(10));
+        songs.setSpacing(10);
+        for (int i = 0; i < 21; i++) {
+            songs.getChildren().add(this.songUI());
+        }
+        this.songsScroll.setContent(songs);
+        this.songsScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        this.songsScroll.setOnMouseEntered(e -> this.songsScroll.setStyle("bar-width: bar-fat"));
+        this.songsScroll.setOnMouseExited(e -> this.songsScroll.setStyle("bar-width: bar-skinny"));
+        this.songsScroll.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/scrollpane.css")).toExternalForm());
+        return this.songsScroll;
     }
 }
