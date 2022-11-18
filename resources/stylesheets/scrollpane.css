@@ -11,32 +11,25 @@
 
     -fx-background-color: transparent;
 }
-
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
-
 .scroll-bar {
     -fx-background-color: transparent;
     -fx-pref-width: bar-width;
 }
-
 .scroll-bar:vertical .thumb{
     -fx-background-color: thumb-color;
 }
-
 .scroll-bar .increment-button{
     -fx-background-color: transparent;
 }
-
 .scroll-bar .decrement-button{
     -fx-background-color: transparent;
 }
-
 .scroll-bar .increment-arrow{
     -fx-background-color: transparent;
 }
-
 .scroll-bar .decrement-arrow{
     -fx-background-color: transparent;
 }

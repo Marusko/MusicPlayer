@@ -43,6 +43,7 @@ public class MainWindow extends Application {
         bp.setLeft(this.menu());
         bp.setCenter(this.content());
         Scene mainScene = new Scene(bp, 1500, 900);
+        mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
         stage.setTitle("Music player");
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         stage.setScene(mainScene);
@@ -328,12 +329,10 @@ public class MainWindow extends Application {
         Slider slider = new Slider();
         slider.setMaxWidth(sliderWidth);
         slider.setMinWidth(sliderWidth);
-        slider.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/slider.css")).toExternalForm());
         slider.setOnMouseEntered(e -> slider.setStyle("thumb-transparent: thumb-show"));
         slider.setOnMouseExited(e -> slider.setStyle("thumb-transparent: thumb-hide"));
 
         ProgressBar pb = new ProgressBar(0);
-        pb.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/progressbar.css")).toExternalForm());
         pb.setStyle("track-color:transparent");
         pb.setMaxWidth(sliderWidth);
         pb.setMinWidth(sliderWidth);
@@ -341,7 +340,6 @@ public class MainWindow extends Application {
         pb.setMinHeight(13);
 
         ProgressBar pb2 = new ProgressBar(0);
-        pb2.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/progressbar.css")).toExternalForm());
         pb2.setMaxWidth(sliderWidth - 6);
         pb2.setMinWidth(sliderWidth - 6);
         pb2.setMaxHeight(3);
@@ -369,7 +367,6 @@ public class MainWindow extends Application {
         colorBox.getChildren().addAll(color, colorPicker);
         colorBox.setSpacing(10);
         colorPicker.getSelectionModel().selectFirst();
-        colorPicker.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/combobox.css")).toExternalForm());
         colorBox.setOnMouseEntered(e -> colorPicker.setStyle("combo-color: mouse-on-color"));
         colorBox.setOnMouseExited(e -> colorPicker.setStyle("combo-color: default-combo-color"));
 
@@ -401,7 +398,6 @@ public class MainWindow extends Application {
         Label createPlaylist = new Label("Create playlist");
         createPlaylist.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
         TextField playlistName = new TextField();
-        playlistName.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/textfield.css")).toExternalForm());
         playlistName.setOnMouseEntered(e -> playlistName.setStyle("field-color: mouse-on-color"));
         playlistName.setOnMouseExited(e -> playlistName.setStyle("field-color: default-field-color"));
         Button playlistButton = new Button("Create");
@@ -419,7 +415,6 @@ public class MainWindow extends Application {
 
     private HBox songUI() {
         //CheckBox selected = new CheckBox(); //TO DO
-        //selected.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/checkbox.css")).toExternalForm());
         Button playSong = new Button();
         ImageView playSongI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
         playSongI.setPreserveRatio(true);
@@ -455,13 +450,12 @@ public class MainWindow extends Application {
         VBox songs = new VBox();
         songs.setPadding(new Insets(10));
         songs.setSpacing(10);
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 21; i++) {
             songs.getChildren().add(this.songUI());
         }
         this.songsScroll.setContent(songs);
-        this.songsScroll.setOnMouseEntered(e -> this.songsScroll.setStyle("bar-width: bar-fat"));
-        this.songsScroll.setOnMouseExited(e -> this.songsScroll.setStyle("bar-width: bar-skinny"));
-        this.songsScroll.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/scrollpane.css")).toExternalForm());
+        this.songsScroll.setOnMouseEntered(e -> this.songsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
+        this.songsScroll.setOnMouseExited(e -> this.songsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-skinny"));
         return this.songsScroll;
     }
 
@@ -495,9 +489,8 @@ public class MainWindow extends Application {
             }
         }
         this.playlistsScroll.setContent(playlists);
-        this.playlistsScroll.setOnMouseEntered(e -> this.playlistsScroll.setStyle("bar-width: bar-fat"));
-        this.playlistsScroll.setOnMouseExited(e -> this.playlistsScroll.setStyle("bar-width: bar-skinny"));
-        this.playlistsScroll.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/scrollpane.css")).toExternalForm());
+        this.playlistsScroll.setOnMouseEntered(e -> this.playlistsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
+        this.playlistsScroll.setOnMouseExited(e -> this.playlistsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-skinny"));
         return this.playlistsScroll;
     }
 }

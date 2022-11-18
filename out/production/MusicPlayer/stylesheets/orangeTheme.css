@@ -1,0 +1,137 @@
+.my-menu-button{
+    default-button-color: #ff6600;
+
+    default-action-button-color: #bfff00;
+
+    mouse-on-color: #cc5200;
+
+    button-color: default-button-color;
+    -fx-background-color: button-color;
+    -fx-pref-width: 200px;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold
+}
+
+.my-music-control-button{
+    default-button-color: #ff6600;
+
+    default-action-button-color: #bfff00;
+
+    mouse-on-color: #cc5200;
+
+    button-color: default-button-color;
+    -fx-background-color: button-color;
+    -fx-font-weight: bold;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-size: 15px;
+    -fx-pref-width: 50;
+    -fx-background-radius: 100;
+}
+
+.check-box{
+    default-check-color: #ff6600;
+
+    mouse-on-color: #cc5200;
+
+    check-color: default-check-color;
+}
+.check-box .box{
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+.check-box:selected .mark{
+    -fx-background-color: black;
+}
+.check-box:selected .box{
+    -fx-background-color: check-color;
+}
+
+.combo-box{
+    default-combo-color: #ff6600;
+
+    mouse-on-color: #cc5200;
+
+    combo-color: default-combo-color;
+    -fx-background-color: combo-color;
+    -fx-pref-width: 200px;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold
+}
+
+.progress-bar{
+    track-color: #808080;
+    default-slider-color: #ff6600;
+    -fx-background-color: transparent;
+}
+.progress-bar .track {
+    -fx-background-color: track-color;
+    -fx-background-radius: 50;
+}
+.progress-bar .bar{
+    -fx-background-color: default-slider-color;
+    -fx-background-size: 5;
+}
+
+.scroll-pane{
+    -fx-background-color: transparent;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-bar {
+    default-scroll-color: #ff6600;
+
+    bar-skinny: 8px;
+    bar-fat: 12px;
+
+    thumb-color: default-scroll-color;
+    bar-width: bar-skinny;
+
+    -fx-background-color: transparent;
+    -fx-pref-width: bar-width;
+}
+.scroll-bar:vertical .thumb{
+    -fx-background-color: thumb-color;
+}
+.scroll-bar .increment-button{
+    -fx-background-color: transparent;
+}
+.scroll-bar .decrement-button{
+    -fx-background-color: transparent;
+}
+.scroll-bar .increment-arrow{
+    -fx-background-color: transparent;
+}
+.scroll-bar .decrement-arrow{
+    -fx-background-color: transparent;
+}
+
+.slider {
+    thumb-show: white;
+    thumb-hide: transparent;
+    thumb-transparent: thumb-hide;
+}
+
+.slider .thumb {
+    -fx-background-color: thumb-transparent;
+}
+.slider .track {
+    -fx-background-color: transparent;
+}
+
+.text-field{
+    default-field-color: #ff6600;
+
+    mouse-on-color: #cc5200;
+
+    field-color: default-field-color;
+    -fx-background-color: field-color;
+    -fx-pref-width: 200px;
+    -fx-font-family: Arial Rounded MT Bold;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold
+}
