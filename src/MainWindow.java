@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class MainWindow extends Application {
     private final String autor = "Matúš Suský";
-    private final String version = "0.0.1";
+    private final String version = "0.0.2";
     //Testovanie
     private static final int ADD = 0;
     private static final int ALL = 1;
@@ -47,15 +47,13 @@ public class MainWindow extends Application {
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         stage.setScene(mainScene);
         stage.show();
+        //Testovanie UI
+        this.settingsPage();
+        this.songsPage();
+        this.playlistsPage();
+        this.addPage();
+        this.setContent(this.songsScroll);
     }
-
-    public void setNameOnScreen(String s) {
-        this.nameOnScreen.setText(s);
-    }
-    public void setSongName(String s) {
-        this.songName.setText(s);
-    }
-
     //Testovanie
     private void setRep(boolean v) {
         this.rep = v;
@@ -65,6 +63,13 @@ public class MainWindow extends Application {
     }
     private void setShuf(boolean v) {
         this.shuf = v;
+    }
+
+    public void setNameOnScreen(String s) {
+        this.nameOnScreen.setText(s);
+    }
+    public void setSongName(String s) {
+        this.songName.setText(s);
     }
 
     public static void main(String[] args) {
@@ -257,6 +262,7 @@ public class MainWindow extends Application {
 
         add.setOnAction(e -> {
             this.selected = MainWindow.ADD;
+            this.setContent(this.add);
             this.setNameOnScreen("Add new song or playlist");
             add.setStyle("button-color: default-action-button-color");
             all.setStyle("button-color: default-button-color");
@@ -265,6 +271,7 @@ public class MainWindow extends Application {
         });
         all.setOnAction(e -> {
             this.selected = MainWindow.ALL;
+            this.setContent(this.songsScroll);
             this.setNameOnScreen("All songs");
             all.setStyle("button-color: default-action-button-color");
             add.setStyle("button-color: default-button-color");
@@ -273,6 +280,7 @@ public class MainWindow extends Application {
         });
         playlists.setOnAction(e -> {
             this.selected = MainWindow.PLAYLISTS;
+            this.setContent(this.playlistsScroll);
             this.setNameOnScreen("Your playlists");
             playlists.setStyle("button-color: default-action-button-color");
             all.setStyle("button-color: default-button-color");
@@ -281,6 +289,7 @@ public class MainWindow extends Application {
         });
         settings.setOnAction(e -> {
             this.selected = MainWindow.SETTINGS;
+            this.setContent(this.settings);
             this.setNameOnScreen("Settings");
             settings.setStyle("button-color: default-action-button-color");
             all.setStyle("button-color: default-button-color");
@@ -310,7 +319,7 @@ public class MainWindow extends Application {
         this.nameOnScreen.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/labelLarge.css")).toExternalForm());
         this.mainListsVbox.getChildren().add(this.nameOnScreen);
         this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
-        this.mainListsVbox.getChildren().addAll(this.playlists());
+        this.mainListsVbox.getChildren().addAll(this.playlistsPage());
         return mainListsVbox;
     }
 
@@ -351,7 +360,7 @@ public class MainWindow extends Application {
         this.mainListsVbox.getChildren().add(n);
     }
 
-    private VBox settings() {
+    private VBox settingsPage() {
         VBox colorBox = new VBox();
         Label color = new Label("Theme");
         color.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/label.css")).toExternalForm());
@@ -442,7 +451,7 @@ public class MainWindow extends Application {
         return song;
     }
 
-    private ScrollPane songs() {
+    private ScrollPane songsPage() {
         VBox songs = new VBox();
         songs.setPadding(new Insets(10));
         songs.setSpacing(10);
@@ -475,7 +484,7 @@ public class MainWindow extends Application {
         return playlist;
     }
 
-    private ScrollPane playlists() {
+    private ScrollPane playlistsPage() {
         GridPane playlists = new GridPane();
         playlists.setPadding(new Insets(0, 0, 100, 170));
         playlists.setVgap(40);
