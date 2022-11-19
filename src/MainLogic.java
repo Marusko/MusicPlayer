@@ -31,6 +31,7 @@ public class MainLogic {
     }
 
     public void playSong(Song s) {
+
         if (this.pla) {
             this.mp.stop();
         }
@@ -40,7 +41,34 @@ public class MainLogic {
         mp = new MediaPlayer(m);
         this.mw.setSongName(s.getName());
         this.mp.setVolume(this.volume);
+        this.mp.setOnReady(new Runnable() {
+            @Override
+            public void run() {
+                mw.setSongSliderLenght(mp.getTotalDuration().toSeconds());
+            }
+        });
         mp.play();
+    }
+
+    public void playNext() {
+        if (this.songQueue.contains(this.actualSong)) {
+            int index = this.songQueue.indexOf(this.actualSong);
+            index++;
+            if (index < this.songQueue.size()) {
+                Song next = this.songQueue.get(index);
+                this.playSong(next);
+            }
+        }
+    }
+    public void playPrev() {
+        if (this.songQueue.contains(this.actualSong)) {
+            int index = this.songQueue.indexOf(this.actualSong);
+            index--;
+            if (index > -1) {
+                Song next = this.songQueue.get(index);
+                this.playSong(next);
+            }
+        }
     }
 
     public void playPauseSong() {
@@ -75,6 +103,7 @@ public class MainLogic {
         Media m = new Media(path);
         Song song = new Song(f.getName(), null, m.getDuration(), path, "Author", "year");
         this.allSongs.add(song);
+        this.songQueue.add(song);
     }
 
     public void createPlaylist(String name) {
@@ -93,6 +122,10 @@ public class MainLogic {
             }
         }
         return playlist;
+    }
+
+    public MediaPlayer getMp() {
+        return mp;
     }
 
     public boolean isPla() {

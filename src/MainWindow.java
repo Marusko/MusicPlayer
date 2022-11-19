@@ -36,6 +36,7 @@ public class MainWindow extends Application {
     private final VBox add = new VBox();
     private final ScrollPane songsScroll = new ScrollPane();
     private final ScrollPane playlistsScroll = new ScrollPane();
+    private Slider songSlider;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -61,6 +62,12 @@ public class MainWindow extends Application {
     }
     public void setSongName(String s) {
         this.songName.setText(s);
+    }
+    public void setSongSlider(double v) {
+        this.songSlider.setValue(v);
+    }
+    public void setSongSliderLenght(double v) {
+        this.songSlider.setMax(v);
     }
     private void setTheme(String t) {
         switch (t) {
@@ -113,9 +120,11 @@ public class MainWindow extends Application {
         Button prev = new Button();
         ImageView prevI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/back.png")).toExternalForm()));
         prevNext(prev, prevI);
+        prev.setOnAction(e -> this.ml.playPrev());
         Button next = new Button();
         ImageView nextI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/next.png")).toExternalForm()));
         prevNext(next, nextI);
+        next.setOnAction(e -> this.ml.playNext());
         Button repeat = new Button();
         ImageView repeatI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/repeat.png")).toExternalForm()));
         repeatI.setFitHeight(20);
@@ -179,7 +188,9 @@ public class MainWindow extends Application {
         controls.setSpacing(10);
 
         HBox songTimeAligment = new HBox();
-        songTimeAligment.getChildren().addAll(actualTime, this.hybridSlider(700), songLength);
+        StackPane sp = this.hybridSlider(700);
+        songSlider = (Slider)sp.getChildren().get(2);
+        songTimeAligment.getChildren().addAll(actualTime, sp, songLength);
         songTimeAligment.setAlignment(Pos.TOP_CENTER);
         songTimeAligment.setSpacing(10);
 
