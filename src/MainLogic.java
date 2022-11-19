@@ -14,7 +14,8 @@ public class MainLogic {
     private final ArrayList<Playlist> allPlaylists;
     private final ArrayList<Song> selectedSongs;
 
-    private boolean pla = true;
+    private double volume = 0.3;
+    private boolean pla = false;
     private boolean rep = false;
     private boolean shuf = false;
 
@@ -30,9 +31,15 @@ public class MainLogic {
     }
 
     public void playSong(Song s) {
+        if (this.pla) {
+            this.mp.stop();
+        }
+        this.pla = true;
         this.actualSong = s;
         Media m = new Media(this.actualSong.getPath());
         mp = new MediaPlayer(m);
+        this.mw.setSongName(s.getName());
+        this.mp.setVolume(this.volume);
         mp.play();
     }
 
@@ -46,6 +53,7 @@ public class MainLogic {
         }
     }
     public void changeVolume(double v) {
+        this.volume = v;
         mp.setVolume(v);
     }
 

@@ -92,8 +92,8 @@ public class MainWindow extends Application {
         ImageView playI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
         playI.setFitHeight(20);
         playI.setPreserveRatio(true);
-        play.setGraphic(playI);
         ImageView pauseI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/pause.png")).toExternalForm()));
+        play.setGraphic(pauseI);
         pauseI.setFitHeight(20);
         pauseI.setPreserveRatio(true);
         play.getStyleClass().add("my-music-control-button");
@@ -102,10 +102,10 @@ public class MainWindow extends Application {
         //Testovanie
         play.setOnAction(e -> {
             if (this.ml.isPla()) {
-                play.setGraphic(pauseI);
+                play.setGraphic(playI);
                 this.ml.playPauseSong();
             } else {
-                play.setGraphic(playI);
+                play.setGraphic(pauseI);
                 this.ml.playPauseSong();
             }
         });
@@ -312,7 +312,8 @@ public class MainWindow extends Application {
         volumeLabelBox.setAlignment(Pos.CENTER);
         StackPane sp = this.hybridSlider(150);
         Slider s = (Slider)sp.getChildren().get(2);
-        s.valueProperty().addListener(e -> this.ml.changeVolume(s.getValue() / 1000));
+        s.setValue(30);
+        s.valueProperty().addListener(e -> this.ml.changeVolume(s.getValue() / 100));
         VBox volumeBox = new VBox(volumeLabelBox, sp);
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
@@ -479,7 +480,7 @@ public class MainWindow extends Application {
         playSong.getStyleClass().add("my-play-button");
         playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-color"));
         playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-color"));
-        playSong.setOnAction(e -> this.ml.playSong(this.ml.getAllSongs().get(0)));
+        playSong.setOnAction(e -> this.ml.playSong(s));
         HBox controlsBox = new HBox(selected, playSong);
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);
