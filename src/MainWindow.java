@@ -23,10 +23,7 @@ public class MainWindow extends Application {
     private static final int PLAYLISTS = 2;
     private static final int SETTINGS = 3;
     private int selected = MainWindow.ALL;
-    //Testovanie
-    private boolean pla = true;
-    private boolean rep = false;//Testovanie
-    private boolean shuf = false;
+
 
     private MainLogic ml;
 
@@ -57,16 +54,6 @@ public class MainWindow extends Application {
         //Testovanie UI
         this.refresh(stage);
         this.switchMenu(this.selected);
-    }
-    //Testovanie
-    private void setRep(boolean v) {
-        this.rep = v;
-    }
-    private void setPla(boolean v) {
-        this.pla = v;
-    }
-    private void setShuf(boolean v) {
-        this.shuf = v;
     }
 
     public void setNameOnScreen(String s) {
@@ -114,12 +101,12 @@ public class MainWindow extends Application {
         play.setOnMouseExited(e -> play.setStyle("button-color: default-color"));
         //Testovanie
         play.setOnAction(e -> {
-            if (this.pla) {
+            if (this.ml.isPla()) {
                 play.setGraphic(pauseI);
-                this.setPla(false);
+                this.ml.playPauseSong();
             } else {
                 play.setGraphic(playI);
-                this.setPla(true);
+                this.ml.playPauseSong();
             }
         });
 
@@ -138,7 +125,7 @@ public class MainWindow extends Application {
         repeat.setOnMouseEntered(e -> repeat.setStyle("button-color: mouse-color"));
         repeat.setOnMouseExited(e -> {
             //testovanie
-            if (!this.rep) {
+            if (!this.ml.isRep()) {
                 repeat.setStyle("button-color: default-color");
             } else {
                 repeat.setStyle("button-color: default-action-color");
@@ -146,11 +133,11 @@ public class MainWindow extends Application {
         });
         //testovanie
         repeat.setOnAction(e -> {
-            if (this.rep) {
-                this.setRep(false);
+            if (this.ml.isRep()) {
+                this.ml.setRep(false);
                 repeat.setStyle("button-color: default-color");
             } else {
-                this.setRep(true);
+                this.ml.setRep(true);
                 repeat.setStyle("button-color: default-action-color");
             }
         });
@@ -164,7 +151,7 @@ public class MainWindow extends Application {
         shuffle.setOnMouseEntered(e -> shuffle.setStyle("button-color: mouse-color"));
         shuffle.setOnMouseExited(e -> {
             //testovanie
-            if (!this.shuf) {
+            if (!this.ml.isShuf()) {
                 shuffle.setStyle("button-color: default-color");
             } else {
                 shuffle.setStyle("button-color: default-action-color");
@@ -172,11 +159,11 @@ public class MainWindow extends Application {
         });
         //testovanie
         shuffle.setOnAction(e -> {
-            if (this.shuf) {
-                this.setShuf(false);
+            if (this.ml.isShuf()) {
+                this.ml.setShuf(false);
                 shuffle.setStyle("button-color: default-color");
             } else {
-                this.setShuf(true);
+                this.ml.setShuf(true);
                 shuffle.setStyle("button-color: default-action-color");
             }
         });
