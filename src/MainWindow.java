@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -9,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -26,6 +28,8 @@ public class MainWindow extends Application {
     private boolean rep = false;//Testovanie
     private boolean shuf = false;
 
+    private MainLogic ml;
+
     //UI elements which are updated based on other elements
     private Scene mainScene;
     private final Label nameOnScreen = new Label();
@@ -38,6 +42,7 @@ public class MainWindow extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.ml = new MainLogic(this);
         BorderPane bp = new BorderPane();
         bp.setStyle("-fx-background-color: #5c5c5c");
         bp.setBottom(this.songControls());
@@ -50,12 +55,8 @@ public class MainWindow extends Application {
         stage.setScene(mainScene);
         stage.show();
         //Testovanie UI
-        this.settingsPage();
-        this.songsPage();
-        this.playlistsPage();
-        this.addPage();
-        this.setContent(this.songsScroll);
-        this.setNameOnScreen("All songs"); //Testovanie
+        this.refresh();
+        this.switchMenu(this.selected);
     }
     //Testovanie
     private void setRep(boolean v) {
@@ -213,6 +214,13 @@ public class MainWindow extends Application {
         b.setOnMouseExited(e -> b.setStyle("button-color: default-color"));
     }
 
+    private void refresh() {
+        this.settingsPage();
+        this.songsPage();
+        this.playlistsPage(this.ml.getAllPlaylists());
+        this.addPage();
+    }
+
     private VBox menu() {
         VBox mainMenu = new VBox();
 
@@ -279,8 +287,7 @@ public class MainWindow extends Application {
 
         add.setOnAction(e -> {
             this.selected = MainWindow.ADD;
-            this.setContent(this.add);
-            this.setNameOnScreen("Add new song or playlist");
+            this.switchMenu(this.selected);
             add.setStyle("button-color: default-action-color");
             all.setStyle("button-color: default-color");
             playlists.setStyle("button-color: default-color");
@@ -288,8 +295,7 @@ public class MainWindow extends Application {
         });
         all.setOnAction(e -> {
             this.selected = MainWindow.ALL;
-            this.setContent(this.songsScroll);
-            this.setNameOnScreen("All songs");
+            this.switchMenu(this.selected);
             all.setStyle("button-color: default-action-color");
             add.setStyle("button-color: default-color");
             playlists.setStyle("button-color: default-color");
@@ -297,8 +303,7 @@ public class MainWindow extends Application {
         });
         playlists.setOnAction(e -> {
             this.selected = MainWindow.PLAYLISTS;
-            this.setContent(this.playlistsScroll);
-            this.setNameOnScreen("Your playlists");
+            this.switchMenu(this.selected);
             playlists.setStyle("button-color: default-action-color");
             all.setStyle("button-color: default-color");
             add.setStyle("button-color: default-color");
@@ -306,8 +311,7 @@ public class MainWindow extends Application {
         });
         settings.setOnAction(e -> {
             this.selected = MainWindow.SETTINGS;
-            this.setContent(this.settings);
-            this.setNameOnScreen("Settings");
+            this.switchMenu(this.selected);
             settings.setStyle("button-color: default-action-color");
             all.setStyle("button-color: default-color");
             add.setStyle("button-color: default-color");
@@ -329,6 +333,23 @@ public class MainWindow extends Application {
         mainMenu.setStyle("-fx-padding: 10px; -fx-background-color: #404040; -fx-background-radius: 10");
 
         return mainMenu;
+    }
+
+    private void switchMenu(int menu) {
+        switch (menu) {
+            case 0: this.setContent(this.add);
+                    this.setNameOnScreen("Add new song or playlist");
+                    break;
+            case 1: this.setContent(this.songsScroll);
+                    this.setNameOnScreen("All songs");
+                    break;
+            case 2: this.setContent(this.playlistsScroll);
+                    this.setNameOnScreen("Your playlists");
+                    break;
+            case 3: this.setContent(this.settings);
+                    this.setNameOnScreen("Settings");
+                    break;
+        }
     }
 
     private VBox content() {
@@ -377,6 +398,7 @@ public class MainWindow extends Application {
     }
 
     private void settingsPage() {
+        this.settings.getChildren().clear();
         Label color = new Label("Theme");
         ComboBox<String> colorPicker = new ComboBox<>();
         colorPicker.getItems().addAll("Orange", "Green", "Blue");
@@ -402,6 +424,7 @@ public class MainWindow extends Application {
     }
 
     private void addPage() {
+        this.add.getChildren().clear();
         Label addSong = new Label("Add song");
         Button songButton = new Button("Add");
         songButton.getStyleClass().add("my-menu-button");
@@ -418,6 +441,11 @@ public class MainWindow extends Application {
         playlistButton.getStyleClass().add("my-menu-button");
         playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("button-color: mouse-color"));
         playlistButton.setOnMouseExited(e -> playlistButton.setStyle("button-color: default-color"));
+        playlistButton.setOnAction(e -> {
+            this.ml.createPlaylist(playlistName.getText());
+            playlistName.setText("");
+            this.refresh();
+        });
         VBox playlistBox = new VBox(createPlaylist, playlistName, playlistButton);
         playlistBox.setSpacing(10);
 
@@ -466,6 +494,7 @@ public class MainWindow extends Application {
     }
 
     private void songsPage() {
+        this.songsScroll.setContent(null);
         VBox songs = new VBox();
         songs.setPadding(new Insets(10));
         songs.setSpacing(10);
@@ -477,9 +506,9 @@ public class MainWindow extends Application {
         this.songsScroll.setOnMouseExited(e -> this.songsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-skinny"));
     }
 
-    private VBox playlist() {
+    private VBox playlist(String namePlaylist) {
         ImageView playlistI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
-        Label name = new Label("Playlist");
+        Label name = new Label(namePlaylist);
         Button open = new Button("Open");
         open.getStyleClass().add("my-menu-button");
         open.setOnMouseEntered(e -> open.setStyle("button-color: mouse-color"));
@@ -495,15 +524,15 @@ public class MainWindow extends Application {
         return playlist;
     }
 
-    private void playlistsPage() {
-        GridPane playlists = new GridPane();
+    private void playlistsPage(ArrayList<Playlist> all) {
+        this.playlistsScroll.setContent(null);
+        FlowPane playlists = new FlowPane();
+        playlists.setPrefWidth(1200);
         playlists.setPadding(new Insets(0, 0, 100, 170));
         playlists.setVgap(40);
         playlists.setHgap(40);
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 4; j++) {
-                playlists.add(this.playlist(), j, i);
-            }
+        for (Playlist p : all) {
+            playlists.getChildren().add(this.playlist(p.getName()));
         }
         this.playlistsScroll.setContent(playlists);
         this.playlistsScroll.setOnMouseEntered(e -> this.playlistsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
