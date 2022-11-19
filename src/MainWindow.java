@@ -323,7 +323,10 @@ public class MainWindow extends Application {
         HBox volumeLabelBox = new HBox(volumeI, volume);
         volumeLabelBox.setSpacing(10);
         volumeLabelBox.setAlignment(Pos.CENTER);
-        VBox volumeBox = new VBox(volumeLabelBox, hybridSlider(150));
+        StackPane sp = this.hybridSlider(150);
+        Slider s = (Slider)sp.getChildren().get(2);
+        s.valueProperty().addListener(e -> this.ml.changeVolume(s.getValue() / 1000));
+        VBox volumeBox = new VBox(volumeLabelBox, sp);
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
 
@@ -489,6 +492,7 @@ public class MainWindow extends Application {
         playSong.getStyleClass().add("my-play-button");
         playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-color"));
         playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-color"));
+        playSong.setOnAction(e -> this.ml.playSong(this.ml.getAllSongs().get(0)));
         HBox controlsBox = new HBox(selected, playSong);
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);

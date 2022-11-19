@@ -1,4 +1,5 @@
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MainLogic {
+    private MediaPlayer mp;
     private final LinkedList<Song> songQueue;
     private final ArrayList<Song> allSongs;
     private final ArrayList<Playlist> allPlaylists;
@@ -21,6 +23,16 @@ public class MainLogic {
         this.allPlaylists = new ArrayList<>();
         this.selectedSongs = new ArrayList<>();
         this.mw = mw;
+    }
+
+    public void playSong(Song s) {
+        this.actualSong = s;
+        Media m = new Media(this.actualSong.getPath());
+        mp = new MediaPlayer(m);
+        mp.play();
+    }
+    public void changeVolume(double v) {
+        mp.setVolume(v);
     }
 
     public void selectSong(Song s) {
