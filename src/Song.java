@@ -5,6 +5,7 @@ public class Song {
     private final String path;
     private final String author;
     private final String year;
+    private boolean checked = false;
 
     public Song(String name, String playlist, String length, String path, String author,String year) {
         this.name = name;
@@ -44,5 +45,13 @@ public class Song {
 
     public String getPath() {
         return path;
+    }
+
+    public boolean getChecked() {
+        return this.checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }
