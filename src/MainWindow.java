@@ -421,13 +421,24 @@ public class MainWindow extends Application {
         VBox playlistBox = new VBox(createPlaylist, playlistName, playlistButton);
         playlistBox.setSpacing(10);
 
-        this.add.getChildren().addAll(songBox, playlistBox);
+        Label addToPlaylist = new Label("Or add choosen songs to your existing playlist");
+        ComboBox<Playlist> choosePlaylist = new ComboBox<>();
+        choosePlaylist.setOnMouseEntered(e -> choosePlaylist.setStyle("combo-color: mouse-color"));
+        choosePlaylist.setOnMouseExited(e -> choosePlaylist.setStyle("combo-color: default-color"));
+        Button addToButton = new Button("Add");
+        addToButton.getStyleClass().add("my-menu-button");
+        addToButton.setOnMouseEntered(e -> addToButton.setStyle("button-color: mouse-color"));
+        addToButton.setOnMouseExited(e -> addToButton.setStyle("button-color: default-color"));
+        VBox addToBox = new VBox(addToPlaylist, choosePlaylist, addToButton);
+        addToBox.setSpacing(10);
+
+        this.add.getChildren().addAll(songBox, playlistBox, addToBox);
         this.add.setSpacing(50);
         this.add.setPadding(new Insets(100));
     }
 
     private HBox songUI() {
-        //CheckBox selected = new CheckBox(); //TO DO
+        CheckBox selected = new CheckBox();
         Button playSong = new Button();
         ImageView playSongI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
         playSongI.setPreserveRatio(true);
@@ -436,7 +447,7 @@ public class MainWindow extends Application {
         playSong.getStyleClass().add("my-play-button");
         playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-color"));
         playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-color"));
-        HBox controlsBox = new HBox(/*selected, */playSong);
+        HBox controlsBox = new HBox(selected, playSong);
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);
 
