@@ -37,12 +37,9 @@ public class MainLogic {
     public void addSong(Stage stage) {
         FileChooser fc = new FileChooser();
         File f = fc.showOpenDialog(stage);
-        String path = f.getPath();
-        String newPath = path.replace('\\', '/');
-        path = newPath.replace('C', 'e');
-        path = "fil" + path;
+        String path = "" + f.toURI();
         Media m = new Media(path);
-        Song song = new Song(f.getName(), null, m.getDuration(), f.getAbsolutePath(), "Author", "year");
+        Song song = new Song(f.getName(), null, m.getDuration(), path, "Author", "year");
         this.allSongs.add(song);
     }
 
