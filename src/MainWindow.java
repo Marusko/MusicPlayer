@@ -1,6 +1,5 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -337,18 +336,22 @@ public class MainWindow extends Application {
 
     private void switchMenu(int menu) {
         switch (menu) {
-            case 0: this.setContent(this.add);
-                    this.setNameOnScreen("Add new song or playlist");
-                    break;
-            case 1: this.setContent(this.songsScroll);
-                    this.setNameOnScreen("All songs");
-                    break;
-            case 2: this.setContent(this.playlistsScroll);
-                    this.setNameOnScreen("Your playlists");
-                    break;
-            case 3: this.setContent(this.settings);
-                    this.setNameOnScreen("Settings");
-                    break;
+            case 0 -> {
+                this.setContent(this.add);
+                this.setNameOnScreen("Add new song or playlist");
+            }
+            case 1 -> {
+                this.setContent(this.songsScroll);
+                this.setNameOnScreen("All songs");
+            }
+            case 2 -> {
+                this.setContent(this.playlistsScroll);
+                this.setNameOnScreen("Your playlists");
+            }
+            case 3 -> {
+                this.setContent(this.settings);
+                this.setNameOnScreen("Settings");
+            }
         }
     }
 
