@@ -52,4 +52,9 @@ public class Playlist {
     /*private void calculateTotalLength() {
         ZATIAL NEPOUZITE
     }*/
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

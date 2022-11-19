@@ -1,13 +1,15 @@
+import javafx.util.Duration;
+
 public class Song {
     private final String name;
     private String playlist;
-    private final String length;
+    private final Duration length;
     private final String path;
     private final String author;
     private final String year;
     private boolean checked = false;
 
-    public Song(String name, String playlist, String length, String path, String author,String year) {
+    public Song(String name, String playlist, Duration length, String path, String author, String year) {
         this.name = name;
         this.playlist = playlist;
         this.length = length;
@@ -24,11 +26,8 @@ public class Song {
         return author;
     }
 
-    public int getMinutes() {
-        return Integer.parseInt(this.length.split(":")[0]); //Zatial takto
-    }
-    public int getSeconds() {
-        return Integer.parseInt(this.length.split(":")[1]); //Zatial takto
+    public Duration getLength() {
+        return this.length;
     }
 
     public String getYear() {
@@ -53,5 +52,10 @@ public class Song {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

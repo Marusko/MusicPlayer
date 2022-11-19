@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -14,8 +15,8 @@ import java.util.Objects;
 
 
 public class MainWindow extends Application {
-    private final String autor = "Matúš Suský";
-    private final String version = "0.0.2";
+    private final static String autor = "Matúš Suský";
+    private final static String version = "0.0.2";
     //Testovanie
     private static final int ADD = 0;
     private static final int ALL = 1;
@@ -54,7 +55,7 @@ public class MainWindow extends Application {
         stage.setScene(mainScene);
         stage.show();
         //Testovanie UI
-        this.refresh();
+        this.refresh(stage);
         this.switchMenu(this.selected);
     }
     //Testovanie
@@ -213,11 +214,11 @@ public class MainWindow extends Application {
         b.setOnMouseExited(e -> b.setStyle("button-color: default-color"));
     }
 
-    private void refresh() {
-        this.settingsPage();
-        this.songsPage();
-        this.playlistsPage(this.ml.getAllPlaylists());
-        this.addPage();
+    private void refresh(Stage stage) {
+        this.settingsPage(stage);
+        this.songsPage(this.ml.getAllSongs(), stage);
+        this.playlistsPage(this.ml.getAllPlaylists(), stage);
+        this.addPage(stage);
     }
 
     private VBox menu() {
@@ -400,7 +401,7 @@ public class MainWindow extends Application {
         }
     }
 
-    private void settingsPage() {
+    private void settingsPage(Stage stage) {
         this.settings.getChildren().clear();
         Label color = new Label("Theme");
         ComboBox<String> colorPicker = new ComboBox<>();
@@ -414,9 +415,9 @@ public class MainWindow extends Application {
         colorBox.setSpacing(10);
 
         VBox infoBox = new VBox();
-        Label info = new Label("Made by: " + this.autor);
+        Label info = new Label("Made by: " + MainWindow.autor);
         info.getStyleClass().add("label-small");
-        Label infoVersion = new Label("Version: " + this.version);
+        Label infoVersion = new Label("Version: " + MainWindow.version);
         infoVersion.getStyleClass().add("label-small");
         infoBox.getChildren().addAll(info, infoVersion);
         infoBox.setSpacing(10);
@@ -426,13 +427,17 @@ public class MainWindow extends Application {
         this.settings.setPadding(new Insets(100));
     }
 
-    private void addPage() {
+    private void addPage(Stage stage) {
         this.add.getChildren().clear();
         Label addSong = new Label("Add song");
         Button songButton = new Button("Add");
         songButton.getStyleClass().add("my-menu-button");
         songButton.setOnMouseEntered(e -> songButton.setStyle("button-color: mouse-color"));
         songButton.setOnMouseExited(e -> songButton.setStyle("button-color: default-color"));
+        songButton.setOnAction(e -> {
+            this.ml.addSong(stage);
+            this.refresh(stage);
+        });
         VBox songBox = new VBox(addSong, songButton);
         songBox.setSpacing(10);
 
@@ -447,13 +452,14 @@ public class MainWindow extends Application {
         playlistButton.setOnAction(e -> {
             this.ml.createPlaylist(playlistName.getText());
             playlistName.setText("");
-            this.refresh();
+            this.refresh(stage);
         });
         VBox playlistBox = new VBox(createPlaylist, playlistName, playlistButton);
         playlistBox.setSpacing(10);
 
         Label addToPlaylist = new Label("Or add choosen songs to your existing playlist");
         ComboBox<Playlist> choosePlaylist = new ComboBox<>();
+        choosePlaylist.getItems().addAll(this.ml.getAllPlaylists());
         choosePlaylist.setOnMouseEntered(e -> choosePlaylist.setStyle("combo-color: mouse-color"));
         choosePlaylist.setOnMouseExited(e -> choosePlaylist.setStyle("combo-color: default-color"));
         Button addToButton = new Button("Add");
@@ -468,8 +474,13 @@ public class MainWindow extends Application {
         this.add.setPadding(new Insets(100));
     }
 
-    private HBox songUI() {
+    private HBox songUI(String name, String auth, String yer, String len, Song s) {
         CheckBox selected = new CheckBox();
+        selected.setOnAction(e -> {
+            if (selected.isSelected()) {
+                this.ml.selectSong(s);
+            }
+        });
         Button playSong = new Button();
         ImageView playSongI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
         playSongI.setPreserveRatio(true);
@@ -482,10 +493,10 @@ public class MainWindow extends Application {
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);
 
-        Label songName = new Label("Song name");
-        Label author = new Label("Author");
-        Label year = new Label("Year");
-        Label length = new Label("5:00");
+        Label songName = new Label(name);
+        Label author = new Label(auth);
+        Label year = new Label(yer);
+        Label length = new Label(len);
 
         HBox song = new HBox(controlsBox, songName, author, year, length);
         song.setSpacing(200);
@@ -496,13 +507,13 @@ public class MainWindow extends Application {
         return song;
     }
 
-    private void songsPage() {
+    private void songsPage(ArrayList<Song> songsA, Stage stage) {
         this.songsScroll.setContent(null);
         VBox songs = new VBox();
         songs.setPadding(new Insets(10));
         songs.setSpacing(10);
-        for (int i = 0; i < 21; i++) {
-            songs.getChildren().add(this.songUI());
+        for (Song s : songsA) {
+            songs.getChildren().add(this.songUI(s.getName(), s.getAuthor(), s.getYear(), "0:00", s));
         }
         this.songsScroll.setContent(songs);
         this.songsScroll.setOnMouseEntered(e -> this.songsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
@@ -527,7 +538,7 @@ public class MainWindow extends Application {
         return playlist;
     }
 
-    private void playlistsPage(ArrayList<Playlist> all) {
+    private void playlistsPage(ArrayList<Playlist> all, Stage stage) {
         this.playlistsScroll.setContent(null);
         FlowPane playlists = new FlowPane();
         playlists.setPrefWidth(1200);
