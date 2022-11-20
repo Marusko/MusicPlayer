@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class MainLogic {
+    public final static int REPEAT_OFF = 0;
+    public final static int REPEAT_ALL = 1;
+    public final static int REPEAT_ONE = 2;
     private MediaPlayer mp;
     private final LinkedList<Song> songQueue;
     private final ArrayList<Song> allSongs;
@@ -16,7 +19,7 @@ public class MainLogic {
 
     private double volume = 0.3;
     private boolean pla = false;
-    private boolean rep = false;
+    private int rep = MainLogic.REPEAT_OFF;
     private boolean shuf = false;
     private Song actualSong = null;
     private final MainWindow mw;
@@ -38,7 +41,7 @@ public class MainLogic {
         return pla;
     }
 
-    public boolean isRep() {
+    public int isRep() {
         return rep;
     }
 
@@ -46,8 +49,9 @@ public class MainLogic {
         return shuf;
     }
 
-    public void setRep(boolean rep) {
-        this.rep = rep;
+    public void setRep() {
+        this.rep++;
+        this.rep = this.rep > 2 ? 0 : this.rep;
     }
 
     public void setShuf(boolean shuf) {
@@ -82,19 +86,25 @@ public class MainLogic {
 
     public void playNext() {
         if (this.songQueue.contains(this.actualSong)) {
+            this.mp.setCycleCount(1);
             int index = this.songQueue.indexOf(this.actualSong);
             index++;
-            if (index < this.songQueue.size()) {
+            if (this.rep == MainLogic.REPEAT_ONE){
+                this.mp.setCycleCount(MediaPlayer.INDEFINITE);
+                Song next = this.actualSong;
+                this.playSong(next);
+                this.mw.setPlayButtonImage(false);
+            } else if (index < this.songQueue.size() && this.rep == MainLogic.REPEAT_OFF) {
                 Song next = this.songQueue.get(index);
                 this.playSong(next);
                 this.actualSong = next;
-            } else if (!this.rep){
+            } else if (index == this.songQueue.size() && this.rep == MainLogic.REPEAT_OFF){
                 Song next = this.songQueue.getFirst();
                 this.playSong(next);
                 this.mp.pause();
                 this.pla = false;
                 this.mw.setPlayButtonImage(true);
-            } else if (this.rep){
+            } else if (index == this.songQueue.size() && this.rep == MainLogic.REPEAT_ALL){
                 Song next = this.songQueue.getFirst();
                 this.playSong(next);
                 this.mw.setPlayButtonImage(false);
@@ -110,6 +120,11 @@ public class MainLogic {
                 Song prev = this.songQueue.get(index);
                 this.playSong(prev);
                 this.actualSong = prev;
+            } else if (index == -1 && this.rep == MainLogic.REPEAT_ALL) {
+                Song prev = this.songQueue.getLast();
+                this.playSong(prev);
+                this.actualSong = prev;
+                this.mw.setPlayButtonImage(false);
             }
         }
     }

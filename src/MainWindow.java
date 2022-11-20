@@ -139,26 +139,34 @@ public class MainWindow extends Application {
         prevNext(next, nextI);
         next.setOnAction(e -> this.ml.playNext());
         Button repeat = new Button();
-        ImageView repeatI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/repeat.png")).toExternalForm()));
-        repeatI.setFitHeight(20);
-        repeatI.setPreserveRatio(true);
-        repeat.setGraphic(repeatI);
+        ImageView repeatAllI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/repeat.png")).toExternalForm()));
+        repeatAllI.setFitHeight(20);
+        repeatAllI.setPreserveRatio(true);
+        ImageView repeatOneI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/repeat-once.png")).toExternalForm()));
+        repeatOneI.setFitHeight(20);
+        repeatOneI.setPreserveRatio(true);
+        repeat.setGraphic(repeatAllI);
         repeat.getStyleClass().add("my-music-control-button");
         repeat.setOnMouseEntered(e -> repeat.setStyle("button-color: mouse-color"));
         repeat.setOnMouseExited(e -> {
-            if (!this.ml.isRep()) {
+            if (this.ml.isRep() == 0) {
                 repeat.setStyle("button-color: default-color");
             } else {
                 repeat.setStyle("button-color: default-action-color");
             }
         });
         repeat.setOnAction(e -> {
-            if (this.ml.isRep()) {
-                this.ml.setRep(false);
+            if (this.ml.isRep() == 2) {
+                this.ml.setRep();
                 repeat.setStyle("button-color: default-color");
-            } else {
-                this.ml.setRep(true);
+                repeat.setGraphic(repeatAllI);
+            } else if (this.ml.isRep() == 0) {
+                this.ml.setRep();
                 repeat.setStyle("button-color: default-action-color");
+            } else if (this.ml.isRep() == 1) {
+                this.ml.setRep();
+                repeat.setStyle("button-color: default-action-color");
+                repeat.setGraphic(repeatOneI);
             }
         });
 
