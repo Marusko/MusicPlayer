@@ -18,7 +18,6 @@ public class MainLogic {
     private boolean pla = false;
     private boolean rep = false;
     private boolean shuf = false;
-    private int songCounter = 0;
     private Song actualSong = null;
     private final MainWindow mw;
 
@@ -164,7 +163,6 @@ public class MainLogic {
             song.setUp(this.mw);
             this.allSongs.add(song);
             this.songQueue.add(song);
-            this.songCounter++;
         }
         br.close();
     }

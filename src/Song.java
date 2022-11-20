@@ -6,11 +6,10 @@ public class Song {
     private String name;
     private String playlist;
     private Duration length;
-    private String path;
+    private final String path;
     private String author;
     private boolean checked = false;
-    private Media m;
-    private MediaPlayer mp;
+    private final Media m;
 
     public Song(String path, Media m, String playlist) {
         this.path = path;
@@ -19,10 +18,10 @@ public class Song {
     }
 
     public void setUp(MainWindow mw) {
-        mp = new MediaPlayer(m);
+        MediaPlayer mp = new MediaPlayer(m);
         mp.setOnReady(() -> {
             name = (String) m.getMetadata().get("title");
-            length = (Duration) m.getMetadata().get("duration");
+            length = m.getDuration();
             author = (String) m.getMetadata().get("artist");
             mw.refresh();
         });
@@ -35,8 +34,14 @@ public class Song {
         return author;
     }
 
-    public double getLength() {
-        return this.length.toMinutes();
+    public String getLength() {
+        String length ="";
+        if (this.length != null) {
+            double min = Math.floor(this.length.toMinutes());
+            double sec = ((this.length.toMinutes()) - min) * 60;
+            length = String.format("%1$.0f:%2$.0f", min, sec);
+        }
+        return length;
     }
 
     public String getPlaylist() {
