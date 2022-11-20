@@ -213,3 +213,6 @@ public class MainLogic {
 
 
 }
+
+//TODO Shuffle button
+//TODO Actual time and progress of song
