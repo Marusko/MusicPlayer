@@ -35,6 +35,38 @@ public class MainLogic {
         }
     }
 
+    public MediaPlayer getMp() {
+        return mp;
+    }
+
+    public boolean isPla() {
+        return pla;
+    }
+
+    public boolean isRep() {
+        return rep;
+    }
+
+    public boolean isShuf() {
+        return shuf;
+    }
+
+    public void setPla(boolean pla) {
+        this.pla = pla;
+    }
+
+    public void setRep(boolean rep) {
+        this.rep = rep;
+    }
+
+    public void setShuf(boolean shuf) {
+        this.shuf = shuf;
+    }
+
+    public ArrayList<Song> getAllSongs() {
+        return this.allSongs;
+    }
+
     public void playSong(Song s) {
         if (this.pla || this.mp != null) {
             this.mp.stop();
@@ -60,12 +92,16 @@ public class MainLogic {
                 Song next = this.songQueue.get(index);
                 this.playSong(next);
                 this.actualSong = next;
-            } else {
+            } else if (!this.rep){
                 Song next = this.songQueue.getFirst();
                 this.playSong(next);
                 this.mp.pause();
                 this.pla = false;
                 this.mw.setPlayButtonImage(true);
+            } else if (this.rep){
+                Song next = this.songQueue.getFirst();
+                this.playSong(next);
+                this.mw.setPlayButtonImage(false);
             }
         }
     }
@@ -90,21 +126,8 @@ public class MainLogic {
             this.mp.play();
         }
     }
-    public void changeVolume(double v) {
-        this.volume = v;
-        mp.setVolume(v);
-    }
 
-    public void selectSong(Song s) {
-        this.selectedSongs.add(s);
-    }
-    public ArrayList<Song> getSelectedSongs() {
-        return this.selectedSongs;
-    }
 
-    public ArrayList<Song> getAllSongs() {
-        return this.allSongs;
-    }
 
     public void addSong(Stage stage) throws Exception {
         FileChooser fc = new FileChooser();
@@ -145,6 +168,19 @@ public class MainLogic {
         br.close();
     }
 
+    public void changeVolume(double v) {
+        this.volume = v;
+        mp.setVolume(v);
+    }
+
+
+    public void selectSong(Song s) {
+        this.selectedSongs.add(s);
+    }
+    public ArrayList<Song> getSelectedSongs() {
+        return this.selectedSongs;
+    }
+
     public void createPlaylist(String name) {
         Playlist p = new Playlist(name, null);
         this.allPlaylists.add(p);
@@ -163,31 +199,5 @@ public class MainLogic {
         return playlist;
     }
 
-    public MediaPlayer getMp() {
-        return mp;
-    }
 
-    public boolean isPla() {
-        return pla;
-    }
-
-    public boolean isRep() {
-        return rep;
-    }
-
-    public boolean isShuf() {
-        return shuf;
-    }
-
-    public void setPla(boolean pla) {
-        this.pla = pla;
-    }
-
-    public void setRep(boolean rep) {
-        this.rep = rep;
-    }
-
-    public void setShuf(boolean shuf) {
-        this.shuf = shuf;
-    }
 }
