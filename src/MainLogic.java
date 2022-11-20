@@ -48,6 +48,8 @@ public class MainLogic {
         this.mp.setVolume(this.volume);
         this.mp.setOnReady(() -> mw.setSongSliderLength(mp.getTotalDuration().toSeconds()));
         mp.play();
+        mp.setOnEndOfMedia(this::playNext);
+        this.mw.setPlayButtonImage(!this.pla);
     }
 
     public void playNext() {

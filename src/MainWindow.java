@@ -37,14 +37,27 @@ public class MainWindow extends Application {
     private final ScrollPane songsScroll = new ScrollPane();
     private final ScrollPane playlistsScroll = new ScrollPane();
     private Slider songSlider;
+    private Button playButton;
+    private ImageView playI;
+    private ImageView pauseI;
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        playI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
+        playI.setFitHeight(20);
+        playI.setPreserveRatio(true);
+        pauseI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/pause.png")).toExternalForm()));
+        pauseI.setFitHeight(20);
+        pauseI.setPreserveRatio(true);
+        this.playButton = new Button();
+
         this.mainStage = stage;
         this.ml = new MainLogic(this);
         BorderPane bp = new BorderPane();
         bp.setStyle("-fx-background-color: #5c5c5c");
-        bp.setBottom(this.songControls());
+        VBox songControl = this.songControls();
+        bp.setBottom(songControl);
         bp.setLeft(this.menu());
         bp.setCenter(this.content());
         this.mainScene = new Scene(bp, 1500, 900);
@@ -86,6 +99,13 @@ public class MainWindow extends Application {
             }
         }
     }
+    public void setPlayButtonImage(boolean b) {
+        if (b) {
+            this.playButton.setGraphic(playI);
+        } else {
+            this.playButton.setGraphic(pauseI);
+        }
+    }
     public Stage getStage() {
         return this.mainStage;
     }
@@ -99,41 +119,23 @@ public class MainWindow extends Application {
         mainSongControls.setSpacing(10);
         mainSongControls.setAlignment(Pos.TOP_CENTER);
 
-        Button play = new Button();
-        ImageView playI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
-        playI.setFitHeight(20);
-        playI.setPreserveRatio(true);
-        ImageView pauseI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/pause.png")).toExternalForm()));
-        play.setGraphic(pauseI);
-        pauseI.setFitHeight(20);
-        pauseI.setPreserveRatio(true);
-        play.getStyleClass().add("my-music-control-button");
-        play.setOnMouseEntered(e -> play.setStyle("button-color: mouse-color"));
-        play.setOnMouseExited(e -> play.setStyle("button-color: default-color"));
-        play.setOnAction(e -> {
-            if (this.ml.isPla()) {
-                play.setGraphic(playI);
-                this.ml.playPauseSong();
-            } else {
-                play.setGraphic(pauseI);
-                this.ml.playPauseSong();
-            }
+        playButton.getStyleClass().add("my-music-control-button");
+        playButton.setOnMouseEntered(e -> playButton.setStyle("button-color: mouse-color"));
+        playButton.setOnMouseExited(e -> playButton.setStyle("button-color: default-color"));
+        this.setPlayButtonImage(false);
+        playButton.setOnAction(e -> {
+            this.setPlayButtonImage(this.ml.isPla());
+            this.ml.playPauseSong();
         });
 
         Button prev = new Button();
         ImageView prevI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/back.png")).toExternalForm()));
         prevNext(prev, prevI);
-        prev.setOnAction(e -> {
-            this.ml.playPrev();
-            play.setGraphic(pauseI);
-        });
+        prev.setOnAction(e -> this.ml.playPrev());
         Button next = new Button();
         ImageView nextI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/next.png")).toExternalForm()));
         prevNext(next, nextI);
-        next.setOnAction(e -> {
-            this.ml.playNext();
-            play.setGraphic(pauseI);
-        });
+        next.setOnAction(e -> this.ml.playNext());
         Button repeat = new Button();
         ImageView repeatI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/repeat.png")).toExternalForm()));
         repeatI.setFitHeight(20);
@@ -192,7 +194,7 @@ public class MainWindow extends Application {
         songLength.getStyleClass().add("label-small");
 
         HBox controls = new HBox();
-        controls.getChildren().addAll(shuffle, prev, play, next, repeat);
+        controls.getChildren().addAll(shuffle, prev, playButton, next, repeat);
         controls.setAlignment(Pos.TOP_CENTER);
         controls.setSpacing(10);
 
