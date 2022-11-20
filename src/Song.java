@@ -23,6 +23,13 @@ public class Song {
             name = (String) m.getMetadata().get("title");
             length = m.getDuration();
             author = (String) m.getMetadata().get("artist");
+            if (name == null) {
+                String source = m.getSource();
+                int slashIndex = source.lastIndexOf("/");
+                int dotIndex = source.lastIndexOf(".");
+                String fileName = source.substring(slashIndex + 1, dotIndex);
+                name = fileName.replace("_", " ");
+            }
             mw.refresh();
         });
     }

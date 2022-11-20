@@ -15,14 +15,13 @@ import java.util.Objects;
 
 public class MainWindow extends Application {
     private final static String autor = "Matúš Suský";
-    private final static String version = "0.0.2";
+    private final static String version = "0.0.4";
     //Testovanie
     private static final int ADD = 0;
     private static final int ALL = 1;
     private static final int PLAYLISTS = 2;
     private static final int SETTINGS = 3;
     private int selected = MainWindow.ALL;
-
 
     private MainLogic ml;
 
@@ -66,7 +65,6 @@ public class MainWindow extends Application {
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);
         this.mainStage.show();
-        //Testovanie UI
         this.refresh();
         this.switchMenu(this.selected);
     }
@@ -144,7 +142,6 @@ public class MainWindow extends Application {
         repeat.getStyleClass().add("my-music-control-button");
         repeat.setOnMouseEntered(e -> repeat.setStyle("button-color: mouse-color"));
         repeat.setOnMouseExited(e -> {
-            //testovanie
             if (!this.ml.isRep()) {
                 repeat.setStyle("button-color: default-color");
             } else {
@@ -169,14 +166,12 @@ public class MainWindow extends Application {
         shuffle.getStyleClass().add("my-music-control-button");
         shuffle.setOnMouseEntered(e -> shuffle.setStyle("button-color: mouse-color"));
         shuffle.setOnMouseExited(e -> {
-            //testovanie
             if (!this.ml.isShuf()) {
                 shuffle.setStyle("button-color: default-color");
             } else {
                 shuffle.setStyle("button-color: default-action-color");
             }
         });
-        //testovanie
         shuffle.setOnAction(e -> {
             if (this.ml.isShuf()) {
                 this.ml.setShuf(false);
@@ -510,14 +505,17 @@ public class MainWindow extends Application {
         controlsBox.setAlignment(Pos.CENTER);
 
         Label songName = new Label(name);
+        songName.setPrefWidth(600);
         Label author = new Label(auth);
+        author.setPrefWidth(225);
         Label length = new Label(len);
 
         HBox song = new HBox(controlsBox, songName, author, length);
-        song.setSpacing(200);
+        song.setSpacing(75);
         song.setPrefHeight(40);
         song.setPrefWidth(1200);
-        song.setAlignment(Pos.CENTER);
+        song.setPadding(new Insets(10));
+        song.setAlignment(Pos.CENTER_LEFT);
         song.setStyle(" -fx-background-color: #404040; -fx-background-radius: 10");
         return song;
     }
