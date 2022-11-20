@@ -132,7 +132,8 @@ public class MainLogic {
         File f = fc.showOpenDialog(stage);
         String path = "" + f.toURI();
         Media m = new Media(path);
-        Song song = new Song(f.getName(), null, m.getDuration(), path, "Author", "year");
+        Song song = new Song(path, m, null);
+        song.setUp(this.mw);
         this.allSongs.add(song);
         this.songQueue.add(song);
         //File allSongsFile = new File(Objects.requireNonNull(getClass().getResource("data/allSongs.txt")).toURI());
@@ -140,19 +141,14 @@ public class MainLogic {
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         StringBuilder lines = new StringBuilder();
         String line;
-        int c = 1;
         while ((line = br.readLine()) != null) {
-            if (c == this.songCounter) {
-                lines.append(line);
-            } else {
-                lines.append(line + "\n");
-            }
-            c++;
+            lines.append(line);
+            lines.append("\n");
         }
         br.close();
+        lines.append(path);
         PrintWriter pw = new PrintWriter(allSongsFile);
         pw.println(lines);
-        pw.println(path);
         pw.flush();
         pw.close();
         this.mw.refresh();
@@ -163,9 +159,9 @@ public class MainLogic {
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         String line;
         while ((line = br.readLine()) != null) {
-            File f = new File(line);
             Media m = new Media(line);
-            Song song = new Song(f.getName(), null, m.getDuration(), line, "Author", "year");
+            Song song = new Song(line, m, null);
+            song.setUp(this.mw);
             this.allSongs.add(song);
             this.songQueue.add(song);
             this.songCounter++;

@@ -1,23 +1,32 @@
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 public class Song {
-    private final String name;
+    private String name;
     private String playlist;
-    private final Duration length;
-    private final String path;
-    private final String author;
-    private final String year;
+    private Duration length;
+    private String path;
+    private String author;
     private boolean checked = false;
+    private Media m;
+    private MediaPlayer mp;
 
-    public Song(String name, String playlist, Duration length, String path, String author, String year) {
-        this.name = name;
-        this.playlist = playlist;
-        this.length = length;
+    public Song(String path, Media m, String playlist) {
         this.path = path;
-        this.author = author;
-        this.year = year;
+        this.m = m;
+        this.playlist = playlist;
     }
 
+    public void setUp(MainWindow mw) {
+        mp = new MediaPlayer(m);
+        mp.setOnReady(() -> {
+            name = (String) m.getMetadata().get("title");
+            length = (Duration) m.getMetadata().get("duration");
+            author = (String) m.getMetadata().get("artist");
+            mw.refresh();
+        });
+    }
     public String getName() {
         return name;
     }
@@ -26,12 +35,8 @@ public class Song {
         return author;
     }
 
-    public Duration getLength() {
-        return this.length;
-    }
-
-    public String getYear() {
-        return year;
+    public double getLength() {
+        return this.length.toMinutes();
     }
 
     public String getPlaylist() {

@@ -489,7 +489,7 @@ public class MainWindow extends Application {
         this.add.setPadding(new Insets(100));
     }
 
-    private HBox songUI(String name, String auth, String yer, String len, Song s) {
+    private HBox songUI(String name, String auth, double len, Song s) {
         CheckBox selected = new CheckBox();
         selected.setOnAction(e -> {
             if (selected.isSelected()) {
@@ -511,10 +511,9 @@ public class MainWindow extends Application {
 
         Label songName = new Label(name);
         Label author = new Label(auth);
-        Label year = new Label(yer);
-        Label length = new Label(len);
+        Label length = new Label(String.valueOf(len));
 
-        HBox song = new HBox(controlsBox, songName, author, year, length);
+        HBox song = new HBox(controlsBox, songName, author, length);
         song.setSpacing(200);
         song.setPrefHeight(40);
         song.setPrefWidth(1200);
@@ -529,7 +528,8 @@ public class MainWindow extends Application {
         songs.setPadding(new Insets(10));
         songs.setSpacing(10);
         for (Song s : songsA) {
-            songs.getChildren().add(this.songUI(s.getName(), s.getAuthor(), s.getYear(), "0:00", s));
+            songs.getChildren().add(this.songUI(s.getName(), s.getAuthor(), 0, s));
+            //System.out.println(s.getLength());
         }
         this.songsScroll.setContent(songs);
         this.songsScroll.setOnMouseEntered(e -> this.songsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
