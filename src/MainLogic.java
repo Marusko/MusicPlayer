@@ -3,7 +3,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -28,25 +28,25 @@ public class MainLogic {
         this.allPlaylists = new ArrayList<>();
         this.selectedSongs = new ArrayList<>();
         this.mw = mw;
+        try {
+            this.loadSongs();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void playSong(Song s) {
-
-        if (this.pla) {
+        if (this.pla || this.mp != null) {
             this.mp.stop();
         }
+
         this.pla = true;
         this.actualSong = s;
         Media m = new Media(this.actualSong.getPath());
         mp = new MediaPlayer(m);
         this.mw.setSongName(s.getName());
         this.mp.setVolume(this.volume);
-        this.mp.setOnReady(new Runnable() {
-            @Override
-            public void run() {
-                mw.setSongSliderLenght(mp.getTotalDuration().toSeconds());
-            }
-        });
+        this.mp.setOnReady(() -> mw.setSongSliderLength(mp.getTotalDuration().toSeconds()));
         mp.play();
     }
 
@@ -57,6 +57,7 @@ public class MainLogic {
             if (index < this.songQueue.size()) {
                 Song next = this.songQueue.get(index);
                 this.playSong(next);
+                this.actualSong = next;
             }
         }
     }
@@ -65,8 +66,9 @@ public class MainLogic {
             int index = this.songQueue.indexOf(this.actualSong);
             index--;
             if (index > -1) {
-                Song next = this.songQueue.get(index);
-                this.playSong(next);
+                Song prev = this.songQueue.get(index);
+                this.playSong(prev);
+                this.actualSong = prev;
             }
         }
     }
@@ -96,7 +98,7 @@ public class MainLogic {
         return this.allSongs;
     }
 
-    public void addSong(Stage stage) {
+    public void addSong(Stage stage) throws Exception {
         FileChooser fc = new FileChooser();
         File f = fc.showOpenDialog(stage);
         String path = "" + f.toURI();
@@ -104,6 +106,35 @@ public class MainLogic {
         Song song = new Song(f.getName(), null, m.getDuration(), path, "Author", "year");
         this.allSongs.add(song);
         this.songQueue.add(song);
+        //File allSongsFile = new File(Objects.requireNonNull(getClass().getResource("data/allSongs.txt")).toURI());
+        File allSongsFile = new File("all.txt"); //Test
+        BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
+        StringBuilder lines = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            lines.append(line);
+        }
+        br.close();
+        PrintWriter pw = new PrintWriter(allSongsFile);
+        pw.println(lines);
+        pw.println(path);
+        pw.flush();
+        pw.close();
+        this.mw.refresh();
+    }
+
+    private void loadSongs() throws Exception {
+        File allSongsFile = new File("all.txt"); //Test
+        BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
+        String line;
+        while ((line = br.readLine()) != null) {
+            File f = new File(line);
+            Media m = new Media(line);
+            Song song = new Song(f.getName(), null, m.getDuration(), line, "Author", "year");
+            this.allSongs.add(song);
+            this.songQueue.add(song);
+        }
+        br.close();
     }
 
     public void createPlaylist(String name) {
