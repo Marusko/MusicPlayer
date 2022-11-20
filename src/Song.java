@@ -28,7 +28,7 @@ public class Song {
                 int slashIndex = source.lastIndexOf("/");
                 int dotIndex = source.lastIndexOf(".");
                 String fileName = source.substring(slashIndex + 1, dotIndex);
-                name = fileName.replace("_", " ");
+                name = fileName.replace("_", " ").replaceAll("%20", " ").replaceAll("%5B", "[").replaceAll("%5D", "]");
             }
             mw.refresh();
         });
@@ -46,7 +46,7 @@ public class Song {
         if (this.length != null) {
             double min = Math.floor(this.length.toMinutes());
             double sec = ((this.length.toMinutes()) - min) * 60;
-            length = String.format("%1$.0f:%2$.0f", min, sec);
+            length = String.format("%1$.0f:%2$02.0f", min, sec);
         }
         return length;
     }

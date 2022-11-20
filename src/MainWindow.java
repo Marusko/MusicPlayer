@@ -39,6 +39,7 @@ public class MainWindow extends Application {
     private Button playButton;
     private ImageView playI;
     private ImageView pauseI;
+    private Label songLength;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -72,8 +73,11 @@ public class MainWindow extends Application {
     public void setNameOnScreen(String s) {
         this.nameOnScreen.setText(s);
     }
-    public void setSongName(String s) {
-        this.songName.setText(s);
+    public void setSongName() {
+        this.songName.setText(this.ml.getActualSong().getName());
+    }
+    public void setSongLength() {
+        this.songLength.setText(this.ml.getActualSong().getLength());
     }
     public void setSongSlider(double v) {
         this.songSlider.setValue(v);
@@ -184,7 +188,7 @@ public class MainWindow extends Application {
 
         Label actualTime = new Label("0:00");
         actualTime.getStyleClass().add("label-small");
-        Label songLength = new Label("5:00");
+        songLength = new Label("0:00");
         songLength.getStyleClass().add("label-small");
 
         HBox controls = new HBox();

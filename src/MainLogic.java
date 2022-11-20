@@ -54,6 +54,10 @@ public class MainLogic {
         this.shuf = shuf;
     }
 
+    public Song getActualSong() {
+        return this.actualSong;
+    }
+
     public ArrayList<Song> getAllSongs() {
         return this.allSongs;
     }
@@ -67,7 +71,8 @@ public class MainLogic {
         this.actualSong = s;
         Media m = new Media(this.actualSong.getPath());
         mp = new MediaPlayer(m);
-        this.mw.setSongName(s.getName());
+        this.mw.setSongName();
+        this.mw.setSongLength();
         this.mp.setVolume(this.volume);
         this.mp.setOnReady(() -> mw.setSongSliderLength(mp.getTotalDuration().toSeconds()));
         mp.play();
@@ -96,6 +101,7 @@ public class MainLogic {
             }
         }
     }
+
     public void playPrev() {
         if (this.songQueue.contains(this.actualSong)) {
             int index = this.songQueue.indexOf(this.actualSong);
