@@ -60,6 +60,12 @@ public class MainLogic {
                 Song next = this.songQueue.get(index);
                 this.playSong(next);
                 this.actualSong = next;
+            } else {
+                Song next = this.songQueue.getFirst();
+                this.playSong(next);
+                this.mp.pause();
+                this.pla = false;
+                this.mw.setPlayButtonImage(true);
             }
         }
     }
