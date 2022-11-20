@@ -18,7 +18,7 @@ public class MainLogic {
     private boolean pla = false;
     private boolean rep = false;
     private boolean shuf = false;
-
+    private int songCounter = 0;
     private Song actualSong = null;
     private final MainWindow mw;
 
@@ -127,8 +127,6 @@ public class MainLogic {
         }
     }
 
-
-
     public void addSong(Stage stage) throws Exception {
         FileChooser fc = new FileChooser();
         File f = fc.showOpenDialog(stage);
@@ -142,8 +140,14 @@ public class MainLogic {
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         StringBuilder lines = new StringBuilder();
         String line;
+        int c = 1;
         while ((line = br.readLine()) != null) {
-            lines.append(line);
+            if (c == this.songCounter) {
+                lines.append(line);
+            } else {
+                lines.append(line + "\n");
+            }
+            c++;
         }
         br.close();
         PrintWriter pw = new PrintWriter(allSongsFile);
@@ -164,6 +168,7 @@ public class MainLogic {
             Song song = new Song(f.getName(), null, m.getDuration(), line, "Author", "year");
             this.allSongs.add(song);
             this.songQueue.add(song);
+            this.songCounter++;
         }
         br.close();
     }

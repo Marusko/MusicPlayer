@@ -151,7 +151,6 @@ public class MainWindow extends Application {
                 repeat.setStyle("button-color: default-action-color");
             }
         });
-        //testovanie
         repeat.setOnAction(e -> {
             if (this.ml.isRep()) {
                 this.ml.setRep(false);
