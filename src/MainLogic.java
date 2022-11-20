@@ -34,10 +34,6 @@ public class MainLogic {
         }
     }
 
-    public MediaPlayer getMp() {
-        return mp;
-    }
-
     public boolean isPla() {
         return pla;
     }
@@ -48,10 +44,6 @@ public class MainLogic {
 
     public boolean isShuf() {
         return shuf;
-    }
-
-    public void setPla(boolean pla) {
-        this.pla = pla;
     }
 
     public void setRep(boolean rep) {
