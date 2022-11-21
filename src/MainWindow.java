@@ -47,7 +47,7 @@ public class MainWindow extends Application {
     private Label actualTime;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
 
         playI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
         playI.setFitHeight(20);
