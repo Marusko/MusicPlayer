@@ -23,6 +23,7 @@ public class MainLogic {
     private boolean pla = false;
     private int rep = MainLogic.REPEAT_OFF;
     private boolean shuf = false;
+    private boolean updatingStateOfSong = true;
     private Song actualSong = null;
     private final MainWindow mw;
 
@@ -58,12 +59,19 @@ public class MainLogic {
         this.rep = this.rep > 2 ? 0 : this.rep;
     }
 
+    public void setUpdatingStateOfSong(boolean updatingStateOfSong) {
+        this.updatingStateOfSong = updatingStateOfSong;
+    }
+
     public Song getActualSong() {
         return this.actualSong;
     }
 
     public MediaPlayer getMp() {
         return mp;
+    }
+    public boolean isUpdatingStateOfSong() {
+        return this.updatingStateOfSong;
     }
 
     public ArrayList<Song> getAllSongs() {
@@ -85,8 +93,10 @@ public class MainLogic {
         this.mp.setVolume(this.volume);
         this.mp.setOnReady(() -> mw.setSongSliderLength(mp));
         this.mp.currentTimeProperty().addListener(e -> {
-            mw.setActualSongTime(mp);
-            mw.setSongSlider(mp);
+            if (updatingStateOfSong) {
+                mw.setActualSongTime(mp);
+                mw.setSongSlider(mp);
+            }
         });
         mp.play();
         mp.setOnEndOfMedia(this::playNext);
@@ -256,5 +266,3 @@ public class MainLogic {
 
 
 }
-
-//TODO seek song time

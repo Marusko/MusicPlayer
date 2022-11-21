@@ -221,7 +221,20 @@ public class MainWindow extends Application {
         HBox songTimeAligment = new HBox();
         StackPane sp = this.hybridSlider(700);
         songSlider = (Slider)sp.getChildren().get(2);
-        songSlider.valueProperty().addListener(e -> songProgress.setProgress(songSlider.getValue() / ml.getMp().getTotalDuration().toSeconds()));
+        songSlider.valueProperty().addListener(e -> {
+            songSlider.setOnMousePressed(ev -> this.ml.setUpdatingStateOfSong(false));
+            songSlider.setOnMouseReleased(eve -> {
+                this.ml.getMp().seek(new Duration(songSlider.getValue() * 1000));
+                this.ml.setUpdatingStateOfSong(true);
+                this.ml.getMp().currentTimeProperty().addListener(ev -> {
+                    if (ml.isUpdatingStateOfSong()) {
+                        this.setActualSongTime(this.ml.getMp());
+                        this.setSongSlider(this.ml.getMp());
+                    }
+                });
+            });
+            songProgress.setProgress(songSlider.getValue() / ml.getMp().getTotalDuration().toSeconds());
+        });
         songProgress = (ProgressBar) sp.getChildren().get(1);
         songTimeAligment.getChildren().addAll(actualTime, sp, songLength);
         songTimeAligment.setAlignment(Pos.TOP_CENTER);
