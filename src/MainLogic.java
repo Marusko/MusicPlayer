@@ -173,8 +173,7 @@ public class MainLogic {
             }
             LinkedList<Song> shuffledQueue = new LinkedList<>();
             shuffledQueue.add(this.actualSong);
-            for (int i = 0; i < tmp.length; i++) {
-                int index = tmp[i];
+            for (int index : tmp) {
                 if (index != this.allSongs.indexOf(this.actualSong)) {
                     shuffledQueue.add(this.allSongs.get(index));
                 }
