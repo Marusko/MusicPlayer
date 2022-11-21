@@ -25,7 +25,6 @@ public class MainWindow extends Application {
     private static final int PLAYLISTS = 2;
     private static final int SETTINGS = 3;
     private int selected = MainWindow.ALL;
-
     private MainLogic ml;
 
     //UI elements which are updated based on other elements
