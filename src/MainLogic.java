@@ -151,10 +151,10 @@ public class MainLogic {
 
     public void shuffle() {
         if (this.shuf) {
-            this.shuf = !this.shuf;
+            this.shuf = false;
             this.songQueue = this.backUpQueue;
         } else {
-            this.shuf = !this.shuf;
+            this.shuf = true;
             int[] tmp = new int[this.allSongs.size()];
             for (int i = 0; i < tmp.length; i++) {
                 tmp[i] = i;
