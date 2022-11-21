@@ -125,9 +125,6 @@ public class MainWindow extends Application {
             this.playButton.setGraphic(pauseI);
         }
     }
-    public Stage getStage() {
-        return this.mainStage;
-    }
 
     public static void main(String[] args) {
         launch(args);
