@@ -2,18 +2,19 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class MainLogic {
     public final static int REPEAT_OFF = 0;
     public final static int REPEAT_ALL = 1;
     public final static int REPEAT_ONE = 2;
     private MediaPlayer mp;
-    private final LinkedList<Song> songQueue;
+    private LinkedList<Song> songQueue;
+    private LinkedList<Song> backUpQueue;
     private final ArrayList<Song> allSongs;
     private final ArrayList<Playlist> allPlaylists;
     private final ArrayList<Song> selectedSongs;
@@ -27,6 +28,7 @@ public class MainLogic {
 
     public MainLogic(MainWindow mw) {
         this.songQueue = new LinkedList<>();
+        this.backUpQueue = new LinkedList<>();
         this.allSongs = new ArrayList<>();
         this.allPlaylists = new ArrayList<>();
         this.selectedSongs = new ArrayList<>();
@@ -36,6 +38,7 @@ public class MainLogic {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        this.backUpQueue = this.songQueue;
     }
 
     public boolean isPla() {
@@ -143,6 +146,35 @@ public class MainLogic {
         } else {
             this.pla = true;
             this.mp.play();
+        }
+    }
+
+    public void shuffle() {
+        if (this.shuf) {
+            this.shuf = !this.shuf;
+            this.songQueue = this.backUpQueue;
+        } else {
+            this.shuf = !this.shuf;
+            int[] tmp = new int[this.allSongs.size()];
+            for (int i = 0; i < tmp.length; i++) {
+                tmp[i] = i;
+            }
+            Random r = new Random();
+            for (int i = 0; i < tmp.length; i++) {
+                int n = r.nextInt(0, tmp.length);
+                int x = tmp[n];
+                tmp[n] = tmp[i];
+                tmp[i] = x;
+            }
+            LinkedList<Song> shuffledQueue = new LinkedList<>();
+            shuffledQueue.add(this.actualSong);
+            for (int i = 0; i < tmp.length; i++) {
+                int index = tmp[i];
+                if (index != this.allSongs.indexOf(this.actualSong)) {
+                    shuffledQueue.add(this.allSongs.get(index));
+                }
+            }
+            this.songQueue = shuffledQueue;
         }
     }
 
