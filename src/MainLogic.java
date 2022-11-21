@@ -103,7 +103,7 @@ public class MainLogic {
                 Song next = this.actualSong;
                 this.playSong(next);
                 this.mw.setPlayButtonImage(false);
-            } else if (index < this.songQueue.size() && this.rep == MainLogic.REPEAT_OFF) {
+            } else if (index < this.songQueue.size() && this.rep == MainLogic.REPEAT_OFF || index < this.songQueue.size() && this.rep == MainLogic.REPEAT_ALL) {
                 Song next = this.songQueue.get(index);
                 this.playSong(next);
                 this.actualSong = next;
@@ -257,5 +257,4 @@ public class MainLogic {
 
 }
 
-//TODO Next when repeating all
 //TODO seek song time
