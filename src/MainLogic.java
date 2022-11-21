@@ -2,6 +2,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -114,17 +115,23 @@ public class MainLogic {
 
     public void playPrev() {
         if (this.songQueue.contains(this.actualSong)) {
-            int index = this.songQueue.indexOf(this.actualSong);
-            index--;
-            if (index > -1) {
-                Song prev = this.songQueue.get(index);
-                this.playSong(prev);
-                this.actualSong = prev;
-            } else if (index == -1 && this.rep == MainLogic.REPEAT_ALL) {
-                Song prev = this.songQueue.getLast();
-                this.playSong(prev);
-                this.actualSong = prev;
-                this.mw.setPlayButtonImage(false);
+            double seconds = this.mp.getCurrentTime().toSeconds();
+            if (seconds < 11) {
+                int index = this.songQueue.indexOf(this.actualSong);
+                index--;
+                if (index > -1) {
+                    Song prev = this.songQueue.get(index);
+                    this.playSong(prev);
+                    this.actualSong = prev;
+                } else if (index == -1 && this.rep == MainLogic.REPEAT_ALL) {
+                    Song prev = this.songQueue.getLast();
+                    this.playSong(prev);
+                    this.actualSong = prev;
+                    this.mw.setPlayButtonImage(false);
+                }
+            } else {
+                this.mp.seek(this.mp.getStartTime());
+                this.mp.play();
             }
         }
     }
@@ -216,4 +223,3 @@ public class MainLogic {
 
 //TODO Shuffle button
 //TODO Actual time and progress of song
-//TODO Prev button first to start of the song then prev song
