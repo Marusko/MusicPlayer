@@ -58,12 +58,12 @@ public class MainLogic {
         this.rep = this.rep > 2 ? 0 : this.rep;
     }
 
-    public void setShuf(boolean shuf) {
-        this.shuf = shuf;
-    }
-
     public Song getActualSong() {
         return this.actualSong;
+    }
+
+    public MediaPlayer getMp() {
+        return mp;
     }
 
     public ArrayList<Song> getAllSongs() {
@@ -73,6 +73,7 @@ public class MainLogic {
     public void playSong(Song s) {
         if (this.pla || this.mp != null) {
             this.mp.stop();
+            this.mp.dispose();
         }
 
         this.pla = true;
@@ -82,7 +83,11 @@ public class MainLogic {
         this.mw.setSongName();
         this.mw.setSongLength();
         this.mp.setVolume(this.volume);
-        this.mp.setOnReady(() -> mw.setSongSliderLength(mp.getTotalDuration().toSeconds()));
+        this.mp.setOnReady(() -> mw.setSongSliderLength(mp));
+        this.mp.currentTimeProperty().addListener(e -> {
+            mw.setActualSongTime(mp);
+            mw.setSongSlider(mp);
+        });
         mp.play();
         mp.setOnEndOfMedia(this::playNext);
         this.mw.setPlayButtonImage(!this.pla);
@@ -253,4 +258,5 @@ public class MainLogic {
 
 }
 
-//TODO Actual time and progress of song
+//TODO Next when repeating all
+//TODO seek song time

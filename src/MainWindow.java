@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -7,7 +8,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -35,11 +38,13 @@ public class MainWindow extends Application {
     private final VBox add = new VBox();
     private final ScrollPane songsScroll = new ScrollPane();
     private final ScrollPane playlistsScroll = new ScrollPane();
-    private Slider songSlider;
     private Button playButton;
     private ImageView playI;
     private ImageView pauseI;
     private Label songLength;
+    private Slider songSlider;
+    private ProgressBar songProgress;
+    private Label actualTime;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -79,11 +84,23 @@ public class MainWindow extends Application {
     public void setSongLength() {
         this.songLength.setText(this.ml.getActualSong().getLength());
     }
-    public void setSongSlider(double v) {
-        this.songSlider.setValue(v);
+    public void setActualSongTime(MediaPlayer mp) {
+        String actual = "";
+        if (mp != null) {
+            Duration d = mp.getCurrentTime();
+            double min = Math.floor(d.toMinutes());
+            double sec = ((d.toMinutes()) - min) * 60;
+            actual = String.format("%1$.0f:%2$02.0f", min, sec);
+        }
+        this.actualTime.setText(actual);
     }
-    public void setSongSliderLength(double v) {
-        this.songSlider.setMax(v);
+    public void setSongSlider(MediaPlayer mp) {
+        this.songSlider.setValue(mp.getCurrentTime().toSeconds());
+    }
+    public void setSongSliderLength(MediaPlayer mp) {
+        songSlider.maxProperty().bind(Bindings.createDoubleBinding(
+                () -> mp.getTotalDuration().toSeconds(),
+                mp.totalDurationProperty()));
     }
     private void setTheme(String t) {
         switch (t) {
@@ -194,7 +211,7 @@ public class MainWindow extends Application {
             }
         });
 
-        Label actualTime = new Label("0:00");
+        actualTime = new Label("0:00");
         actualTime.getStyleClass().add("label-small");
         songLength = new Label("0:00");
         songLength.getStyleClass().add("label-small");
@@ -207,6 +224,8 @@ public class MainWindow extends Application {
         HBox songTimeAligment = new HBox();
         StackPane sp = this.hybridSlider(700);
         songSlider = (Slider)sp.getChildren().get(2);
+        songSlider.valueProperty().addListener(e -> songProgress.setProgress(songSlider.getValue() / ml.getMp().getTotalDuration().toSeconds()));
+        songProgress = (ProgressBar) sp.getChildren().get(1);
         songTimeAligment.getChildren().addAll(actualTime, sp, songLength);
         songTimeAligment.setAlignment(Pos.TOP_CENTER);
         songTimeAligment.setSpacing(10);
