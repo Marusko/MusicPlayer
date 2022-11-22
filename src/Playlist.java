@@ -14,11 +14,9 @@ public class Playlist {
     public String getPath() {
         return path;
     }
-
     public String getName() {
         return name;
     }
-
     public String getTotalLength() {
         double allSeconds = 0;
         for (Song s : this.songs) {
@@ -35,19 +33,15 @@ public class Playlist {
         }
         return length;
     }
-
     public int getNumberOfSongs() {
         return this.songs.size();
     }
-
     public ArrayList<Song> getSongs() {
         return songs;
     }
-
     public void removeSongs(ArrayList<Song> r) {
         this.songs.removeAll(r);
     }
-
     public void addSongs(ArrayList<Song> songs) {
         this.songs.addAll(songs);
         for (Song s : this.songs) {

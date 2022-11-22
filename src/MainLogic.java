@@ -42,38 +42,32 @@ public class MainLogic {
         this.backUpQueue = this.songQueue;
     }
 
-    public boolean isPla() {
-        return pla;
-    }
-
-    public int isRep() {
-        return rep;
-    }
-
-    public boolean isShuf() {
-        return shuf;
-    }
-
     public void setRep() {
         this.rep++;
         this.rep = this.rep > 2 ? 0 : this.rep;
     }
-
     public void setUpdatingStateOfSong(boolean updatingStateOfSong) {
         this.updatingStateOfSong = updatingStateOfSong;
     }
 
+    public boolean isPla() {
+        return pla;
+    }
+    public int isRep() {
+        return rep;
+    }
+    public boolean isShuf() {
+        return shuf;
+    }
     public Song getActualSong() {
         return this.actualSong;
     }
-
     public MediaPlayer getMp() {
         return mp;
     }
     public boolean isUpdatingStateOfSong() {
         return this.updatingStateOfSong;
     }
-
     public ArrayList<Song> getAllSongs() {
         return this.allSongs;
     }
@@ -103,7 +97,6 @@ public class MainLogic {
         this.mw.setPlayButtonImage(!this.pla);
         this.mw.setTitle(s.getName());
     }
-
     public void playNext() {
         if (this.songQueue.contains(this.actualSong)) {
             this.mp.setCycleCount(1);
@@ -131,7 +124,6 @@ public class MainLogic {
             }
         }
     }
-
     public void playPrev() {
         if (this.songQueue.contains(this.actualSong)) {
             double seconds = this.mp.getCurrentTime().toSeconds();
@@ -150,11 +142,12 @@ public class MainLogic {
                 }
             } else {
                 this.mp.seek(this.mp.getStartTime());
+                this.mw.setPlayButtonImage(false);
+                this.pla = true;
                 this.mp.play();
             }
         }
     }
-
     public void playPauseSong() {
         if (this.pla) {
             this.pla = false;
@@ -194,7 +187,6 @@ public class MainLogic {
             this.songQueue = shuffledQueue;
         }
     }
-
     public void setPlaylistSongs(Playlist playlist) {
         if (playlist != null) {
             this.songQueue = new LinkedList<>(playlist.getSongs());
@@ -229,7 +221,6 @@ public class MainLogic {
         pw.close();
         this.mw.refresh();
     }
-
     private void loadSongs() throws Exception {
         File allSongsFile = new File("all.txt"); //Test
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
@@ -248,7 +239,6 @@ public class MainLogic {
         this.volume = v;
         mp.setVolume(v);
     }
-
 
     public void selectSong(Song s) {
         this.selectedSongs.add(s);

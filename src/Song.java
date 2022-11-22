@@ -37,11 +37,9 @@ public class Song {
     public String getName() {
         return name;
     }
-
     public String getAuthor() {
         return author;
     }
-
     public String getLength() {
         String length = "";
         if (this.length != null) {
@@ -54,11 +52,9 @@ public class Song {
     public Duration getDuration() {
         return this.length;
     }
-
     public void setPlaylist(Playlist playlist) {
         this.playlists.add(playlist);
     }
-
     public String getPath() {
         return path;
     }

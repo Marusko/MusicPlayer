@@ -19,7 +19,6 @@ import java.util.Objects;
 public class MainWindow extends Application {
     private final static String autor = "Matúš Suský";
     private final static String version = "0.0.5";
-    //Testovanie
     private static final int ADD = 0;
     private static final int ALL = 1;
     private static final int PLAYLISTS = 2;
@@ -77,6 +76,29 @@ public class MainWindow extends Application {
         this.switchMenu(this.selected);
     }
 
+    public void setTitle(String s) {
+        if (s != null) {
+            this.mainStage.setTitle("Playing - " + s);
+        } else {
+            this.mainStage.setTitle("Music player");
+        }
+    }
+    private void setTheme(String t) {
+        switch (t) {
+            case "Orange" -> {
+                this.mainScene.getStylesheets().remove(0);
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
+            }
+            case "Green" -> {
+                this.mainScene.getStylesheets().remove(0);
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/greenTheme.css")).toExternalForm());
+            }
+            case "Blue" -> {
+                this.mainScene.getStylesheets().remove(0);
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/blueTheme.css")).toExternalForm());
+            }
+        }
+    }
     public void setNameOnScreen(String s) {
         this.nameOnScreen.setText(s);
     }
@@ -104,34 +126,11 @@ public class MainWindow extends Application {
                 () -> mp.getTotalDuration().toSeconds(),
                 mp.totalDurationProperty()));
     }
-    private void setTheme(String t) {
-        switch (t) {
-            case "Orange" -> {
-                this.mainScene.getStylesheets().remove(0);
-                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
-            }
-            case "Green" -> {
-                this.mainScene.getStylesheets().remove(0);
-                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/greenTheme.css")).toExternalForm());
-            }
-            case "Blue" -> {
-                this.mainScene.getStylesheets().remove(0);
-                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/blueTheme.css")).toExternalForm());
-            }
-        }
-    }
     public void setPlayButtonImage(boolean b) {
         if (b) {
             this.playButton.setGraphic(playI);
         } else {
             this.playButton.setGraphic(pauseI);
-        }
-    }
-    public void setTitle(String s) {
-        if (s != null) {
-            this.mainStage.setTitle("Playing - " + s);
-        } else {
-            this.mainStage.setTitle("Music player");
         }
     }
 
@@ -257,7 +256,6 @@ public class MainWindow extends Application {
         mainSongControls.setStyle("-fx-background-color: #4d4d4d; -fx-padding: 15px; -fx-background-radius: 10");
         return mainSongControls;
     }
-
     private void prevNext(Button b, ImageView i) {
         i.setFitHeight(20);
         i.setPreserveRatio(true);
@@ -453,43 +451,12 @@ public class MainWindow extends Application {
             }
         }
     }
-
     private VBox content() {
         this.nameOnScreen.getStyleClass().add("label-large");
         this.mainListsVbox.getChildren().add(this.nameOnScreen);
         this.mainListsVbox.setAlignment(Pos.TOP_LEFT);
         return mainListsVbox;
     }
-
-    private StackPane hybridSlider(int sliderWidth) {
-
-        Slider slider = new Slider();
-        slider.setMaxWidth(sliderWidth);
-        slider.setMinWidth(sliderWidth);
-        slider.setOnMouseEntered(e -> slider.setStyle("thumb-transparent: thumb-show"));
-        slider.setOnMouseExited(e -> slider.setStyle("thumb-transparent: thumb-hide"));
-
-        ProgressBar pb = new ProgressBar(0);
-        pb.setStyle("track-color:transparent");
-        pb.setMaxWidth(sliderWidth);
-        pb.setMinWidth(sliderWidth);
-        pb.setMaxHeight(13);
-        pb.setMinHeight(13);
-
-        ProgressBar pb2 = new ProgressBar(0);
-        pb2.setMaxWidth(sliderWidth - 6);
-        pb2.setMinWidth(sliderWidth - 6);
-        pb2.setMaxHeight(3);
-        pb2.setMinHeight(3);
-
-        slider.valueProperty().addListener(e -> pb.setProgress(slider.getValue() / 100));
-
-        StackPane hybrid = new StackPane();
-
-        hybrid.getChildren().addAll(pb2, pb, slider);
-        return hybrid;
-    }
-
     private void setContent(Node n) {
         if (this.mainListsVbox.getChildren().size() > 1) {
             this.mainListsVbox.getChildren().remove(1);
@@ -660,7 +627,6 @@ public class MainWindow extends Application {
         song.setStyle(" -fx-background-color: #404040; -fx-background-radius: 10");
         return song;
     }
-
     private void songsPage(ArrayList<Song> songsA) {
         this.songsScroll.setContent(null);
         VBox songs = new VBox();
@@ -707,7 +673,6 @@ public class MainWindow extends Application {
         playlist.setStyle("-fx-background-color: #404040; -fx-background-radius: 5");
         return playlist;
     }
-
     private void playlistsPage(ArrayList<Playlist> all) {
         this.playlistsScroll.setContent(null);
         FlowPane playlists = new FlowPane();
@@ -721,5 +686,34 @@ public class MainWindow extends Application {
         this.playlistsScroll.setContent(playlists);
         this.playlistsScroll.setOnMouseEntered(e -> this.playlistsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-fat"));
         this.playlistsScroll.setOnMouseExited(e -> this.playlistsScroll.lookup(".scroll-bar").setStyle("bar-width: bar-skinny"));
+    }
+
+    private StackPane hybridSlider(int sliderWidth) {
+
+        Slider slider = new Slider();
+        slider.setMaxWidth(sliderWidth);
+        slider.setMinWidth(sliderWidth);
+        slider.setOnMouseEntered(e -> slider.setStyle("thumb-transparent: thumb-show"));
+        slider.setOnMouseExited(e -> slider.setStyle("thumb-transparent: thumb-hide"));
+
+        ProgressBar pb = new ProgressBar(0);
+        pb.setStyle("track-color:transparent");
+        pb.setMaxWidth(sliderWidth);
+        pb.setMinWidth(sliderWidth);
+        pb.setMaxHeight(13);
+        pb.setMinHeight(13);
+
+        ProgressBar pb2 = new ProgressBar(0);
+        pb2.setMaxWidth(sliderWidth - 6);
+        pb2.setMinWidth(sliderWidth - 6);
+        pb2.setMaxHeight(3);
+        pb2.setMinHeight(3);
+
+        slider.valueProperty().addListener(e -> pb.setProgress(slider.getValue() / 100));
+
+        StackPane hybrid = new StackPane();
+
+        hybrid.getChildren().addAll(pb2, pb, slider);
+        return hybrid;
     }
 }
