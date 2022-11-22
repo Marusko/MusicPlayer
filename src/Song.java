@@ -2,19 +2,20 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class Song {
     private String name;
-    private String playlist;
+    private final ArrayList<Playlist> playlists;
     private Duration length;
     private final String path;
     private String author;
-    private boolean checked = false;
     private final Media m;
 
-    public Song(String path, Media m, String playlist) {
+    public Song(String path, Media m) {
         this.path = path;
         this.m = m;
-        this.playlist = playlist;
+        this.playlists = new ArrayList<>();
     }
 
     public void setUp(MainWindow mw) {
@@ -51,24 +52,12 @@ public class Song {
         return length;
     }
 
-    public String getPlaylist() {
-        return playlist;
-    }
-
-    public void setPlaylist(String playlist) {
-        this.playlist = playlist;
+    public void setPlaylist(Playlist playlist) {
+        this.playlists.add(playlist);
     }
 
     public String getPath() {
         return path;
-    }
-
-    public boolean getChecked() {
-        return this.checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
     }
 
     @Override

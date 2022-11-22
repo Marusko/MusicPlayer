@@ -338,6 +338,8 @@ public class MainWindow extends Application {
         });
         all.setOnAction(e -> {
             this.selected = MainWindow.ALL;
+            this.songsPage(this.ml.getAllSongs());
+            this.ml.setPlaylistSongs(null);
             this.switchMenu(this.selected);
             all.setStyle("button-color: default-action-color");
             add.setStyle("button-color: default-color");
@@ -516,6 +518,11 @@ public class MainWindow extends Application {
         addToButton.getStyleClass().add("my-menu-button");
         addToButton.setOnMouseEntered(e -> addToButton.setStyle("button-color: mouse-color"));
         addToButton.setOnMouseExited(e -> addToButton.setStyle("button-color: default-color"));
+        addToButton.setOnAction(e -> {
+            //this.ml.getPlaylist(choosePlaylist.getValue().getName());
+            choosePlaylist.getValue().addSongs(this.ml.getSelectedSongs());
+            this.ml.getSelectedSongs().clear();
+        });
         VBox addToBox = new VBox(addToPlaylist, choosePlaylist, addToButton);
         addToBox.setSpacing(10);
 
@@ -529,6 +536,8 @@ public class MainWindow extends Application {
         selected.setOnAction(e -> {
             if (selected.isSelected()) {
                 this.ml.selectSong(s);
+            } else if (!selected.isSelected()) {
+                this.ml.deSelectSong(s);
             }
         });
         Button playSong = new Button();
@@ -580,6 +589,12 @@ public class MainWindow extends Application {
         open.getStyleClass().add("my-menu-button");
         open.setOnMouseEntered(e -> open.setStyle("button-color: mouse-color"));
         open.setOnMouseExited(e -> open.setStyle("button-color: default-color"));
+        open.setOnAction(e -> {
+            this.songsPage(this.ml.getPlaylist(namePlaylist).getSongs());
+            this.ml.setPlaylistSongs(this.ml.getPlaylist(namePlaylist));
+            this.switchMenu(MainWindow.ALL);
+            this.setNameOnScreen(namePlaylist);
+        });
         VBox playlist = new VBox(playlistI, name, open);
         playlist.setSpacing(10);
         playlist.setAlignment(Pos.CENTER);

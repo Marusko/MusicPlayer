@@ -48,6 +48,12 @@ public class Playlist {
     public void addSong(Song s) {
         this.songs.add(s);
     }
+    public void addSongs(ArrayList<Song> songs) {
+        this.songs.addAll(songs);
+        for (Song s : this.songs) {
+            s.setPlaylist(this);
+        }
+    }
 
     /*private void calculateTotalLength() {
         ZATIAL NEPOUZITE

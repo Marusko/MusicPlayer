@@ -192,12 +192,20 @@ public class MainLogic {
         }
     }
 
+    public void setPlaylistSongs(Playlist playlist) {
+        if (playlist != null) {
+            this.songQueue = new LinkedList<>(playlist.getSongs());
+        } else {
+            this.songQueue = this.backUpQueue;
+        }
+    }
+
     public void addSong(Stage stage) throws Exception {
         FileChooser fc = new FileChooser();
         File f = fc.showOpenDialog(stage);
         String path = "" + f.toURI();
         Media m = new Media(path);
-        Song song = new Song(path, m, null);
+        Song song = new Song(path, m);
         song.setUp(this.mw);
         this.allSongs.add(song);
         this.songQueue.add(song);
@@ -225,7 +233,7 @@ public class MainLogic {
         String line;
         while ((line = br.readLine()) != null) {
             Media m = new Media(line);
-            Song song = new Song(line, m, null);
+            Song song = new Song(line, m);
             song.setUp(this.mw);
             this.allSongs.add(song);
             this.songQueue.add(song);
@@ -241,6 +249,9 @@ public class MainLogic {
 
     public void selectSong(Song s) {
         this.selectedSongs.add(s);
+    }
+    public void deSelectSong(Song s) {
+        this.selectedSongs.remove(s);
     }
     public ArrayList<Song> getSelectedSongs() {
         return this.selectedSongs;
