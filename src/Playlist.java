@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Playlist {
     private final ArrayList<Song> songs;
-    private String name;
+    private final String name;
     private final String path;
 
     public Playlist(String name, String path) {
@@ -17,10 +17,6 @@ public class Playlist {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getTotalLength() {
@@ -64,3 +60,5 @@ public class Playlist {
         return this.name;
     }
 }
+
+//TODO save playlists
