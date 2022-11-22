@@ -47,16 +47,11 @@ public class Playlist {
     public ArrayList<Song> getSongs() {
         return songs;
     }
-    public Song getSong(String name) {
-        Song song = null;
-        for (Song s : songs) {
-            if (s.getName().equals(name)) {
-                song = s;
-                break;
-            }
-        }
-        return song;
+
+    public void removeSongs(ArrayList<Song> r) {
+        this.songs.removeAll(r);
     }
+
     public void addSongs(ArrayList<Song> songs) {
         this.songs.addAll(songs);
         for (Song s : this.songs) {

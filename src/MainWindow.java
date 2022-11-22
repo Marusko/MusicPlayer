@@ -24,6 +24,7 @@ public class MainWindow extends Application {
     private static final int ALL = 1;
     private static final int PLAYLISTS = 2;
     private static final int SETTINGS = 3;
+    private static final int REMOVE = 4;
     private int selected = MainWindow.ALL;
     private MainLogic ml;
 
@@ -35,6 +36,7 @@ public class MainWindow extends Application {
     private final VBox mainListsVbox = new VBox();
     private final VBox settings = new VBox();
     private final VBox add = new VBox();
+    private final VBox remove = new VBox();
     private final ScrollPane songsScroll = new ScrollPane();
     private final ScrollPane playlistsScroll = new ScrollPane();
     private Button playButton;
@@ -262,13 +264,14 @@ public class MainWindow extends Application {
         this.songsPage(this.ml.getAllSongs());
         this.playlistsPage(this.ml.getAllPlaylists());
         this.addPage();
+        this.removePage();
     }
 
     private VBox menu() {
         VBox mainMenu = new VBox();
 
         Button add = new Button("Add");
-        ImageView addI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/add-list.png")).toExternalForm()));
+        ImageView addI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/plus.png")).toExternalForm()));
         addI.setFitHeight(20);
         addI.setPreserveRatio(true);
         add.setGraphic(addI);
@@ -279,6 +282,21 @@ public class MainWindow extends Application {
                 add.setStyle("button-color: default-action-color");
             } else {
                 add.setStyle("button-color: default-color");
+            }
+        });
+
+        Button remove = new Button("Remove");
+        ImageView removeI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/minus.png")).toExternalForm()));
+        removeI.setFitHeight(20);
+        removeI.setPreserveRatio(true);
+        remove.setGraphic(removeI);
+        remove.getStyleClass().add("my-menu-button");
+        remove.setOnMouseEntered(e -> remove.setStyle("button-color: mouse-color"));
+        remove.setOnMouseExited(e -> {
+            if (this.selected == MainWindow.REMOVE) {
+                remove.setStyle("button-color: default-action-color");
+            } else {
+                remove.setStyle("button-color: default-color");
             }
         });
 
@@ -335,6 +353,7 @@ public class MainWindow extends Application {
             all.setStyle("button-color: default-color");
             playlists.setStyle("button-color: default-color");
             settings.setStyle("button-color: default-color");
+            remove.setStyle("button-color: default-color");
         });
         all.setOnAction(e -> {
             this.selected = MainWindow.ALL;
@@ -345,6 +364,7 @@ public class MainWindow extends Application {
             add.setStyle("button-color: default-color");
             playlists.setStyle("button-color: default-color");
             settings.setStyle("button-color: default-color");
+            remove.setStyle("button-color: default-color");
         });
         playlists.setOnAction(e -> {
             this.selected = MainWindow.PLAYLISTS;
@@ -353,6 +373,7 @@ public class MainWindow extends Application {
             all.setStyle("button-color: default-color");
             add.setStyle("button-color: default-color");
             settings.setStyle("button-color: default-color");
+            remove.setStyle("button-color: default-color");
         });
         settings.setOnAction(e -> {
             this.selected = MainWindow.SETTINGS;
@@ -361,6 +382,17 @@ public class MainWindow extends Application {
             all.setStyle("button-color: default-color");
             add.setStyle("button-color: default-color");
             playlists.setStyle("button-color: default-color");
+            remove.setStyle("button-color: default-color");
+        });
+
+        remove.setOnAction(e -> {
+            this.selected = MainWindow.REMOVE;
+            this.switchMenu(this.selected);
+            remove.setStyle("button-color: default-action-color");
+            all.setStyle("button-color: default-color");
+            add.setStyle("button-color: default-color");
+            playlists.setStyle("button-color: default-color");
+            settings.setStyle("button-color: default-color");
         });
 
         Label volume = new Label("Volume");
@@ -376,7 +408,7 @@ public class MainWindow extends Application {
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
 
-        mainMenu.getChildren().addAll(add, all, playlists, settings, volumeBox);
+        mainMenu.getChildren().addAll(add, remove, all, playlists, settings, volumeBox);
         mainMenu.setSpacing(10);
         mainMenu.setAlignment(Pos.CENTER);
         mainMenu.setStyle("-fx-padding: 10px; -fx-background-color: #404040; -fx-background-radius: 10");
@@ -401,6 +433,10 @@ public class MainWindow extends Application {
             case 3 -> {
                 this.setContent(this.settings);
                 this.setNameOnScreen("Settings");
+            }
+            case 4 -> {
+                this.setContent(this.remove);
+                this.setNameOnScreen("Remove songs");
             }
         }
     }
@@ -448,6 +484,30 @@ public class MainWindow extends Application {
         } else {
             this.mainListsVbox.getChildren().add(n);
         }
+    }
+
+    private void removePage() {
+        this.remove.getChildren().clear();
+        Label removeFromPlaylist = new Label("Remove chosen songs from your existing playlist");
+        ComboBox<Playlist> choosePlaylist = new ComboBox<>();
+        choosePlaylist.getItems().addAll(this.ml.getAllPlaylists());
+        choosePlaylist.setOnMouseEntered(e -> choosePlaylist.setStyle("combo-color: mouse-color"));
+        choosePlaylist.setOnMouseExited(e -> choosePlaylist.setStyle("combo-color: default-color"));
+        Button deleteButton = new Button("Delete");
+        deleteButton.getStyleClass().add("my-menu-button");
+        deleteButton.setOnMouseEntered(e -> deleteButton.setStyle("button-color: mouse-color"));
+        deleteButton.setOnMouseExited(e -> deleteButton.setStyle("button-color: default-color"));
+        deleteButton.setOnAction(e -> {
+            choosePlaylist.getValue().removeSongs(this.ml.getSelectedSongs());
+            this.ml.getSelectedSongs().clear();
+            this.refresh();
+        });
+        VBox removeFromBox = new VBox(removeFromPlaylist, choosePlaylist, deleteButton);
+        removeFromBox.setSpacing(10);
+
+        this.remove.getChildren().addAll(removeFromBox);
+        this.remove.setSpacing(50);
+        this.remove.setPadding(new Insets(100));
     }
 
     private void settingsPage() {
