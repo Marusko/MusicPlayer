@@ -101,6 +101,7 @@ public class MainLogic {
         mp.play();
         mp.setOnEndOfMedia(this::playNext);
         this.mw.setPlayButtonImage(!this.pla);
+        this.mw.setTitle(s.getName());
     }
 
     public void playNext() {
@@ -158,9 +159,11 @@ public class MainLogic {
         if (this.pla) {
             this.pla = false;
             this.mp.pause();
+            this.mw.setTitle(null);
         } else {
             this.pla = true;
             this.mp.play();
+            this.mw.setTitle(this.actualSong.getName());
         }
     }
 

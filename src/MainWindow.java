@@ -126,6 +126,13 @@ public class MainWindow extends Application {
             this.playButton.setGraphic(pauseI);
         }
     }
+    public void setTitle(String s) {
+        if (s != null) {
+            this.mainStage.setTitle("Playing - " + s);
+        } else {
+            this.mainStage.setTitle("Music player");
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);
