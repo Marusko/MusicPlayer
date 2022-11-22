@@ -29,6 +29,7 @@ public class MainWindow extends Application {
     private MainLogic ml;
 
     //UI elements which are updated based on other elements
+    private BorderPane bp;
     private Stage mainStage;
     private Scene mainScene;
     private final Label nameOnScreen = new Label();
@@ -60,7 +61,7 @@ public class MainWindow extends Application {
 
         this.mainStage = stage;
         this.ml = new MainLogic(this);
-        BorderPane bp = new BorderPane();
+        bp = new BorderPane();
         bp.setStyle("-fx-background-color: #5c5c5c");
         VBox songControl = this.songControls();
         bp.setBottom(songControl);
@@ -272,6 +273,7 @@ public class MainWindow extends Application {
         this.playlistsPage(this.ml.getAllPlaylists());
         this.addPage();
         this.removePage();
+        this.bp.setLeft(this.menu());
     }
 
     private VBox menu() {
@@ -415,7 +417,11 @@ public class MainWindow extends Application {
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
 
-        mainMenu.getChildren().addAll(add, remove, all, playlists, settings, volumeBox);
+        mainMenu.getChildren().addAll(add);
+        if (!this.ml.getAllPlaylists().isEmpty()) {
+            mainMenu.getChildren().add(remove);
+        }
+        mainMenu.getChildren().addAll(all, playlists, settings, volumeBox);
         mainMenu.setSpacing(10);
         mainMenu.setAlignment(Pos.CENTER);
         mainMenu.setStyle("-fx-padding: 10px; -fx-background-color: #404040; -fx-background-radius: 10");
@@ -512,7 +518,23 @@ public class MainWindow extends Application {
         VBox removeFromBox = new VBox(removeFromPlaylist, choosePlaylist, deleteButton);
         removeFromBox.setSpacing(10);
 
-        this.remove.getChildren().addAll(removeFromBox);
+        Label removePlaylist = new Label("Remove your existing playlist");
+        ComboBox<Playlist> choosePlaylistToDelete = new ComboBox<>();
+        choosePlaylistToDelete.getItems().addAll(this.ml.getAllPlaylists());
+        choosePlaylistToDelete.setOnMouseEntered(e -> choosePlaylistToDelete.setStyle("combo-color: mouse-color"));
+        choosePlaylistToDelete.setOnMouseExited(e -> choosePlaylistToDelete.setStyle("combo-color: default-color"));
+        Button deletePlaylistButton = new Button("Delete");
+        deletePlaylistButton.getStyleClass().add("my-menu-button");
+        deletePlaylistButton.setOnMouseEntered(e -> deletePlaylistButton.setStyle("button-color: mouse-color"));
+        deletePlaylistButton.setOnMouseExited(e -> deletePlaylistButton.setStyle("button-color: default-color"));
+        deletePlaylistButton.setOnAction(e -> {
+            this.ml.deletePlaylist(choosePlaylistToDelete.getValue());
+            this.refresh();
+        });
+        VBox removeBox = new VBox(removePlaylist, choosePlaylistToDelete, deletePlaylistButton);
+        removeBox.setSpacing(10);
+
+        this.remove.getChildren().addAll(removeFromBox, removeBox);
         this.remove.setSpacing(50);
         this.remove.setPadding(new Insets(100));
     }
@@ -590,8 +612,11 @@ public class MainWindow extends Application {
             this.ml.getSelectedSongs().clear();
             this.refresh();
         });
-        VBox addToBox = new VBox(addToPlaylist, choosePlaylist, addToButton);
+        VBox addToBox = new VBox();
         addToBox.setSpacing(10);
+        if (!this.ml.getAllPlaylists().isEmpty()) {
+            addToBox.getChildren().addAll(addToPlaylist, choosePlaylist, addToButton);
+        }
 
         this.add.getChildren().addAll(songBox, playlistBox, addToBox);
         this.add.setSpacing(50);

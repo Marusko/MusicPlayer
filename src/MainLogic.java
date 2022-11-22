@@ -267,7 +267,6 @@ public class MainLogic {
     public ArrayList<Playlist> getAllPlaylists() {
         return this.allPlaylists;
     }
-
     public Playlist getPlaylist(String name) {
         Playlist playlist = null;
         for (Playlist p : this.allPlaylists) {
@@ -277,4 +276,9 @@ public class MainLogic {
         }
         return playlist;
     }
+    public void deletePlaylist(Playlist p) {
+        this.allPlaylists.remove(p);
+    }
 }
+
+//TODO when song is not in the location then don't load it and remove it from all.txt
