@@ -519,9 +519,9 @@ public class MainWindow extends Application {
         addToButton.setOnMouseEntered(e -> addToButton.setStyle("button-color: mouse-color"));
         addToButton.setOnMouseExited(e -> addToButton.setStyle("button-color: default-color"));
         addToButton.setOnAction(e -> {
-            //this.ml.getPlaylist(choosePlaylist.getValue().getName());
             choosePlaylist.getValue().addSongs(this.ml.getSelectedSongs());
             this.ml.getSelectedSongs().clear();
+            this.refresh();
         });
         VBox addToBox = new VBox(addToPlaylist, choosePlaylist, addToButton);
         addToBox.setSpacing(10);
@@ -585,6 +585,16 @@ public class MainWindow extends Application {
     private VBox playlist(String namePlaylist) {
         ImageView playlistI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         Label name = new Label(namePlaylist);
+
+        Label songs = new Label("Empty");
+        songs.getStyleClass().add("label-small");
+        songs.setText(this.ml.getPlaylist(namePlaylist).getNumberOfSongs() + " songs");
+        Label length = new Label("Empty");
+        length.getStyleClass().add("label-small");
+        length.setText(this.ml.getPlaylist(namePlaylist).getTotalLength());
+        VBox infoBox = new VBox(songs, length);
+        infoBox.setAlignment(Pos.CENTER);
+
         Button open = new Button("Open");
         open.getStyleClass().add("my-menu-button");
         open.setOnMouseEntered(e -> open.setStyle("button-color: mouse-color"));
@@ -595,7 +605,7 @@ public class MainWindow extends Application {
             this.switchMenu(MainWindow.ALL);
             this.setNameOnScreen(namePlaylist);
         });
-        VBox playlist = new VBox(playlistI, name, open);
+        VBox playlist = new VBox(playlistI, name, infoBox, open);
         playlist.setSpacing(10);
         playlist.setAlignment(Pos.CENTER);
         playlist.setPadding(new Insets(10));

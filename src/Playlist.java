@@ -3,7 +3,6 @@ import java.util.ArrayList;
 public class Playlist {
     private final ArrayList<Song> songs;
     private String name;
-    private String totalLength;
     private final String path;
 
     public Playlist(String name, String path) {
@@ -25,7 +24,20 @@ public class Playlist {
     }
 
     public String getTotalLength() {
-        return totalLength;
+        double allSeconds = 0;
+        for (Song s : this.songs) {
+            allSeconds += s.getDuration().toSeconds();
+        }
+
+        String length;
+        if (allSeconds > 0) {
+            double min = Math.floor(allSeconds / 60);
+            double sec = ((allSeconds / 60) - min) * 60;
+            length = String.format("%1$.0f:%2$02.0f", min, sec);
+        }  else {
+            length = "Empty";
+        }
+        return length;
     }
 
     public int getNumberOfSongs() {
@@ -45,19 +57,12 @@ public class Playlist {
         }
         return song;
     }
-    public void addSong(Song s) {
-        this.songs.add(s);
-    }
     public void addSongs(ArrayList<Song> songs) {
         this.songs.addAll(songs);
         for (Song s : this.songs) {
             s.setPlaylist(this);
         }
     }
-
-    /*private void calculateTotalLength() {
-        ZATIAL NEPOUZITE
-    }*/
 
     @Override
     public String toString() {

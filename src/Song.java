@@ -43,13 +43,16 @@ public class Song {
     }
 
     public String getLength() {
-        String length ="";
+        String length = "";
         if (this.length != null) {
             double min = Math.floor(this.length.toMinutes());
             double sec = ((this.length.toMinutes()) - min) * 60;
             length = String.format("%1$.0f:%2$02.0f", min, sec);
         }
         return length;
+    }
+    public Duration getDuration() {
+        return this.length;
     }
 
     public void setPlaylist(Playlist playlist) {
