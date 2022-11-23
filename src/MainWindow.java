@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class MainWindow extends Application {
     private final static String autor = "Matúš Suský";
-    private final static String version = "0.0.6";
+    private final static String version = "0.0.7";
     private static final int ADD = 0;
     private static final int ALL = 1;
     private static final int PLAYLISTS = 2;
