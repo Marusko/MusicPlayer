@@ -161,33 +161,41 @@ public class MainLogic {
         }
     }
 
-    public void shuffle() {
-        if (this.shuf) {
-            this.shuf = false;
-            this.songQueue = this.backUpQueue;
+    public void setAndShuffle(boolean reshuffle) {
+        if (!reshuffle) {
+            if (this.shuf) {
+                this.shuf = false;
+                this.songQueue = this.backUpQueue;
+            } else {
+                this.shuf = true;
+                shuffle();
+            }
         } else {
-            this.shuf = true;
-            int[] tmp = new int[this.songQueue.size()];
-            for (int i = 0; i < tmp.length; i++) {
-                tmp[i] = i;
-            }
-            Random r = new Random();
-            for (int i = 0; i < tmp.length; i++) {
-                int n = r.nextInt(0, tmp.length);
-                int x = tmp[n];
-                tmp[n] = tmp[i];
-                tmp[i] = x;
-            }
-            LinkedList<Song> shuffledQueue = new LinkedList<>();
-            shuffledQueue.add(this.actualSong);
-            for (int index : tmp) {
-                if (index != this.songQueue.indexOf(this.actualSong)) {
-                    shuffledQueue.add(this.songQueue.get(index));
-                }
-            }
-            this.songQueue = shuffledQueue;
+            shuffle();
         }
     }
+    private void shuffle() {
+        int[] tmp = new int[this.songQueue.size()];
+        for (int i = 0; i < tmp.length; i++) {
+            tmp[i] = i;
+        }
+        Random r = new Random();
+        for (int i = 0; i < tmp.length; i++) {
+            int n = r.nextInt(0, tmp.length);
+            int x = tmp[n];
+            tmp[n] = tmp[i];
+            tmp[i] = x;
+        }
+        LinkedList<Song> shuffledQueue = new LinkedList<>();
+        shuffledQueue.add(this.actualSong);
+        for (int index : tmp) {
+            if (index != this.songQueue.indexOf(this.actualSong)) {
+                shuffledQueue.add(this.songQueue.get(index));
+            }
+        }
+        this.songQueue = shuffledQueue;
+    }
+
     public void setPlaylistSongs(Playlist playlist) {
         if (playlist != null) {
             this.songQueue = new LinkedList<>(playlist.getSongs());
@@ -196,6 +204,7 @@ public class MainLogic {
             this.songQueue.addAll(this.allSongs);
         }
         this.backUpQueue = this.songQueue;
+        this.setAndShuffle(true);
     }
 
     public void addSong(Stage stage) throws Exception {
@@ -308,4 +317,3 @@ public class MainLogic {
 }
 
 //TODO when song is not in the location then don't load it and remove it from all.txt
-//TODO when switching and shuffle is on it needs to reshuffle

@@ -208,10 +208,10 @@ public class MainWindow extends Application {
         });
         shuffle.setOnAction(e -> {
             if (this.ml.isShuf()) {
-                this.ml.shuffle();
+                this.ml.setAndShuffle(false);
                 shuffle.setStyle("button-color: default-color");
             } else {
-                this.ml.shuffle();
+                this.ml.setAndShuffle(false);
                 shuffle.setStyle("button-color: default-action-color");
             }
         });
