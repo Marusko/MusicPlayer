@@ -46,6 +46,7 @@ public class MainWindow extends Application {
     private Slider songSlider;
     private ProgressBar songProgress;
     private Label actualTime;
+    private Slider volumeSlider;
 
     @Override
     public void start(Stage stage) {
@@ -272,6 +273,9 @@ public class MainWindow extends Application {
         this.addPage();
         this.removePage();
         this.bp.setLeft(this.menu());
+        if (this.ml.getMp() != null) {
+            this.volumeSlider.setValue(this.ml.getMp().getVolume() * 100);
+        }
     }
 
     private VBox menu() {
@@ -408,9 +412,9 @@ public class MainWindow extends Application {
         volumeLabelBox.setSpacing(10);
         volumeLabelBox.setAlignment(Pos.CENTER);
         StackPane sp = this.hybridSlider(150);
-        Slider s = (Slider)sp.getChildren().get(2);
-        s.setValue(30);
-        s.valueProperty().addListener(e -> this.ml.changeVolume(s.getValue() / 100));
+        volumeSlider = (Slider)sp.getChildren().get(2);
+        volumeSlider.setValue(30);
+        volumeSlider.valueProperty().addListener(e -> this.ml.changeVolume(volumeSlider.getValue() / 100));
         VBox volumeBox = new VBox(volumeLabelBox, sp);
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
@@ -717,5 +721,3 @@ public class MainWindow extends Application {
         return hybrid;
     }
 }
-
-//TODO update volume in refresh()
