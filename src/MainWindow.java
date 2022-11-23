@@ -40,6 +40,7 @@ public class MainWindow extends Application {
     private final ScrollPane songsScroll = new ScrollPane();
     private final ScrollPane playlistsScroll = new ScrollPane();
     private Button playButton;
+    private Button shuffle;
     private ImageView playI;
     private ImageView pauseI;
     private Label songLength;
@@ -134,6 +135,9 @@ public class MainWindow extends Application {
             this.playButton.setGraphic(pauseI);
         }
     }
+    public void resetShuffleColor() {
+        shuffle.setStyle("button-color: default-color");
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -193,7 +197,7 @@ public class MainWindow extends Application {
             }
         });
 
-        Button shuffle = new Button();
+        shuffle = new Button();
         ImageView shuffleI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/shuffle.png")).toExternalForm()));
         shuffleI.setFitHeight(20);
         shuffleI.setPreserveRatio(true);
@@ -209,10 +213,10 @@ public class MainWindow extends Application {
         });
         shuffle.setOnAction(e -> {
             if (this.ml.isShuf()) {
-                this.ml.setAndShuffle(false);
+                this.ml.setAndShuffle();
                 shuffle.setStyle("button-color: default-color");
             } else {
-                this.ml.setAndShuffle(false);
+                this.ml.setAndShuffle();
                 shuffle.setStyle("button-color: default-action-color");
             }
         });

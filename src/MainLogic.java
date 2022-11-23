@@ -161,16 +161,12 @@ public class MainLogic {
         }
     }
 
-    public void setAndShuffle(boolean reshuffle) {
-        if (!reshuffle) {
-            if (this.shuf) {
-                this.shuf = false;
-                this.songQueue = this.backUpQueue;
-            } else {
-                this.shuf = true;
-                shuffle();
-            }
+    public void setAndShuffle() {
+        if (this.shuf) {
+            this.shuf = false;
+            this.songQueue = this.backUpQueue;
         } else {
+            this.shuf = true;
             shuffle();
         }
     }
@@ -204,7 +200,8 @@ public class MainLogic {
             this.songQueue.addAll(this.allSongs);
         }
         this.backUpQueue = this.songQueue;
-        this.setAndShuffle(true);
+        this.shuf = false;
+        this.mw.resetShuffleColor();
     }
 
     public void addSong(Stage stage) throws Exception {
