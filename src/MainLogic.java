@@ -166,7 +166,7 @@ public class MainLogic {
             this.songQueue = this.backUpQueue;
         } else {
             this.shuf = true;
-            int[] tmp = new int[this.allSongs.size()];
+            int[] tmp = new int[this.songQueue.size()];
             for (int i = 0; i < tmp.length; i++) {
                 tmp[i] = i;
             }
@@ -180,8 +180,8 @@ public class MainLogic {
             LinkedList<Song> shuffledQueue = new LinkedList<>();
             shuffledQueue.add(this.actualSong);
             for (int index : tmp) {
-                if (index != this.allSongs.indexOf(this.actualSong)) {
-                    shuffledQueue.add(this.allSongs.get(index));
+                if (index != this.songQueue.indexOf(this.actualSong)) {
+                    shuffledQueue.add(this.songQueue.get(index));
                 }
             }
             this.songQueue = shuffledQueue;
@@ -191,8 +191,10 @@ public class MainLogic {
         if (playlist != null) {
             this.songQueue = new LinkedList<>(playlist.getSongs());
         } else {
-            this.songQueue = this.backUpQueue;
+            this.songQueue.clear();
+            this.songQueue.addAll(this.allSongs);
         }
+        this.backUpQueue = this.songQueue;
     }
 
     public void addSong(Stage stage) throws Exception {
