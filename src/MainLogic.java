@@ -36,6 +36,7 @@ public class MainLogic {
         this.mw = mw;
         try {
             this.loadSongs();
+            this.loadPlaylists();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -253,7 +254,7 @@ public class MainLogic {
     }
 
     public void createPlaylist(String name) {
-        Playlist p = new Playlist(name, null);
+        Playlist p = new Playlist(name);
         this.allPlaylists.add(p);
     }
     public ArrayList<Playlist> getAllPlaylists() {
@@ -269,7 +270,40 @@ public class MainLogic {
         return playlist;
     }
     public void deletePlaylist(Playlist p) {
+        p.deleteFile();
         this.allPlaylists.remove(p);
+        this.savePlaylists();
+    }
+    public void savePlaylists() {
+        for (Playlist p : this.allPlaylists) {
+            try {
+                p.savePlaylist();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public void loadPlaylists() throws Exception {
+        File folder = new File("playlists/");
+        File[] playlists = folder.listFiles();
+        if (playlists != null) {
+            for (File playlist : playlists) {
+                int index = playlist.getName().lastIndexOf(".");
+                String name = playlist.getName().substring(0, index);
+                this.createPlaylist(name);
+                BufferedReader br;
+                for (Song s : this.allSongs) {
+                    br = new BufferedReader(new FileReader(playlist));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        if (s.getPath().equals(line.trim())) {
+                            this.getPlaylist(name).addSong(s);
+                        }
+                    }
+                    br.close();
+                }
+            }
+        }
     }
 }
 

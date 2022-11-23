@@ -2,11 +2,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-
 public class Song {
     private String name;
-    private final ArrayList<Playlist> playlists;
     private Duration length;
     private final String path;
     private String author;
@@ -15,7 +12,6 @@ public class Song {
     public Song(String path, Media m) {
         this.path = path;
         this.m = m;
-        this.playlists = new ArrayList<>();
     }
 
     public void setUp(MainWindow mw) {
@@ -51,9 +47,6 @@ public class Song {
     }
     public Duration getDuration() {
         return this.length;
-    }
-    public void setPlaylist(Playlist playlist) {
-        this.playlists.add(playlist);
     }
     public String getPath() {
         return path;

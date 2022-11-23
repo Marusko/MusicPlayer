@@ -1,18 +1,36 @@
+import java.io.*;
 import java.util.ArrayList;
 
 public class Playlist {
     private final ArrayList<Song> songs;
     private final String name;
-    private final String path;
 
-    public Playlist(String name, String path) {
+    public Playlist(String name) {
         this.songs = new ArrayList<>();
         this.name = name;
-        this.path = path;
     }
 
-    public String getPath() {
-        return path;
+    public void savePlaylist() throws Exception {
+        File playlistFileOld = new File("playlists/" + name + ".txt");
+        File playlistFile;
+        if (playlistFileOld.delete()) {
+            playlistFile = new File("playlists/" + name + ".txt");
+        } else {
+            playlistFile = playlistFileOld;
+        }
+
+        PrintWriter pw = new PrintWriter(playlistFile);
+        StringBuilder sb = new StringBuilder();
+        for (Song s : this.songs) {
+            sb.append(s.getPath()).append("\n");
+        }
+        pw.println(sb);
+        pw.flush();
+        pw.close();
+    }
+    public void deleteFile() {
+        File playlistFile = new File("playlists/" + name + ".txt");
+        playlistFile.delete();
     }
     public String getName() {
         return name;
@@ -20,7 +38,9 @@ public class Playlist {
     public String getTotalLength() {
         double allSeconds = 0;
         for (Song s : this.songs) {
-            allSeconds += s.getDuration().toSeconds();
+            if (s.getDuration() != null) {
+                allSeconds += s.getDuration().toSeconds();
+            }
         }
 
         String length;
@@ -41,12 +61,22 @@ public class Playlist {
     }
     public void removeSongs(ArrayList<Song> r) {
         this.songs.removeAll(r);
+        try {
+            this.savePlaylist();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
     public void addSongs(ArrayList<Song> songs) {
         this.songs.addAll(songs);
-        for (Song s : this.songs) {
-            s.setPlaylist(this);
+        try {
+            this.savePlaylist();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
+    public void addSong(Song s) {
+        this.songs.add(s);
     }
 
     @Override
@@ -54,5 +84,3 @@ public class Playlist {
         return this.name;
     }
 }
-
-//TODO save playlists
