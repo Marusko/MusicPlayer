@@ -274,4 +274,4 @@ public class MainLogic {
 }
 
 //TODO when song is not in the location then don't load it and remove it from all.txt
-//TODO Shuffle for playlists
+//TODO when switching and shuffle is on it needs to reshuffle
