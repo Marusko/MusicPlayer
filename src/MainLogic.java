@@ -1,4 +1,5 @@
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -235,7 +236,12 @@ public class MainLogic {
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         String line;
         while ((line = br.readLine()) != null) {
-            Media m = new Media(line);
+            Media m;
+            try {
+                m = new Media(line);
+            } catch (MediaException e) {
+                continue;
+            }
             Song song = new Song(line, m);
             song.setUp(this.mw);
             this.allSongs.add(song);
@@ -313,4 +319,4 @@ public class MainLogic {
     }
 }
 
-//TODO when song is not in the location then don't load it and remove it from all.txt
+//TODO when song is not in the location remove it from all.txt
