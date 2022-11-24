@@ -215,7 +215,7 @@ public class MainLogic {
         this.allSongs.add(song);
         this.songQueue.add(song);
         //File allSongsFile = new File(Objects.requireNonNull(getClass().getResource("data/allSongs.txt")).toURI());
-        File allSongsFile = new File("all.txt"); //Test
+        File allSongsFile = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/all.txt"); //Test
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         StringBuilder lines = new StringBuilder();
         String line;
@@ -232,7 +232,7 @@ public class MainLogic {
         this.mw.refresh();
     }
     private void loadSongs() throws Exception {
-        File allSongsFile = new File("all.txt"); //Test
+        File allSongsFile = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/all.txt"); //Test
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         String line;
         while ((line = br.readLine()) != null) {
@@ -296,7 +296,7 @@ public class MainLogic {
         }
     }
     public void loadPlaylists() throws Exception {
-        File folder = new File("playlists/");
+        File folder = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/playlists/");
         File[] playlists = folder.listFiles();
         if (playlists != null) {
             for (File playlist : playlists) {

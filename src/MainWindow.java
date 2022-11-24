@@ -69,7 +69,7 @@ public class MainWindow extends Application {
         bp.setLeft(this.menu());
         bp.setCenter(this.content());
         this.mainScene = new Scene(bp, 1500, 900);
-        this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
+        this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
         this.mainStage.setTitle("Music player");
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);
@@ -89,15 +89,15 @@ public class MainWindow extends Application {
         switch (t) {
             case "Orange" -> {
                 this.mainScene.getStylesheets().remove(0);
-                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/orangeTheme.css")).toExternalForm());
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
             }
             case "Green" -> {
                 this.mainScene.getStylesheets().remove(0);
-                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/greenTheme.css")).toExternalForm());
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/greenTheme.css")).toExternalForm());
             }
             case "Blue" -> {
                 this.mainScene.getStylesheets().remove(0);
-                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styleSheets/blueTheme.css")).toExternalForm());
+                this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/blueTheme.css")).toExternalForm());
             }
         }
     }

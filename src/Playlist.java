@@ -11,10 +11,10 @@ public class Playlist {
     }
 
     public void savePlaylist() throws Exception {
-        File playlistFileOld = new File("playlists/" + name + ".txt");
+        File playlistFileOld = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/playlists/" + name + ".txt");
         File playlistFile;
         if (playlistFileOld.delete()) {
-            playlistFile = new File("playlists/" + name + ".txt");
+            playlistFile = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/playlists/" + name + ".txt");
         } else {
             playlistFile = playlistFileOld;
         }
