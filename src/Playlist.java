@@ -91,3 +91,4 @@ public class Playlist {
 
 //TODO when song is not found
 //TODO switching from playlist to all
+//TODO Loading screen
