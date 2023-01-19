@@ -254,7 +254,7 @@ public class MainWindow extends Application {
         controls.setAlignment(Pos.TOP_CENTER);
         controls.setSpacing(10);
 
-        HBox songTimeAligment = new HBox();
+        HBox songTimeAlignment = new HBox();
         StackPane sp = this.hybridSlider(700);
         songSlider = (Slider)sp.getChildren().get(2);
         songSlider.valueProperty().addListener(e -> {
@@ -272,15 +272,15 @@ public class MainWindow extends Application {
             songProgress.setProgress(songSlider.getValue() / ml.getMp().getTotalDuration().toSeconds());
         });
         songProgress = (ProgressBar) sp.getChildren().get(1);
-        songTimeAligment.getChildren().addAll(actualTime, sp, songLength);
-        songTimeAligment.setAlignment(Pos.TOP_CENTER);
-        songTimeAligment.setSpacing(10);
+        songTimeAlignment.getChildren().addAll(actualTime, sp, songLength);
+        songTimeAlignment.setAlignment(Pos.TOP_CENTER);
+        songTimeAlignment.setSpacing(10);
 
-        HBox songNameAligment = new HBox();
-        songNameAligment.getChildren().add(this.songName);
-        songNameAligment.setAlignment(Pos.TOP_CENTER);
+        HBox songNameAlignment = new HBox();
+        songNameAlignment.getChildren().add(this.songName);
+        songNameAlignment.setAlignment(Pos.TOP_CENTER);
 
-        mainSongControls.getChildren().addAll(songNameAligment, songTimeAligment, controls);
+        mainSongControls.getChildren().addAll(songNameAlignment, songTimeAlignment, controls);
         mainSongControls.setStyle("-fx-background-color: #4d4d4d; -fx-padding: 15px; -fx-background-radius: 10");
         return mainSongControls;
     }

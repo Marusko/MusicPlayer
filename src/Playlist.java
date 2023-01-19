@@ -33,7 +33,7 @@ public class Playlist {
         File playlistFile = new File(MainLogic.PATH + "/playlists/" + name + ".txt");
         boolean del = playlistFile.delete();
         if (!del) {
-            throw new FileSystemException("Can't delete playlis");
+            throw new FileSystemException("Can't delete playlist");
         }
     }
     public String getName() {
