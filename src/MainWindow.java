@@ -99,7 +99,7 @@ public class MainWindow extends Application {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
                 try {
-                    this.ml.setTheme("orange");
+                    this.ml.setTheme("Orange");
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -108,7 +108,7 @@ public class MainWindow extends Application {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/greenTheme.css")).toExternalForm());
                 try {
-                    this.ml.setTheme("green");
+                    this.ml.setTheme("Green");
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -117,7 +117,7 @@ public class MainWindow extends Application {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/blueTheme.css")).toExternalForm());
                 try {
-                    this.ml.setTheme("blue");
+                    this.ml.setTheme("Blue");
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -549,7 +549,7 @@ public class MainWindow extends Application {
         Label color = new Label("Theme");
         ComboBox<String> colorPicker = new ComboBox<>();
         colorPicker.getItems().addAll("Orange", "Green", "Blue");
-        colorPicker.getSelectionModel().selectFirst();
+        colorPicker.getSelectionModel().select(this.ml.getTheme());
         colorPicker.setOnMouseEntered(e -> colorPicker.setStyle("combo-color: mouse-color"));
         colorPicker.setOnMouseExited(e -> colorPicker.setStyle("combo-color: default-color"));
         colorPicker.valueProperty().addListener(e -> this.setTheme(colorPicker.getValue()));
@@ -565,41 +565,26 @@ public class MainWindow extends Application {
         infoBox.getChildren().addAll(info, infoVersion);
         infoBox.setSpacing(10);
 
-        Label setPathLabel = new Label("Set folder for player data"), orLabel = new Label("or");
-
-        Button okButton = new Button("OK");
-        okButton.getStyleClass().add("my-menu-button");
-        okButton.setOnMouseEntered(e -> okButton.setStyle("button-color: mouse-color"));
-        okButton.setOnMouseExited(e -> okButton.setStyle("button-color: default-color"));
+        Label setPathLabel = new Label("Active folder for player data: " + MainLogic.PATH), orLabel = new Label("Set new folder");
 
         Button searchButton = new Button("Search PC");
         searchButton.getStyleClass().add("my-menu-button");
         searchButton.setOnMouseEntered(e -> searchButton.setStyle("button-color: mouse-color"));
         searchButton.setOnMouseExited(e -> searchButton.setStyle("button-color: default-color"));
 
-        TextField folderPathText = new TextField();
-        folderPathText.setText(MainLogic.PATH);
-        folderPathText.setOnMouseEntered(e -> folderPathText.setStyle("field-color: mouse-color"));
-        folderPathText.setOnMouseExited(e -> folderPathText.setStyle("field-color: default-color"));
-
-        okButton.setOnAction(e -> {
-            String path = folderPathText.getText().replace("\\", "/" );
-            try {
-                this.ml.setPath(path);
-                folderPathText.setText(MainLogic.PATH);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
         searchButton.setOnAction(e -> {
             DirectoryChooser dc = new DirectoryChooser();
             dc.setTitle("Choose folder");
             File selected = dc.showDialog(this.mainStage);
-            folderPathText.setText(selected.getAbsolutePath());
+            try {
+                this.ml.setPath(selected.getAbsolutePath());
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+            setPathLabel.setText("Active folder for player data: " + selected.getAbsolutePath());
         });
 
-        VBox pathBox = new VBox(setPathLabel, folderPathText, orLabel, searchButton, okButton);
+        VBox pathBox = new VBox(setPathLabel, orLabel, searchButton);
         pathBox.setSpacing(10);
 
         this.settings.getChildren().addAll(colorBox, pathBox, infoBox);

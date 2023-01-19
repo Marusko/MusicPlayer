@@ -5,6 +5,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -28,6 +29,7 @@ public class MainLogic {
     private boolean updatingStateOfSong = true;
     private Song actualSong = null;
     private final MainWindow mw;
+    private String theme = "";
 
     public MainLogic(MainWindow mw) {
         this.songQueue = new LinkedList<>();
@@ -225,8 +227,17 @@ public class MainLogic {
         this.mw.refresh();
     }
     private void loadSongs() throws Exception {
-        File allSongsFile = new File(PATH + "/all.txt"); //Test
-        BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
+        File allSongsFile = new File(PATH + "/all.txt");
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(allSongsFile));
+        } catch (FileNotFoundException e) {
+           boolean songs = allSongsFile.createNewFile();
+           if (!songs) {
+               throw new FileSystemException("Can't create file for songs");
+           }
+            br = new BufferedReader(new FileReader(allSongsFile));
+        }
         String line;
         while ((line = br.readLine()) != null) {
             Media m;
@@ -290,23 +301,31 @@ public class MainLogic {
     }
     public void loadPlaylists() throws Exception {
         File folder = new File(PATH + "/playlists/");
-        File[] playlists = folder.listFiles();
-        if (playlists != null) {
-            for (File playlist : playlists) {
-                int index = playlist.getName().lastIndexOf(".");
-                String name = playlist.getName().substring(0, index);
-                this.createPlaylist(name);
-                BufferedReader br;
-                for (Song s : this.allSongs) {
-                    br = new BufferedReader(new FileReader(playlist));
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        if (s.getPath().equals(line.trim())) {
-                            this.getPlaylist(name).addSong(s);
+
+        if (folder.exists()) {
+            File[] playlists = folder.listFiles();
+            if (playlists != null) {
+                for (File playlist : playlists) {
+                    int index = playlist.getName().lastIndexOf(".");
+                    String name = playlist.getName().substring(0, index);
+                    this.createPlaylist(name);
+                    BufferedReader br;
+                    for (Song s : this.allSongs) {
+                        br = new BufferedReader(new FileReader(playlist));
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            if (s.getPath().equals(line.trim())) {
+                                this.getPlaylist(name).addSong(s);
+                            }
                         }
+                        br.close();
                     }
-                    br.close();
                 }
+            }
+        } else {
+            boolean dir = folder.mkdir();
+            if (!dir) {
+                throw new FileSystemException("Can't create directory");
             }
         }
     }
@@ -342,7 +361,7 @@ public class MainLogic {
             String[] parts = s.split("=");
             String name = parts[0].replace("[", "").replaceAll("]", "");
             if (name.equals("Path")) {
-                lines = lines.replaceAll(parts[1], PATH);
+                lines = lines.replace(parts[1], PATH);
                 BufferedWriter w = new BufferedWriter(new FileWriter(config));
                 w.write(lines);
                 w.close();
@@ -350,6 +369,7 @@ public class MainLogic {
         }
     }
     public void setTheme(String t) throws Exception {
+        this.theme = t;
         File config = new File("config.cf");
         String lines = this.loadAndSplitConfig();
         String[] sepLines = lines.split(";");
@@ -364,6 +384,10 @@ public class MainLogic {
             }
         }
     }
+    public String getTheme() {
+        return theme;
+    }
+
     public boolean loadConfig() throws Exception {
         boolean first = true;
         File config = new File("config.cf");
@@ -385,9 +409,9 @@ public class MainLogic {
                 }
                 case "Style" -> {
                     switch (parts[1]) {
-                        case "orange" -> this.mw.setTheme("Orange");
-                        case "blue" -> this.mw.setTheme("Blue");
-                        case "green" -> this.mw.setTheme("Green");
+                        case "Orange" -> {this.mw.setTheme("Orange"); this.theme = "Orange";}
+                        case "Blue" -> {this.mw.setTheme("Blue"); this.theme = "Blue";}
+                        case "Green" -> {this.mw.setTheme("Green"); this.theme = "Green";}
                     }
                 }
                 case "Path" -> {

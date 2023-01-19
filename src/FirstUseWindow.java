@@ -3,7 +3,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -37,7 +36,7 @@ public class FirstUseWindow {
     }
 
     private void setUpWindow(Stage stage) {
-        Label welcomeLabel = new Label("Welcome"), setPathLabel = new Label("Set folder for player data"), changeLaterLabel = new Label("You can change the folder later in settings"), orLabel = new Label("or");
+        Label welcomeLabel = new Label("Welcome"), setPathLabel = new Label("Active folder for player data:"), changeLaterLabel = new Label("You can change the folder later in settings"), orLabel = new Label("Set new folder");
         welcomeLabel.getStyleClass().add("label-large");
         welcomeLabel.setStyle("-fx-padding: 30");
         changeLaterLabel.getStyleClass().add("label-small");
@@ -52,9 +51,10 @@ public class FirstUseWindow {
         searchButton.setOnMouseEntered(e -> searchButton.setStyle("button-color: mouse-color"));
         searchButton.setOnMouseExited(e -> searchButton.setStyle("button-color: default-color"));
 
-        TextField folderPathText = new TextField();
-        folderPathText.setOnMouseEntered(e -> folderPathText.setStyle("field-color: mouse-color"));
-        folderPathText.setOnMouseExited(e -> folderPathText.setStyle("field-color: default-color"));
+        Label folderPathText = new Label();
+        if (!MainLogic.PATH.isEmpty()) {
+            folderPathText.setText(MainLogic.PATH);
+        }
 
         okButton.setOnAction(e -> {
             this.path = folderPathText.getText().replace("\\", "/" );
