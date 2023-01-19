@@ -20,6 +20,7 @@ public class MainLogic {
     private final ArrayList<Playlist> allPlaylists;
     private final ArrayList<Song> selectedSongs;
 
+    public static String PATH = "";
     private double volume = 0.3;
     private boolean pla = false;
     private int rep = MainLogic.REPEAT_OFF;
@@ -35,13 +36,6 @@ public class MainLogic {
         this.allPlaylists = new ArrayList<>();
         this.selectedSongs = new ArrayList<>();
         this.mw = mw;
-        try {
-            this.loadSongs();
-            this.loadPlaylists();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        this.backUpQueue = this.songQueue;
     }
 
     public void setRep() {
@@ -214,8 +208,7 @@ public class MainLogic {
         song.setUp(this.mw);
         this.allSongs.add(song);
         this.songQueue.add(song);
-        //File allSongsFile = new File(Objects.requireNonNull(getClass().getResource("data/allSongs.txt")).toURI());
-        File allSongsFile = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/all.txt"); //Test
+        File allSongsFile = new File(PATH + "/all.txt");
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         StringBuilder lines = new StringBuilder();
         String line;
@@ -232,7 +225,7 @@ public class MainLogic {
         this.mw.refresh();
     }
     private void loadSongs() throws Exception {
-        File allSongsFile = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/all.txt"); //Test
+        File allSongsFile = new File(PATH + "/all.txt"); //Test
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
         String line;
         while ((line = br.readLine()) != null) {
@@ -296,7 +289,7 @@ public class MainLogic {
         }
     }
     public void loadPlaylists() throws Exception {
-        File folder = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/playlists/");
+        File folder = new File(PATH + "/playlists/");
         File[] playlists = folder.listFiles();
         if (playlists != null) {
             for (File playlist : playlists) {
@@ -316,6 +309,95 @@ public class MainLogic {
                 }
             }
         }
+    }
+
+    public void load() {
+        try {
+            this.loadSongs();
+            this.loadPlaylists();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        this.backUpQueue = this.songQueue;
+    }
+    private String loadAndSplitConfig() throws Exception {
+        File config = new File("config.cf");
+        BufferedReader br = new BufferedReader(new FileReader(config));
+        String lines = "";
+        String line;
+        while ((line = br.readLine()) != null) {
+            lines = lines + line;
+        }
+        br.close();
+
+        return  lines;
+    }
+    public void setPath(String p) throws Exception {
+        PATH = p;
+
+        File config = new File("config.cf");
+        String lines = this.loadAndSplitConfig();
+        String[] sepLines = lines.split(";");
+        for (String s : sepLines) {
+            String[] parts = s.split("=");
+            String name = parts[0].replace("[", "").replaceAll("]", "");
+            if (name.equals("Path")) {
+                lines = lines.replaceAll(parts[1], PATH);
+                BufferedWriter w = new BufferedWriter(new FileWriter(config));
+                w.write(lines);
+                w.close();
+            }
+        }
+    }
+    public void setTheme(String t) throws Exception {
+        File config = new File("config.cf");
+        String lines = this.loadAndSplitConfig();
+        String[] sepLines = lines.split(";");
+        for (String s : sepLines) {
+            String[] parts = s.split("=");
+            String name = parts[0].replace("[", "").replaceAll("]", "");
+            if (name.equals("Style")) {
+                lines = lines.replaceAll(parts[1], t);
+                BufferedWriter w = new BufferedWriter(new FileWriter(config));
+                w.write(lines);
+                w.close();
+            }
+        }
+    }
+    public boolean loadConfig() throws Exception {
+        boolean first = true;
+        File config = new File("config.cf");
+        String lines = this.loadAndSplitConfig();
+        String[] sepLines = lines.split(";");
+        for (String s : sepLines) {
+            String[] parts = s.split("=");
+            String name = parts[0].replace("[", "").replaceAll("]", "");
+            switch (name) {
+                case "First" -> {
+                    if (parts[1].equals("false")) {
+                        first = false;
+                    } else {
+                        lines = lines.replaceAll("true", "false");
+                        BufferedWriter w = new BufferedWriter(new FileWriter(config));
+                        w.write(lines);
+                        w.close();
+                    }
+                }
+                case "Style" -> {
+                    switch (parts[1]) {
+                        case "orange" -> this.mw.setTheme("Orange");
+                        case "blue" -> this.mw.setTheme("Blue");
+                        case "green" -> this.mw.setTheme("Green");
+                    }
+                }
+                case "Path" -> {
+                    if (!parts[1].equals("null")) {
+                        PATH = parts[1];
+                    }
+                }
+            }
+        }
+        return first;
     }
 }
 

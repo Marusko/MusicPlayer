@@ -11,10 +11,10 @@ public class Playlist {
     }
 
     public void savePlaylist() throws Exception {
-        File playlistFileOld = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/playlists/" + name + ".txt");
+        File playlistFileOld = new File(MainLogic.PATH + "/playlists/" + name + ".txt");
         File playlistFile;
         if (playlistFileOld.delete()) {
-            playlistFile = new File("C:/Users/matus/Desktop/Matúško/Java_course/MusicPlayer/playlists/" + name + ".txt");
+            playlistFile = new File(MainLogic.PATH + "/playlists/" + name + ".txt");
         } else {
             playlistFile = playlistFileOld;
         }
@@ -29,7 +29,7 @@ public class Playlist {
         pw.close();
     }
     public void deleteFile() {
-        File playlistFile = new File("playlists/" + name + ".txt");
+        File playlistFile = new File(MainLogic.PATH + "/playlists/" + name + ".txt");
         playlistFile.delete();
     }
     public String getName() {

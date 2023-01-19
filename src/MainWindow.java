@@ -9,9 +9,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -50,7 +52,7 @@ public class MainWindow extends Application {
     private Slider volumeSlider;
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws Exception {
 
         playI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
         playI.setFitHeight(20);
@@ -59,9 +61,8 @@ public class MainWindow extends Application {
         pauseI.setFitHeight(20);
         pauseI.setPreserveRatio(true);
         this.playButton = new Button();
-
-        this.mainStage = stage;
         this.ml = new MainLogic(this);
+        this.mainStage = stage;
         bp = new BorderPane();
         bp.setStyle("-fx-background-color: #5c5c5c");
         VBox songControl = this.songControls();
@@ -70,14 +71,21 @@ public class MainWindow extends Application {
         bp.setCenter(this.content());
         this.mainScene = new Scene(bp, 1500, 900);
         this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
+
+        if (this.ml.loadConfig()) {
+            FirstUseWindow fuw = new FirstUseWindow();
+            fuw.start(new Stage(), this.ml);
+        }
+        this.ml.load();
+
         this.mainStage.setTitle("Music player");
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);
+
         this.mainStage.show();
         this.refresh();
         this.switchMenu(this.selected);
     }
-
     public void setTitle(String s) {
         if (s != null) {
             this.mainStage.setTitle("Playing - " + s);
@@ -85,19 +93,34 @@ public class MainWindow extends Application {
             this.mainStage.setTitle("Music player");
         }
     }
-    private void setTheme(String t) {
+    public void setTheme(String t) {
         switch (t) {
             case "Orange" -> {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
+                try {
+                    this.ml.setTheme("orange");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
             case "Green" -> {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/greenTheme.css")).toExternalForm());
+                try {
+                    this.ml.setTheme("green");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
             case "Blue" -> {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/blueTheme.css")).toExternalForm());
+                try {
+                    this.ml.setTheme("blue");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -542,8 +565,45 @@ public class MainWindow extends Application {
         infoBox.getChildren().addAll(info, infoVersion);
         infoBox.setSpacing(10);
 
-        this.settings.getChildren().addAll(colorBox, infoBox);
-        this.settings.setSpacing(300);
+        Label setPathLabel = new Label("Set folder for player data"), orLabel = new Label("or");
+
+        Button okButton = new Button("OK");
+        okButton.getStyleClass().add("my-menu-button");
+        okButton.setOnMouseEntered(e -> okButton.setStyle("button-color: mouse-color"));
+        okButton.setOnMouseExited(e -> okButton.setStyle("button-color: default-color"));
+
+        Button searchButton = new Button("Search PC");
+        searchButton.getStyleClass().add("my-menu-button");
+        searchButton.setOnMouseEntered(e -> searchButton.setStyle("button-color: mouse-color"));
+        searchButton.setOnMouseExited(e -> searchButton.setStyle("button-color: default-color"));
+
+        TextField folderPathText = new TextField();
+        folderPathText.setText(MainLogic.PATH);
+        folderPathText.setOnMouseEntered(e -> folderPathText.setStyle("field-color: mouse-color"));
+        folderPathText.setOnMouseExited(e -> folderPathText.setStyle("field-color: default-color"));
+
+        okButton.setOnAction(e -> {
+            String path = folderPathText.getText().replace("\\", "/" );
+            try {
+                this.ml.setPath(path);
+                folderPathText.setText(MainLogic.PATH);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        searchButton.setOnAction(e -> {
+            DirectoryChooser dc = new DirectoryChooser();
+            dc.setTitle("Choose folder");
+            File selected = dc.showDialog(this.mainStage);
+            folderPathText.setText(selected.getAbsolutePath());
+        });
+
+        VBox pathBox = new VBox(setPathLabel, folderPathText, orLabel, searchButton, okButton);
+        pathBox.setSpacing(10);
+
+        this.settings.getChildren().addAll(colorBox, pathBox, infoBox);
+        this.settings.setSpacing(50);
         this.settings.setPadding(new Insets(100));
     }
 
