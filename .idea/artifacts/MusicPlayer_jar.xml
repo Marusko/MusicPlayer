@@ -3,14 +3,14 @@
     <output-path>$PROJECT_DIR$/out/artifacts/MusicPlayer_jar</output-path>
     <root id="archive" name="MusicPlayer.jar">
       <element id="module-output" name="MusicPlayer" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx-swt.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx.base.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx.controls.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx.fxml.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx.graphics.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx.media.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx.swing.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19/lib/javafx.web.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/lib/javafx.web.jar" path-in-jar="/" />
       <element id="file-copy" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/bin/api-ms-win-core-console-l1-1-0.dll" />
       <element id="file-copy" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/bin/api-ms-win-core-console-l1-2-0.dll" />
       <element id="file-copy" path="$PROJECT_DIR$/../01_javaFX/javafx-sdk-19/bin/api-ms-win-core-datetime-l1-1-0.dll" />

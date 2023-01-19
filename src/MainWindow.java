@@ -321,7 +321,6 @@ public class MainWindow extends Application {
         allI.setPreserveRatio(true);
         all.setGraphic(allI);
         all.getStyleClass().add("my-menu-button");
-        all.setStyle("button-color: default-action-color");
         all.setOnMouseEntered(e -> all.setStyle("button-color: mouse-color"));
         all.setOnMouseExited(e -> {
             if (this.selected == MainWindow.ALL) {
@@ -431,6 +430,14 @@ public class MainWindow extends Application {
         mainMenu.setSpacing(10);
         mainMenu.setAlignment(Pos.CENTER);
         mainMenu.setStyle("-fx-padding: 10px; -fx-background-color: #404040; -fx-background-radius: 10");
+
+        switch (this.selected) {
+            case 0 -> add.setStyle("button-color: default-action-color");
+            case 1 -> all.setStyle("button-color: default-action-color");
+            case 2 -> playlists.setStyle("button-color: default-action-color");
+            case 3 -> settings.setStyle("button-color: default-action-color");
+            case 4 -> remove.setStyle("button-color: default-action-color");
+        }
 
         return mainMenu;
     }
