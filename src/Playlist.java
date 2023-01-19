@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 
 public class Playlist {
@@ -28,9 +29,12 @@ public class Playlist {
         pw.flush();
         pw.close();
     }
-    public void deleteFile() {
+    public void deleteFile() throws Exception {
         File playlistFile = new File(MainLogic.PATH + "/playlists/" + name + ".txt");
-        playlistFile.delete();
+        boolean del = playlistFile.delete();
+        if (!del) {
+            throw new FileSystemException("Can't delete playlis");
+        }
     }
     public String getName() {
         return name;
@@ -84,3 +88,6 @@ public class Playlist {
         return this.name;
     }
 }
+
+//TODO when song is not found
+//TODO switching from playlist to all

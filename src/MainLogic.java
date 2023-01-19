@@ -212,16 +212,11 @@ public class MainLogic {
         this.songQueue.add(song);
         File allSongsFile = new File(PATH + "/all.txt");
         BufferedReader br = new BufferedReader(new FileReader(allSongsFile));
-        StringBuilder lines = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            lines.append(line);
-            lines.append("\n");
-        }
+        String line = br.readLine();
         br.close();
-        lines.append(path);
+        line = line + path + ";";
         PrintWriter pw = new PrintWriter(allSongsFile);
-        pw.println(lines);
+        pw.print(line);
         pw.flush();
         pw.close();
         this.mw.refresh();
@@ -238,20 +233,27 @@ public class MainLogic {
            }
             br = new BufferedReader(new FileReader(allSongsFile));
         }
-        String line;
-        while ((line = br.readLine()) != null) {
+        String lines;
+        lines = br.readLine();
+        br.close();
+        String[] sepLines = lines.split(";");
+        for (String s : sepLines) {
             Media m;
             try {
-                m = new Media(line);
+                m = new Media(s);
             } catch (MediaException e) {
+                lines = lines.replace(s, "");
                 continue;
             }
-            Song song = new Song(line, m);
+            Song song = new Song(s, m);
             song.setUp(this.mw);
             this.allSongs.add(song);
             this.songQueue.add(song);
         }
-        br.close();
+        lines = lines.replace(";;", ";");
+        BufferedWriter w = new BufferedWriter(new FileWriter(allSongsFile));
+        w.write(lines);
+        w.close();
     }
 
     public void changeVolume(double v) {
@@ -286,7 +288,11 @@ public class MainLogic {
         return playlist;
     }
     public void deletePlaylist(Playlist p) {
-        p.deleteFile();
+        try {
+            p.deleteFile();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         this.allPlaylists.remove(p);
         this.savePlaylists();
     }
@@ -342,14 +348,14 @@ public class MainLogic {
     private String loadAndSplitConfig() throws Exception {
         File config = new File("config.cf");
         BufferedReader br = new BufferedReader(new FileReader(config));
-        String lines = "";
+        StringBuilder lines = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
-            lines = lines + line;
+            lines.append(line);
         }
         br.close();
 
-        return  lines;
+        return lines.toString();
     }
     public void setPath(String p) throws Exception {
         PATH = p;
@@ -424,5 +430,3 @@ public class MainLogic {
         return first;
     }
 }
-
-//TODO when song is not in the location remove it from all.txt
