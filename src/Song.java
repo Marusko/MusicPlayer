@@ -58,5 +58,3 @@ public class Song {
         return this.name;
     }
 }
-
-//TODO dispose of initializing media player
