@@ -28,6 +28,7 @@ public class Song {
                 name = fileName.replace("_", " ").replaceAll("%20", " ").replaceAll("%5B", "[").replaceAll("%5D", "]");
             }
             mw.refresh();
+            mp.dispose();
         });
     }
     public String getName() {
