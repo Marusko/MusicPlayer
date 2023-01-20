@@ -18,6 +18,7 @@ public class MainLogic {
     private LinkedList<Song> songQueue;
     private LinkedList<Song> backUpQueue;
     private final ArrayList<Song> allSongs;
+    private final ArrayList<String> songPaths;
     private final ArrayList<Playlist> allPlaylists;
     private final ArrayList<Song> selectedSongs;
 
@@ -35,6 +36,7 @@ public class MainLogic {
         this.songQueue = new LinkedList<>();
         this.backUpQueue = new LinkedList<>();
         this.allSongs = new ArrayList<>();
+        this.songPaths = new ArrayList<>();
         this.allPlaylists = new ArrayList<>();
         this.selectedSongs = new ArrayList<>();
         this.mw = mw;
@@ -241,6 +243,7 @@ public class MainLogic {
             Media m;
             try {
                 m = new Media(s);
+                this.songPaths.add(s);
             } catch (MediaException e) {
                 lines = lines.replace(s, "");
                 continue;
@@ -315,17 +318,23 @@ public class MainLogic {
                     int index = playlist.getName().lastIndexOf(".");
                     String name = playlist.getName().substring(0, index);
                     this.createPlaylist(name);
-                    BufferedReader br;
-                    for (Song s : this.allSongs) {
-                        br = new BufferedReader(new FileReader(playlist));
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            if (s.getPath().equals(line.trim())) {
-                                this.getPlaylist(name).addSong(s);
-                            }
+                    BufferedReader br = new BufferedReader(new FileReader(playlist));
+                    String lines = br.readLine();
+                    br.close();
+                    String[] sepLines = lines.split(";");
+
+                    for (String s : sepLines) {
+                        int songIndex = this.songPaths.indexOf(s);
+                        if (songIndex != -1) {
+                            this.getPlaylist(name).addSong(this.allSongs.get(songIndex));
+                        } else {
+                            lines = lines.replace(s, "");
                         }
-                        br.close();
                     }
+                    lines = lines.replace(";;", ";");
+                    BufferedWriter w = new BufferedWriter(new FileWriter(playlist));
+                    w.write(lines);
+                    w.close();
                 }
             }
         } else {
@@ -334,6 +343,7 @@ public class MainLogic {
                 throw new FileSystemException("Can't create directory");
             }
         }
+        this.songPaths.clear();
     }
 
     public void load() {
