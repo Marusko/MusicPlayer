@@ -29,6 +29,7 @@ public class MainWindow extends Application {
     private int selected = MainWindow.ALL;
     private MainLogic ml;
     private LoadingWindow lw;
+    private Loader l;
 
     //UI elements which are updated based on other elements
     private BorderPane bp;
@@ -58,21 +59,28 @@ public class MainWindow extends Application {
         bp = new BorderPane();
         this.mainScene = new Scene(bp, 1500, 900);
         this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
-        Loader l = new Loader();
+        l = new Loader();
         l.setup(this, this.ml);
         l.start();
         try {
-            Thread.sleep(50);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+           throw new RuntimeException(e);
         }
-        this.loadingUI();
     }
 
     public void loadingUI() {
         lw = new LoadingWindow();
         lw.setStyle(this.ml.getTheme());
         lw.loading();
+    }
+    public void firstUI() {
+        if (this.ml.isFirst()) {
+            FirstUseWindow fuw = new FirstUseWindow();
+            fuw.start(new Stage(), this.ml);
+        }
+        l.interrupt();
+        this.loadingUI();
     }
 
     public void continueUI() {
@@ -88,12 +96,6 @@ public class MainWindow extends Application {
         bp.setBottom(songControl);
         bp.setLeft(this.menu());
         bp.setCenter(this.content());
-
-        if (this.ml.isFirst()) {
-            FirstUseWindow fuw = new FirstUseWindow();
-            fuw.start(new Stage(), this.ml);
-        }
-
         this.mainStage.setTitle("Music player");
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);

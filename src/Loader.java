@@ -13,16 +13,26 @@ public class Loader extends Thread {
         this.mw = mw;
         this.ml = ml;
     }
+
     @Override
     public void run() {
         try {
             this.loadAndSplitConfig();
             this.loadConfig();
-            this.load();
-            Thread.sleep(5000);
-            Platform.runLater(() -> this.mw.continueUI());
+            Platform.runLater(() -> this.mw.firstUI());
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+        try {
+            Thread.sleep(Long.MAX_VALUE);
+        } catch (InterruptedException e) {
+            this.load();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+            Platform.runLater(() -> this.mw.continueUI());
         }
     }
 
