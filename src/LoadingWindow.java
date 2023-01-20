@@ -13,7 +13,7 @@ import jfxtras.styles.jmetro.Style;
 import java.util.Objects;
 
 public class LoadingWindow {
-    private Stage loadingStage = new Stage();
+    private final Stage loadingStage = new Stage();
     private String style;
 
     public void setStyle(String style) {
