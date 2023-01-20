@@ -90,4 +90,3 @@ public class Playlist {
 }
 
 //TODO switching from playlist to all
-//TODO Loading screen
