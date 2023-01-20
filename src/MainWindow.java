@@ -28,6 +28,7 @@ public class MainWindow extends Application {
     private static final int REMOVE = 4;
     private int selected = MainWindow.ALL;
     private MainLogic ml;
+    private LoadingWindow lw;
 
     //UI elements which are updated based on other elements
     private BorderPane bp;
@@ -51,9 +52,30 @@ public class MainWindow extends Application {
     private Label actualTime;
     private Slider volumeSlider;
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+        this.ml = new MainLogic(this);
+        this.mainStage = stage;
+        bp = new BorderPane();
+        this.mainScene = new Scene(bp, 1500, 900);
+        this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
+        Loader l = new Loader();
+        l.setup(this, this.ml);
+        l.start();
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        this.loadingUI();
+    }
 
+    public void loadingUI() {
+        lw = new LoadingWindow();
+        lw.setStyle(this.ml.getTheme());
+        lw.loading();
+    }
+
+    public void continueUI() {
         playI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/play.png")).toExternalForm()));
         playI.setFitHeight(20);
         playI.setPreserveRatio(true);
@@ -61,31 +83,20 @@ public class MainWindow extends Application {
         pauseI.setFitHeight(20);
         pauseI.setPreserveRatio(true);
         this.playButton = new Button();
-        this.ml = new MainLogic(this);
-        this.mainStage = stage;
-        bp = new BorderPane();
         bp.setStyle("-fx-background-color: #5c5c5c");
         VBox songControl = this.songControls();
         bp.setBottom(songControl);
         bp.setLeft(this.menu());
         bp.setCenter(this.content());
-        this.mainScene = new Scene(bp, 1500, 900);
-        this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
 
-        if (this.ml.loadConfig()) {
+        if (this.ml.isFirst()) {
             FirstUseWindow fuw = new FirstUseWindow();
             fuw.start(new Stage(), this.ml);
         }
 
-        LoadingWindow lw = new LoadingWindow();
-        lw.setStyle(this.ml.getTheme());
-        lw.loading();
-        this.ml.load();
-
         this.mainStage.setTitle("Music player");
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);
-
 
         this.refresh();
         this.switchMenu(this.selected);
@@ -105,7 +116,7 @@ public class MainWindow extends Application {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/orangeTheme.css")).toExternalForm());
                 try {
-                    this.ml.setTheme("Orange");
+                    this.ml.setTheme("Orange", true);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -114,7 +125,7 @@ public class MainWindow extends Application {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/greenTheme.css")).toExternalForm());
                 try {
-                    this.ml.setTheme("Green");
+                    this.ml.setTheme("Green", true);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -123,7 +134,7 @@ public class MainWindow extends Application {
                 this.mainScene.getStylesheets().remove(0);
                 this.mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("stylesheets/blueTheme.css")).toExternalForm());
                 try {
-                    this.ml.setTheme("Blue");
+                    this.ml.setTheme("Blue", true);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

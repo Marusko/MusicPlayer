@@ -14,7 +14,7 @@ public class Song {
         this.m = m;
     }
 
-    public void setUp(MainWindow mw) {
+    public void setUp() {
         MediaPlayer mp = new MediaPlayer(m);
         mp.setOnReady(() -> {
             name = (String) m.getMetadata().get("title");
@@ -27,7 +27,6 @@ public class Song {
                 String fileName = source.substring(slashIndex + 1, dotIndex);
                 name = fileName.replace("_", " ").replaceAll("%20", " ").replaceAll("%5B", "[").replaceAll("%5D", "]");
             }
-            mw.refresh();
             mp.dispose();
         });
     }

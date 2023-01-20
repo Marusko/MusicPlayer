@@ -158,3 +158,10 @@
     -fx-font-weight: bold;
     -fx-font-size: 12px;
 }
+
+.progress-bar:indeterminate .dot {
+    -fx-background-radius: 1em;
+    -fx-padding: 0.35em;
+
+    -fx-background-color: default-color;
+}

@@ -1,11 +1,9 @@
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -31,6 +29,7 @@ public class MainLogic {
     private Song actualSong = null;
     private final MainWindow mw;
     private String theme = "";
+    private boolean first;
 
     public MainLogic(MainWindow mw) {
         this.songQueue = new LinkedList<>();
@@ -40,6 +39,14 @@ public class MainLogic {
         this.allPlaylists = new ArrayList<>();
         this.selectedSongs = new ArrayList<>();
         this.mw = mw;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
+    }
+
+    public boolean isFirst() {
+        return first;
     }
 
     public void setRep() {
@@ -70,6 +77,15 @@ public class MainLogic {
     }
     public ArrayList<Song> getAllSongs() {
         return this.allSongs;
+    }
+    public ArrayList<String> getSongPaths() {
+        return this.songPaths;
+    }
+    public LinkedList<Song> getSongQueue() {
+        return this.songQueue;
+    }
+    public void equalsQueue() {
+        this.backUpQueue = this.songQueue;
     }
 
     public void playSong(Song s) {
@@ -209,7 +225,7 @@ public class MainLogic {
         String path = "" + f.toURI();
         Media m = new Media(path);
         Song song = new Song(path, m);
-        song.setUp(this.mw);
+        song.setUp();
         this.allSongs.add(song);
         this.songQueue.add(song);
         File allSongsFile = new File(PATH + "/all.txt");
@@ -222,41 +238,6 @@ public class MainLogic {
         pw.flush();
         pw.close();
         this.mw.refresh();
-    }
-    private void loadSongs() throws Exception {
-        File allSongsFile = new File(PATH + "/all.txt");
-        BufferedReader br;
-        try {
-            br = new BufferedReader(new FileReader(allSongsFile));
-        } catch (FileNotFoundException e) {
-           boolean songs = allSongsFile.createNewFile();
-           if (!songs) {
-               throw new FileSystemException("Can't create file for songs");
-           }
-            br = new BufferedReader(new FileReader(allSongsFile));
-        }
-        String lines;
-        lines = br.readLine();
-        br.close();
-        String[] sepLines = lines.split(";");
-        for (String s : sepLines) {
-            Media m;
-            try {
-                m = new Media(s);
-                this.songPaths.add(s);
-            } catch (MediaException e) {
-                lines = lines.replace(s, "");
-                continue;
-            }
-            Song song = new Song(s, m);
-            song.setUp(this.mw);
-            this.allSongs.add(song);
-            this.songQueue.add(song);
-        }
-        lines = lines.replace(";;", ";");
-        BufferedWriter w = new BufferedWriter(new FileWriter(allSongsFile));
-        w.write(lines);
-        w.close();
     }
 
     public void changeVolume(double v) {
@@ -308,53 +289,6 @@ public class MainLogic {
             }
         }
     }
-    public void loadPlaylists() throws Exception {
-        File folder = new File(PATH + "/playlists/");
-
-        if (folder.exists()) {
-            File[] playlists = folder.listFiles();
-            if (playlists != null) {
-                for (File playlist : playlists) {
-                    int index = playlist.getName().lastIndexOf(".");
-                    String name = playlist.getName().substring(0, index);
-                    this.createPlaylist(name);
-                    BufferedReader br = new BufferedReader(new FileReader(playlist));
-                    String lines = br.readLine();
-                    br.close();
-                    String[] sepLines = lines.split(";");
-
-                    for (String s : sepLines) {
-                        int songIndex = this.songPaths.indexOf(s);
-                        if (songIndex != -1) {
-                            this.getPlaylist(name).addSong(this.allSongs.get(songIndex));
-                        } else {
-                            lines = lines.replace(s, "");
-                        }
-                    }
-                    lines = lines.replace(";;", ";");
-                    BufferedWriter w = new BufferedWriter(new FileWriter(playlist));
-                    w.write(lines);
-                    w.close();
-                }
-            }
-        } else {
-            boolean dir = folder.mkdir();
-            if (!dir) {
-                throw new FileSystemException("Can't create directory");
-            }
-        }
-        this.songPaths.clear();
-    }
-
-    public void load() {
-        try {
-            this.loadSongs();
-            this.loadPlaylists();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        this.backUpQueue = this.songQueue;
-    }
     private String loadAndSplitConfig() throws Exception {
         File config = new File("config.cf");
         BufferedReader br = new BufferedReader(new FileReader(config));
@@ -384,59 +318,25 @@ public class MainLogic {
             }
         }
     }
-    public void setTheme(String t) throws Exception {
+    public void setTheme(String t, boolean b) throws Exception {
         this.theme = t;
-        File config = new File("config.cf");
-        String lines = this.loadAndSplitConfig();
-        String[] sepLines = lines.split(";");
-        for (String s : sepLines) {
-            String[] parts = s.split("=");
-            String name = parts[0].replace("[", "").replaceAll("]", "");
-            if (name.equals("Style")) {
-                lines = lines.replaceAll(parts[1], t);
-                BufferedWriter w = new BufferedWriter(new FileWriter(config));
-                w.write(lines);
-                w.close();
+        if (b) {
+            File config = new File("config.cf");
+            String lines = this.loadAndSplitConfig();
+            String[] sepLines = lines.split(";");
+            for (String s : sepLines) {
+                String[] parts = s.split("=");
+                String name = parts[0].replace("[", "").replaceAll("]", "");
+                if (name.equals("Style")) {
+                    lines = lines.replaceAll(parts[1], t);
+                    BufferedWriter w = new BufferedWriter(new FileWriter(config));
+                    w.write(lines);
+                    w.close();
+                }
             }
         }
     }
     public String getTheme() {
         return theme;
-    }
-
-    public boolean loadConfig() throws Exception {
-        boolean first = true;
-        File config = new File("config.cf");
-        String lines = this.loadAndSplitConfig();
-        String[] sepLines = lines.split(";");
-        for (String s : sepLines) {
-            String[] parts = s.split("=");
-            String name = parts[0].replace("[", "").replaceAll("]", "");
-            switch (name) {
-                case "First" -> {
-                    if (parts[1].equals("false")) {
-                        first = false;
-                    } else {
-                        lines = lines.replaceAll("true", "false");
-                        BufferedWriter w = new BufferedWriter(new FileWriter(config));
-                        w.write(lines);
-                        w.close();
-                    }
-                }
-                case "Style" -> {
-                    switch (parts[1]) {
-                        case "Orange" -> {this.mw.setTheme("Orange"); this.theme = "Orange";}
-                        case "Blue" -> {this.mw.setTheme("Blue"); this.theme = "Blue";}
-                        case "Green" -> {this.mw.setTheme("Green"); this.theme = "Green";}
-                    }
-                }
-                case "Path" -> {
-                    if (!parts[1].equals("null")) {
-                        PATH = parts[1];
-                    }
-                }
-            }
-        }
-        return first;
     }
 }
