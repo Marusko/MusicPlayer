@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="javafx" level="application" />
     <orderEntry type="library" name="lib" level="application" />
+    <orderEntry type="library" name="jmetro-11.6.16" level="application" />
   </component>
 </module>

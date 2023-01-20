@@ -76,15 +76,21 @@ public class MainWindow extends Application {
             FirstUseWindow fuw = new FirstUseWindow();
             fuw.start(new Stage(), this.ml);
         }
+
+        LoadingWindow lw = new LoadingWindow();
+        lw.setStyle(this.ml.getTheme());
+        lw.loading();
         this.ml.load();
 
         this.mainStage.setTitle("Music player");
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);
 
-        this.mainStage.show();
+
         this.refresh();
         this.switchMenu(this.selected);
+        this.mainStage.show();
+        lw.close();
     }
     public void setTitle(String s) {
         if (s != null) {
