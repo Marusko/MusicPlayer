@@ -237,7 +237,7 @@ public class MainLogic {
         pw.print(line);
         pw.flush();
         pw.close();
-        this.mw.refresh();
+        this.mw.refresh(true);
     }
 
     public void changeVolume(double v) {

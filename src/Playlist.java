@@ -90,5 +90,4 @@ public class Playlist {
 }
 
 //TODO switching from playlist to all
-//TODO refresh
 //TODO checking

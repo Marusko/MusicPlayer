@@ -102,7 +102,7 @@ public class MainWindow extends Application {
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);
 
-        this.refresh();
+        this.refresh(true);
         volumeBox.setDisable(true);
         songControl.setDisable(true);
         this.switchMenu(this.selected);
@@ -316,9 +316,11 @@ public class MainWindow extends Application {
         b.setOnMouseExited(e -> b.setStyle("button-color: default-color"));
     }
 
-    public void refresh() {
+    public void refresh(boolean b) {
+        if (b) {
+            this.songsPage(this.ml.getAllSongs());
+        }
         this.settingsPage();
-        this.songsPage(this.ml.getAllSongs());
         this.playlistsPage(this.ml.getAllPlaylists());
         this.addPage();
         this.removePage();
@@ -544,7 +546,7 @@ public class MainWindow extends Application {
         deleteButton.setOnAction(e -> {
             choosePlaylist.getValue().removeSongs(this.ml.getSelectedSongs());
             this.ml.getSelectedSongs().clear();
-            this.refresh();
+            this.refresh(false);
         });
         VBox removeFromBox = new VBox(removeFromPlaylist, choosePlaylist, deleteButton);
         removeFromBox.setSpacing(10);
@@ -560,7 +562,7 @@ public class MainWindow extends Application {
         deletePlaylistButton.setOnMouseExited(e -> deletePlaylistButton.setStyle("button-color: default-color"));
         deletePlaylistButton.setOnAction(e -> {
             this.ml.deletePlaylist(choosePlaylistToDelete.getValue());
-            this.refresh();
+            this.refresh(false);
         });
         VBox removeBox = new VBox(removePlaylist, choosePlaylistToDelete, deletePlaylistButton);
         removeBox.setSpacing(10);
@@ -646,7 +648,7 @@ public class MainWindow extends Application {
         playlistButton.setOnAction(e -> {
             this.ml.createPlaylist(playlistName.getText());
             playlistName.setText("");
-            this.refresh();
+            this.refresh(false);
         });
         VBox playlistBox = new VBox(createPlaylist, playlistName, playlistButton);
         playlistBox.setSpacing(10);
@@ -663,7 +665,7 @@ public class MainWindow extends Application {
         addToButton.setOnAction(e -> {
             choosePlaylist.getValue().addSongs(this.ml.getSelectedSongs());
             this.ml.getSelectedSongs().clear();
-            this.refresh();
+            this.refresh(false);
         });
         VBox addToBox = new VBox();
         addToBox.setSpacing(10);
