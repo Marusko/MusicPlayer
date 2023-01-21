@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class MainWindow extends Application {
     private final static String autor = "Matúš Suský";
-    private final static String version = "0.2.1";
+    private final static String version = "0.2.6";
     private final Hyperlink playerIcon = new Hyperlink("-Main Icon");
     private final Hyperlink otherIcon = new Hyperlink("-Other icons");
     private final Hyperlink loadingAni = new Hyperlink("-Loading animation");
