@@ -21,6 +21,10 @@ import java.util.Objects;
 public class MainWindow extends Application {
     private final static String autor = "Matúš Suský";
     private final static String version = "0.2.1";
+    private final Hyperlink playerIcon = new Hyperlink("-Main Icon");
+    private final Hyperlink otherIcon = new Hyperlink("-Other icons");
+    private final Hyperlink loadingAni = new Hyperlink("-Loading animation");
+
     private static final int ADD = 0;
     private static final int ALL = 1;
     private static final int PLAYLISTS = 2;
@@ -101,6 +105,13 @@ public class MainWindow extends Application {
         this.mainStage.setTitle("Music player");
         this.mainStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
         this.mainStage.setScene(mainScene);
+
+        playerIcon.setOnAction(iconEvent -> getHostServices().showDocument("https://www.flaticon.com/free-icon/music_2402461?term=music&page=1&position=9&origin=tag&related_id=2402461"));
+        playerIcon.getStyleClass().add("label-small");
+        otherIcon.setOnAction(iconEvent -> getHostServices().showDocument("https://www.flaticon.com/packs/multimedia-171"));
+        otherIcon.getStyleClass().add("label-small");
+        loadingAni.setOnAction(iconEvent -> getHostServices().showDocument("https://github.com/JFXtras/jfxtras-styles#readme"));
+        loadingAni.getStyleClass().add("label-small");
 
         this.refresh(true);
         volumeBox.setDisable(true);
@@ -590,7 +601,10 @@ public class MainWindow extends Application {
         info.getStyleClass().add("label-small");
         Label infoVersion = new Label("Version: " + MainWindow.version);
         infoVersion.getStyleClass().add("label-small");
-        infoBox.getChildren().addAll(info, infoVersion);
+        Label copy = new Label("Copyright: ");
+        copy.getStyleClass().add("label-small");
+        VBox copyBox = new VBox(copy, loadingAni, playerIcon, otherIcon);
+        infoBox.getChildren().addAll(info, infoVersion, copyBox);
         infoBox.setSpacing(10);
 
         Label setPathLabel = new Label("Active folder for player data: " + MainLogic.PATH), orLabel = new Label("Set new folder");
