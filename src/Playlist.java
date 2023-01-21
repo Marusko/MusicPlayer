@@ -23,9 +23,9 @@ public class Playlist {
         PrintWriter pw = new PrintWriter(playlistFile);
         StringBuilder sb = new StringBuilder();
         for (Song s : this.songs) {
-            sb.append(s.getPath()).append("\n");
+            sb.append(s.getPath()).append(";");
         }
-        pw.println(sb);
+        pw.print(sb);
         pw.flush();
         pw.close();
     }
