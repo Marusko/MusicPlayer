@@ -680,6 +680,9 @@ public class MainWindow extends Application {
 
     private HBox songUI(String name, String auth, String len, Song s) {
         CheckBox selected = new CheckBox();
+        if (this.ml.getSelectedSongs().contains(s)) {
+            selected.setSelected(true);
+        }
         selected.setOnAction(e -> {
             if (selected.isSelected()) {
                 this.ml.selectSong(s);
