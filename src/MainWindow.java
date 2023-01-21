@@ -52,6 +52,8 @@ public class MainWindow extends Application {
     private ProgressBar songProgress;
     private Label actualTime;
     private Slider volumeSlider;
+    private VBox songControl;
+    private VBox volumeBox;
 
     public void start(Stage stage) {
         this.ml = new MainLogic(this);
@@ -92,7 +94,7 @@ public class MainWindow extends Application {
         pauseI.setPreserveRatio(true);
         this.playButton = new Button();
         bp.setStyle("-fx-background-color: #5c5c5c");
-        VBox songControl = this.songControls();
+        songControl = this.songControls();
         bp.setBottom(songControl);
         bp.setLeft(this.menu());
         bp.setCenter(this.content());
@@ -101,6 +103,8 @@ public class MainWindow extends Application {
         this.mainStage.setScene(mainScene);
 
         this.refresh();
+        volumeBox.setDisable(true);
+        songControl.setDisable(true);
         this.switchMenu(this.selected);
         this.mainStage.show();
         lw.close();
@@ -460,9 +464,12 @@ public class MainWindow extends Application {
         volumeSlider = (Slider)sp.getChildren().get(2);
         volumeSlider.setValue(30);
         volumeSlider.valueProperty().addListener(e -> this.ml.changeVolume(volumeSlider.getValue() / 100));
-        VBox volumeBox = new VBox(volumeLabelBox, sp);
+        volumeBox = new VBox(volumeLabelBox, sp);
         volumeBox.setSpacing(5);
         volumeBox.setAlignment(Pos.TOP_CENTER);
+        if (this.ml.getMp() == null) {
+            volumeBox.setDisable(true);
+        }
 
         mainMenu.getChildren().addAll(add);
         if (!this.ml.getAllPlaylists().isEmpty()) {
@@ -686,7 +693,11 @@ public class MainWindow extends Application {
         playSong.getStyleClass().add("my-play-button");
         playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-color"));
         playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-color"));
-        playSong.setOnAction(e -> this.ml.playSong(s));
+        playSong.setOnAction(e -> {
+            this.ml.playSong(s);
+            this.volumeBox.setDisable(false);
+            this.songControl.setDisable(false);
+        });
         HBox controlsBox = new HBox(selected, playSong);
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);
