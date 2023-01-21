@@ -736,7 +736,7 @@ public class MainWindow extends Application {
     }
 
     private VBox playlist(String namePlaylist) {
-        ImageView playlistI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/music.png")).toExternalForm()));
+        ImageView playlistI = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("icons/playlist_big.png")).toExternalForm()));
         Label name = new Label(namePlaylist);
 
         Label songs = new Label("Empty");
