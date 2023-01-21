@@ -81,7 +81,7 @@ public class MainWindow extends Application {
         lw.loading();
     }
     public void firstUI() {
-        if (this.ml.isFirst()) {
+        if (this.ml.isFirstUseBool()) {
             FirstUseWindow fuw = new FirstUseWindow();
             fuw.start(new Stage(), this.ml);
         }
@@ -431,7 +431,7 @@ public class MainWindow extends Application {
         all.setOnAction(e -> {
             this.selected = MainWindow.ALL;
             this.songsPage(this.ml.getAllSongs());
-            this.ml.setPlaylistSongs(null);
+            this.ml.setSelectedPlaylist(null);
             this.switchMenu(this.selected);
             all.setStyle("button-color: default-action-color");
             add.setStyle("button-color: default-color");
@@ -713,6 +713,7 @@ public class MainWindow extends Application {
         playSong.setOnMouseEntered(e -> playSong.setStyle("button-color: mouse-color"));
         playSong.setOnMouseExited(e -> playSong.setStyle("button-color: default-color"));
         playSong.setOnAction(e -> {
+            this.ml.setPlaylistSongs();
             this.ml.playSong(s);
             this.volumeBox.setDisable(false);
             this.songControl.setDisable(false);
@@ -768,7 +769,7 @@ public class MainWindow extends Application {
         open.setOnMouseExited(e -> open.setStyle("button-color: default-color"));
         open.setOnAction(e -> {
             this.songsPage(this.ml.getPlaylist(namePlaylist).getSongs());
-            this.ml.setPlaylistSongs(this.ml.getPlaylist(namePlaylist));
+            this.ml.setSelectedPlaylist(this.ml.getPlaylist(namePlaylist));
             this.switchMenu(MainWindow.ALL);
             this.setNameOnScreen(namePlaylist);
         });

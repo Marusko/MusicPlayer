@@ -29,7 +29,8 @@ public class MainLogic {
     private Song actualSong = null;
     private final MainWindow mw;
     private String theme = "";
-    private boolean first;
+    private boolean firstUseBool;
+    private Playlist selectedPlaylist = null;
 
     public MainLogic(MainWindow mw) {
         this.songQueue = new LinkedList<>();
@@ -41,12 +42,12 @@ public class MainLogic {
         this.mw = mw;
     }
 
-    public void setFirst(boolean first) {
-        this.first = first;
+    public void setFirstUseBool(boolean firstUseBool) {
+        this.firstUseBool = firstUseBool;
     }
 
-    public boolean isFirst() {
-        return first;
+    public boolean isFirstUseBool() {
+        return firstUseBool;
     }
 
     public void setRep() {
@@ -86,6 +87,9 @@ public class MainLogic {
     }
     public void equalsQueue() {
         this.backUpQueue = this.songQueue;
+    }
+    public void setSelectedPlaylist(Playlist p) {
+        this.selectedPlaylist = p;
     }
 
     public void playSong(Song s) {
@@ -207,9 +211,9 @@ public class MainLogic {
         this.songQueue = shuffledQueue;
     }
 
-    public void setPlaylistSongs(Playlist playlist) {
-        if (playlist != null) {
-            this.songQueue = new LinkedList<>(playlist.getSongs());
+    public void setPlaylistSongs() {
+        if (this.selectedPlaylist != null) {
+            this.songQueue = new LinkedList<>(this.selectedPlaylist.getSongs());
         } else {
             this.songQueue.clear();
             this.songQueue.addAll(this.allSongs);

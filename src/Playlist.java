@@ -88,5 +88,3 @@ public class Playlist {
         return this.name;
     }
 }
-
-//TODO switching from playlist to all

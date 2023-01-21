@@ -82,7 +82,7 @@ public class Loader extends Thread {
                 }
             }
         }
-        this.ml.setFirst(first);
+        this.ml.setFirstUseBool(first);
     }
 
     private void load() {
