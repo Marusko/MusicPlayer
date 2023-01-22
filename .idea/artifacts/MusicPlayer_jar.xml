@@ -6,6 +6,7 @@
         <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="MusicPlayer" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/jmetro-11.6.16.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/lib/javafx-swt.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/lib/javafx.web.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/lib/javafx.base.jar" path-in-jar="/" />
@@ -14,7 +15,6 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/lib/javafx.swing.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/lib/javafx.controls.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/lib/javafx.graphics.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../../../Program Files/Java/jmetro-11.6.16.jar" path-in-jar="/" />
       <element id="file-copy" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/bin/api-ms-win-core-console-l1-1-0.dll" />
       <element id="file-copy" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/bin/api-ms-win-core-console-l1-2-0.dll" />
       <element id="file-copy" path="$PROJECT_DIR$/../../../../../../Program Files/Java/javafx-sdk-19.0.2/bin/api-ms-win-core-datetime-l1-1-0.dll" />

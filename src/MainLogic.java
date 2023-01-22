@@ -294,7 +294,7 @@ public class MainLogic {
         }
     }
     private String loadAndSplitConfig() throws Exception {
-        File config = new File("src/config.cf");
+        File config = new File("config.cf");
         BufferedReader br = new BufferedReader(new FileReader(config));
         StringBuilder lines = new StringBuilder();
         String line;
@@ -308,7 +308,7 @@ public class MainLogic {
     public void setPath(String p) throws Exception {
         PATH = p;
 
-        File config = new File("src/config.cf");
+        File config = new File("config.cf");
         String lines = this.loadAndSplitConfig();
         String[] sepLines = lines.split(";");
         for (String s : sepLines) {
@@ -325,7 +325,7 @@ public class MainLogic {
     public void setTheme(String t, boolean b) throws Exception {
         this.theme = t;
         if (b) {
-            File config = new File("src/config.cf");
+            File config = new File("config.cf");
             String lines = this.loadAndSplitConfig();
             String[] sepLines = lines.split(";");
             for (String s : sepLines) {

@@ -37,7 +37,7 @@ public class Loader extends Thread {
     }
 
     private String loadAndSplitConfig() throws Exception {
-        File config = new File("src/config.cf");
+        File config = new File("config.cf");
         BufferedReader br = new BufferedReader(new FileReader(config));
         StringBuilder lines = new StringBuilder();
         String line;
@@ -51,7 +51,7 @@ public class Loader extends Thread {
 
     private void loadConfig() throws Exception {
         boolean first = true;
-        File config = new File("src/config.cf");
+        File config = new File("config.cf");
         String lines = this.loadAndSplitConfig();
         String[] sepLines = lines.split(";");
         for (String s : sepLines) {
