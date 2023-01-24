@@ -108,26 +108,29 @@ public class Loader extends Thread {
         String lines;
         lines = br.readLine();
         br.close();
-        String[] sepLines = lines.split(";");
-        for (String s : sepLines) {
-            Media m;
-            try {
-                m = new Media(s);
-                this.ml.getSongPaths().add(s);
-            } catch (MediaException e) {
-                lines = lines.replace(s, "");
-                continue;
+
+        if (lines != null) {
+            String[] sepLines = lines.split(";");
+            for (String s : sepLines) {
+                Media m;
+                try {
+                    m = new Media(s);
+                    this.ml.getSongPaths().add(s);
+                } catch (MediaException e) {
+                    lines = lines.replace(s, "");
+                    continue;
+                }
+                Song song = new Song(s, m);
+                song.setUp();
+                this.ml.getAllSongs().add(song);
+                this.ml.getSongQueue().add(song);
             }
-            Song song = new Song(s, m);
-            song.setUp();
-            this.ml.getAllSongs().add(song);
-            this.ml.getSongQueue().add(song);
+            lines = lines.replace(";;", ";");
+            BufferedWriter w = new BufferedWriter(new FileWriter(allSongsFile));
+            w.write(lines);
+            w.close();
+            this.ml.equalsQueue();
         }
-        lines = lines.replace(";;", ";");
-        BufferedWriter w = new BufferedWriter(new FileWriter(allSongsFile));
-        w.write(lines);
-        w.close();
-        this.ml.equalsQueue();
     }
     private void loadPlaylists() throws Exception {
         File folder = new File(MainLogic.PATH + "/playlists/");
